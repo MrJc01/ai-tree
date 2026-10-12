@@ -134,7 +134,7 @@ const BASE_FAQ: FaqItem[] = [
     question: 'Os benchmarks mostram placares atuais?',
     answer: [
       'Sim, com data. Cada benchmark mostra o valor do artigo original e, quando há, o placar atual lido em uma data, com a página de onde o dado saiu e o link do placar oficial para você conferir.',
-      'Placares mudam. Quando a página oficial carrega os números por JavaScript, o valor vem de um agregador citado no painel, e o texto diz isso.',
+      'Placares mudam, e cada valor traz a configuração em que foi medido: números de configurações diferentes não se comparam. Quando a fonte de um valor é um agregador, o painel diz isso.',
     ],
   },
   {

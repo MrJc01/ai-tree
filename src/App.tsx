@@ -25,7 +25,7 @@ const iconButton =
   'inline-flex size-8 items-center justify-center rounded-md border border-(--t-border) text-(--t-text-muted) transition-colors hover:text-(--t-text)'
 
 const toolButton =
-  'hidden h-8 items-center whitespace-nowrap rounded-md border border-(--t-border) px-3 font-mono text-[10px] tracking-[0.12em] text-(--t-text-muted) uppercase transition-colors hover:text-(--t-text) md:inline-flex'
+  'hidden h-8 items-center whitespace-nowrap rounded-md border border-(--t-border) px-3 font-mono text-[10px] tracking-[0.12em] text-(--t-text-muted) uppercase transition-colors hover:text-(--t-text) lg:inline-flex'
 
 export default function App() {
   const theme = useAppStore((s) => s.theme)
@@ -86,12 +86,12 @@ export default function App() {
       <header className="relative z-40 flex h-14 shrink-0 items-center justify-between gap-3 border-b border-(--t-border) bg-(--t-surface) px-4">
         <div className="flex min-w-0 items-baseline gap-3">
           <h1 className="truncate text-sm font-semibold tracking-tight">AI Tech Tree & Knowledge</h1>
-          <span className="hidden font-mono text-[11px] text-(--t-text-muted) sm:inline">
+          <span className="hidden whitespace-nowrap font-mono text-[11px] text-(--t-text-muted) xl:inline">
             {UNIQUE_COUNT} habilidades
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="hidden items-center gap-2 md:flex">
+          <div className="hidden items-center gap-2 lg:flex">
             <button
               type="button"
               onClick={resetLayout}

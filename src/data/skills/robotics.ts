@@ -21,7 +21,7 @@ export const ROBOTICS_SKILLS: SkillSeed[] = [
         { year: 1960, event: 'Kalman publica o filtro linear recursivo de predição e correção', importance: 5 },
         { year: 1961, event: 'Kalman e Bucy estendem a teoria para o caso de tempo contínuo', importance: 3 },
       ],
-      actors: [{ name: 'Rudolf E. Kalman', role: 'Autor', org: 'Research Institute for Advanced Studies' }],
+      actors: [{ name: 'Rudolf E. Kalman', role: 'Autor', org: 'Research Institute for Advanced Study, Baltimore' }],
       equations: [
         { label: 'Correção', expression: 'x̂ₖ = x̂ₖ⁻ + Kₖ (zₖ − H x̂ₖ⁻)' },
       ],
@@ -152,7 +152,7 @@ export const ROBOTICS_SKILLS: SkillSeed[] = [
       history: [
         { year: 2022, event: 'Ahn et al. (Google) mostram o SayCan em tarefas de cozinha com um robô real', importance: 4 },
       ],
-      actors: [{ name: 'Michael Ahn', role: 'Primeiro autor', org: 'Google' }],
+      actors: [{ name: 'Michael Ahn', role: 'Primeiro autor no arXiv (na versão do CoRL, Brian Ichter)', org: 'Google' }],
       sources: [
         {
           title: 'Do As I Can, Not As I Say: Grounding Language in Robotic Affordances',
@@ -208,7 +208,7 @@ export const ROBOTICS_SKILLS: SkillSeed[] = [
       history: [
         { year: 2023, event: 'Driess et al. (Google) publicam o PaLM-E, com 562B parâmetros', importance: 4 },
       ],
-      actors: [{ name: 'Danny Driess', role: 'Primeiro autor', org: 'Google' }],
+      actors: [{ name: 'Danny Driess', role: 'Primeiro autor', org: 'Robotics at Google e TU Berlin' }],
       sources: [
         {
           title: 'PaLM-E: An Embodied Multimodal Language Model',

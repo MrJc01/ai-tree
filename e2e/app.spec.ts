@@ -36,16 +36,16 @@ test('exportar gera um PNG de verdade, com a data no nome do arquivo', async ({ 
   await page.getByRole('button', { name: 'Exportar' }).click()
   const [download] = await Promise.all([
     page.waitForEvent('download'),
-    page.getByRole('menuitem', { name: /PNG/ }).click(),
+    page.getByRole('menuitem', { name: /PNG · vista atual/ }).click(),
   ])
-  expect(download.suggestedFilename()).toMatch(/^ai-tree-\d{4}-\d{2}-\d{2}\.png$/)
+  expect(download.suggestedFilename()).toMatch(/^ai-tree-vista-\d{4}-\d{2}-\d{2}\.png$/)
 })
 
 test('o Vault mostra o placar atual com a data da leitura e o link do placar oficial', async ({ page, isMobile }) => {
   test.skip(isMobile, 'o Vault do celular fica acima da barra do tempo; coberto pela checagem visual')
   await page.goto('/')
   await page.getByRole('button', { name: 'Benchmarks' }).click()
-  await expect(page.getByText('Placar atual: 96%')).toBeVisible()
+  await expect(page.getByText('Placar atual: 76,8%')).toBeVisible()
   await expect(page.getByRole('link', { name: /Placar oficial · swebench.com/ })).toHaveAttribute('href', 'https://www.swebench.com/')
 })
 
@@ -71,9 +71,9 @@ test('no celular, o menu exporta a vista como PNG', async ({ page, isMobile }) =
   await page.getByRole('button', { name: 'Menu' }).click()
   const [download] = await Promise.all([
     page.waitForEvent('download'),
-    page.getByRole('menuitem', { name: 'PNG' }).click(),
+    page.getByRole('menuitem', { name: 'PNG · vista atual' }).click(),
   ])
-  expect(download.suggestedFilename()).toMatch(/^ai-tree-\d{4}-\d{2}-\d{2}\.png$/)
+  expect(download.suggestedFilename()).toMatch(/^ai-tree-vista-\d{4}-\d{2}-\d{2}\.png$/)
 })
 
 test('no celular, o menu inicia a apresentação no painel de baixo', async ({ page, isMobile }) => {
@@ -83,4 +83,15 @@ test('no celular, o menu inicia a apresentação no painel de baixo', async ({ p
   await page.getByRole('menuitem', { name: /^Apresentação/ }).click()
   await expect(page.getByText('passo 1 de 17')).toBeVisible()
   await expect(page.getByRole('complementary', { name: 'Roteiro da apresentação' })).toBeVisible()
+})
+
+test('exportar a árvore inteira gera um PNG com o nome de árvore', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'no celular a exportação fica no menu')
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Exportar' }).click()
+  const [download] = await Promise.all([
+    page.waitForEvent('download'),
+    page.getByRole('menuitem', { name: /PNG · árvore inteira/ }).click(),
+  ])
+  expect(download.suggestedFilename()).toMatch(/^ai-tree-arvore-\d{4}-\d{2}-\d{2}\.png$/)
 })

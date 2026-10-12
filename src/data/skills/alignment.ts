@@ -48,7 +48,7 @@ export const ALIGNMENT_SKILLS: SkillSeed[] = [
       history: [
         { year: 2016, event: 'Amodei et al. listam problemas concretos de segurança em IA, incluindo recompensas erradas', importance: 5 },
       ],
-      actors: [{ name: 'Dario Amodei', role: 'Primeiro autor', org: 'Google Brain / OpenAI' }],
+      actors: [{ name: 'Dario Amodei', role: 'Primeiro autor', org: 'Google Brain (no artigo de 2016)' }],
       sources: [
         {
           title: 'Concrete Problems in AI Safety',
@@ -232,7 +232,7 @@ export const ALIGNMENT_SKILLS: SkillSeed[] = [
         { year: 2024, event: 'Anthropic extrai milhões de features interpretáveis de um modelo Claude 3 Sonnet', importance: 5 },
       ],
       actors: [
-        { name: 'Chris Olah', role: 'Autor', org: 'OpenAI / Anthropic' },
+        { name: 'Chris Olah', role: 'Autor', org: 'OpenAI (no artigo Zoom In, de 2020)' },
         { name: 'Anthropic Interpretability Team', role: 'Autores do Scaling Monosemanticity', org: 'Anthropic' },
       ],
       sources: [

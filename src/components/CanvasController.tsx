@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useReactFlow, useStore } from '@xyflow/react'
 import { coveredArea, HEX_HEIGHT, HEX_WIDTH } from '../lib/geometry'
 import { DESKTOP_QUERY, useMedia } from '../lib/useMedia'
+import { setCanvasHandle } from '../lib/canvasHandle'
 import { useAppStore } from '../store/appStore'
 
 /** Zoom com que a habilidade em foco aparece, legível. */
@@ -40,9 +41,19 @@ export function CanvasController() {
   const height = useStore((s) => s.height)
   // Os hexágonos já foram medidos: só então a câmera pode centralizar. (useNodesInitialized não serve: as faixas não têm alças.)
   const initialized = useStore(hexesMeasured)
-  const { getNode, setCenter, fitView } = useReactFlow()
+  const { getNode, setCenter, fitView, getViewport, setViewport } = useReactFlow()
 
   const camera = useRef<Camera | null>(null)
+
+  // Expõe o canvas para o menu de exportação, que fica fora do React Flow.
+  useEffect(() => {
+    setCanvasHandle({
+      getViewport,
+      setViewport: (viewport) => setViewport(viewport, { duration: 0 }),
+      fitAll: () => fitView({ padding: 0.04, minZoom: 0.05, maxZoom: 1, duration: 0 }),
+    })
+    return () => setCanvasHandle(null)
+  }, [getViewport, setViewport, fitView])
   const seen = useRef({ focus: 0, fit: 0 })
   // Evita refazer a mesma câmera a cada render: só age quando o alvo ou o tamanho de fato mudaram.
   const lastKey = useRef<string | null>(null)

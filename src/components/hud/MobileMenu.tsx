@@ -2,7 +2,7 @@ import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import { Menu, X } from 'lucide-react'
 import { SKILLS } from '../../data'
 import { ARRANGE_MODES, arrangePositions } from '../../lib/arrange'
-import { exportCanvas, type ExportFormat } from '../../lib/exportCanvas'
+import { EXPORT_OPTIONS, exportCanvas, type ExportFormat, type ExportScope } from '../../lib/exportCanvas'
 import { PRESENTATION_MODES } from '../../presentation/modes'
 import { useAppStore } from '../../store/appStore'
 
@@ -53,11 +53,11 @@ export function MobileMenu() {
     setOpen(false)
   }
 
-  const exportFormat = async (format: ExportFormat) => {
+  const exportFormat = async (format: ExportFormat, scope: ExportScope) => {
     setOpen(false)
     setStatus(null)
     try {
-      if (!(await exportCanvas(format))) setStatus('Canvas não encontrado')
+      if (!(await exportCanvas(format, scope))) setStatus('Canvas não encontrado')
     } catch {
       setStatus('Não foi possível exportar esta vista')
     }
@@ -66,7 +66,7 @@ export function MobileMenu() {
   return (
     <div
       ref={rootRef}
-      className="relative md:hidden"
+      className="relative lg:hidden"
       onKeyDown={(event) => {
         if (event.key !== 'Escape' || !open) return
         event.stopPropagation()
@@ -118,13 +118,18 @@ export function MobileMenu() {
             ))}
           </Group>
 
-          <Group title="Exportar a vista">
-            <button type="button" role="menuitem" className={itemClass} onClick={() => void exportFormat('png')}>
-              PNG
-            </button>
-            <button type="button" role="menuitem" className={itemClass} onClick={() => void exportFormat('svg')}>
-              SVG
-            </button>
+          <Group title="Exportar">
+            {EXPORT_OPTIONS.map((o) => (
+              <button
+                key={`${o.format}-${o.scope}`}
+                type="button"
+                role="menuitem"
+                className={itemClass}
+                onClick={() => void exportFormat(o.format, o.scope)}
+              >
+                {o.label}
+              </button>
+            ))}
           </Group>
 
           <Group title="Apresentar">

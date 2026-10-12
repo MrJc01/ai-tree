@@ -2,8 +2,9 @@ import type { Benchmark } from '../types/skill'
 
 /**
  * Benchmarks do Vault. `measures` lista as entidades originais avaliadas por cada um.
- * `reference` é o valor publicado no artigo de origem. `current` é o placar lido em `checkedAt`, com a página
- * de onde saiu o dado e o placar oficial para conferir. Placares mudam: releia a fonte antes de citar um número.
+ * `reference` é o valor publicado no artigo de origem. `current` é o placar lido em `checkedAt` na página oficial
+ * do benchmark (ou, quando a página oficial não é legível, num agregador citado). Cada placar traz a configuração
+ * em que foi medido, porque números de configurações diferentes não se comparam. Placares mudam: releia antes de citar.
  */
 export const BENCHMARKS: Benchmark[] = [
   {
@@ -20,14 +21,13 @@ export const BENCHMARKS: Benchmark[] = [
       source: 'https://arxiv.org/abs/2310.06770',
     },
     current: {
-      leader: 'Claude Opus 5 (Anthropic), SWE-bench Verified',
-      value: '96%',
+      leader: 'Claude 4.5 Opus (high), agente mini-SWE-agent, só bash',
+      value: '76,8%',
       checkedAt: '2026-10-12',
-      sourceDate: '2026-10-10',
-      sourceUrl: 'https://benchlm.ai/benchmarks/swe-verified',
-      sourceLabel: 'BenchLM',
+      sourceUrl: 'https://www.swebench.com/',
+      sourceLabel: 'swebench.com (oficial)',
       officialUrl: 'https://www.swebench.com/',
-      note: 'Em seguida: Claude Mythos 5 (95,5%) e Claude Fable 5 (95%). O swebench.com carrega o placar por JavaScript, então o número veio do BenchLM, que agrega placares.',
+      note: 'Verified (500 instâncias), configuração padrão do placar oficial: só bash, com o agente mini-SWE-agent. Entrada de 17/02/2026. Em seguida: Gemini 3 Flash e MiniMax M2.5 (75,8%). Números de 96% que circulam em outros sites usam outras configurações e não são comparáveis com este.',
     },
   },
   {
@@ -39,14 +39,13 @@ export const BENCHMARKS: Benchmark[] = [
     paperUrl: 'https://arxiv.org/abs/2406.01574',
     officialUrl: 'https://huggingface.co/spaces/TIGER-Lab/MMLU-Pro',
     current: {
-      leader: 'Claude Fable 5.1 (Anthropic)',
-      value: '92,38%',
+      leader: 'Gemini-3.1-Pro (TIGER-Lab), empatado com Llama-3.1-Nemotron-70B-Instruct',
+      value: '91,16%',
       checkedAt: '2026-10-12',
-      sourceDate: '2026-09-01',
-      sourceUrl: 'https://www.vals.ai/benchmarks/mmlu_pro',
-      sourceLabel: 'Vals.ai',
+      sourceUrl: 'https://tiger-lab-mmlu-pro.hf.space/',
+      sourceLabel: 'TIGER-Lab (oficial)',
       officialUrl: 'https://huggingface.co/spaces/TIGER-Lab/MMLU-Pro',
-      note: 'Em seguida: Claude Opus 5 (91,59%) e Claude Fable 5 (91,50%). O placar do TIGER-Lab também carrega por JavaScript.',
+      note: 'Tabela oficial, ordenada pela pontuação geral. As duas primeiras linhas têm a mesma pontuação e as mesmas notas por área, o que sugere uma duplicata na tabela. A Vals.ai mede 92,38% para o Claude Fable 5.1, com outra metodologia.',
     },
   },
   {
@@ -59,15 +58,13 @@ export const BENCHMARKS: Benchmark[] = [
     paperUrl: 'https://arxiv.org/abs/1911.01547',
     officialUrl: 'https://arcprize.org/leaderboard',
     current: {
-      leader: 'Tufa Labs (equipe), ARC-AGI-2',
-      value: '88,06%',
+      leader: 'GPT-6 Astra (Max), ARC-AGI-2',
+      value: '95%',
       checkedAt: '2026-10-12',
-      sourceDate: '2026-10-09',
-      sourceUrl:
-        'https://toolnavs.com/article/2447-arc-agi-2-high-score-refresh-tufa-labs-tops-the-board-at-8806-past-the-85-bonus',
-      sourceLabel: 'ToolNavs (cita a ARC Prize)',
+      sourceUrl: 'https://arcprize.org/leaderboard',
+      sourceLabel: 'ARC Prize (oficial)',
       officialUrl: 'https://arcprize.org/leaderboard',
-      note: 'Resultado parcial: a pontuação do Kaggle usa cerca de metade dos dados de teste. A página oficial abre no ARC-AGI-3; use o filtro ARC-AGI-2.',
+      note: 'Tabela oficial, com o filtro ARC-AGI-2. Lançamento do modelo: 02/09/2026. Em seguida: GPT-6.1 Sol (Max), 94,2%, e Claude Opus 5.5 (High), 93,3%. O 88,06% do Tufa Labs é de uma competição no Kaggle, com cerca de metade dos dados de teste: outra disputa.',
     },
   },
   {
@@ -84,6 +81,15 @@ export const BENCHMARKS: Benchmark[] = [
       setting: 'Lançamento, 25/03/2026. Pontuação RHAE: a eficiência de ações em relação a um humano',
       source: 'https://arcprize.org/blog/arc-agi-3-launch',
     },
+    current: {
+      leader: 'GPT-6 Astra (Max), configuração padrão · GPT-6 Astra (High), com Provider Adapter',
+      value: '62,7% (padrão) · 99,9% (Provider Adapter)',
+      checkedAt: '2026-10-12',
+      sourceUrl: 'https://arcprize.org/leaderboard',
+      sourceLabel: 'ARC Prize (oficial)',
+      officialUrl: 'https://arcprize.org/leaderboard',
+      note: 'Tabela oficial, com o filtro ARC-AGI-3. Cada número é a melhor pontuação de uma configuração. A OpenAI anunciou 99,9% para o GPT-6 Astra, o que bate com a configuração Provider Adapter. Lançamento do modelo: 02/09/2026. Humanos: 100%.',
+    },
   },
   {
     id: 'arena-elo',
@@ -99,9 +105,9 @@ export const BENCHMARKS: Benchmark[] = [
       checkedAt: '2026-10-12',
       sourceDate: '2026-10-08',
       sourceUrl: 'https://arena.ai/leaderboard/text',
-      sourceLabel: 'Arena (arena.ai)',
+      sourceLabel: 'Arena (arena.ai, oficial)',
       officialUrl: 'https://arena.ai/leaderboard/text',
-      note: 'Em seguida: claude-opus-5.5-high (1507) e claude-opus-4-6-high (1504). A pontuação preliminar pode mudar.',
+      note: 'Tabela oficial lida no navegador. Em seguida: claude-opus-5.5-high (1507) e claude-opus-4-6-high (1504). A pontuação preliminar pode mudar.',
     },
   },
   {
@@ -137,7 +143,7 @@ export const BENCHMARKS: Benchmark[] = [
       checkedAt: '2026-10-12',
       sourceDate: '2026-03',
       sourceUrl: 'https://www.codesota.com/browse/computer-vision/image-classification/imagenet',
-      sourceLabel: 'Codesota',
+      sourceLabel: 'Codesota (agregador)',
       officialUrl: 'https://www.image-net.org/',
       note: 'O ImageNet não mantém placar atual. A entrada é de 2022 (arxiv.org/abs/2205.01917); a página do Codesota foi revisada em março de 2026.',
     },

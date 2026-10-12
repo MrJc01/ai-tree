@@ -21,8 +21,8 @@ export const COMPUTE_SKILLS: SkillSeed[] = [
         { year: 1951, event: 'Robbins e Monro publicam o método de aproximação estocástica', importance: 5 },
       ],
       actors: [
-        { name: 'Herbert Robbins', role: 'Autor', org: 'Columbia University' },
-        { name: 'Sutton Monro', role: 'Autor', org: 'Columbia University' },
+        { name: 'Herbert Robbins', role: 'Autor', org: 'Universidade da Carolina do Norte (filiação no artigo de 1951)' },
+        { name: 'Sutton Monro', role: 'Autor', org: 'Universidade da Carolina do Norte (filiação no artigo de 1951)' },
       ],
       equations: [{ label: 'Passo', expression: 'θₜ₊₁ = θₜ − ηₜ ∇L(θₜ)' }],
       sources: [
@@ -154,7 +154,7 @@ export const COMPUTE_SKILLS: SkillSeed[] = [
       history: [
         { year: 2017, event: 'Micikevicius et al. (NVIDIA) publicam o treino em precisão mista', importance: 5 },
       ],
-      actors: [{ name: 'Paulius Micikevicius', role: 'Primeiro autor', org: 'NVIDIA' }],
+      actors: [{ name: 'Paulius Micikevicius', role: 'Primeiro autor (contribuição igual com Sharan Narang, Baidu)', org: 'NVIDIA' }],
       sources: [
         {
           title: 'Mixed Precision Training',
@@ -212,7 +212,7 @@ export const COMPUTE_SKILLS: SkillSeed[] = [
         { year: 2020, event: 'Kaplan et al. (OpenAI) publicam as leis de escala para modelos de linguagem', importance: 5 },
         { year: 2022, event: 'Chinchilla revisa a proporção ótima entre parâmetros e dados', importance: 4 },
       ],
-      actors: [{ name: 'Jared Kaplan', role: 'Primeiro autor', org: 'OpenAI / Johns Hopkins' }],
+      actors: [{ name: 'Jared Kaplan', role: 'Primeiro autor', org: 'OpenAI' }],
       equations: [{ label: 'Perda em função de N', expression: 'L(N) ≈ (N_c / N)^α_N' }],
       sources: [
         {

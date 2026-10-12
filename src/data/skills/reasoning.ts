@@ -23,7 +23,7 @@ export const REASONING_SKILLS: SkillSeed[] = [
       ],
       actors: [
         { name: 'John McCarthy', role: 'Organizador de Dartmouth', org: 'Dartmouth College' },
-        { name: 'Allen Newell e Herbert Simon', role: 'Logic Theorist', org: 'Carnegie Mellon' },
+        { name: 'Allen Newell e Herbert Simon', role: 'Logic Theorist (com Cliff Shaw, da RAND)', org: 'RAND Corporation e Carnegie Institute of Technology (CMU)' },
       ],
       sources: [
         {
@@ -353,7 +353,7 @@ export const REASONING_SKILLS: SkillSeed[] = [
         { year: 1965, event: 'I. J. Good descreve a "máquina ultrainteligente" que projeta máquinas melhores', importance: 5 },
         { year: 2014, event: 'Bostrom populariza o cenário de explosão de inteligência', importance: 4 },
       ],
-      actors: [{ name: 'I. J. Good', role: 'Autor da ideia (1965)', org: 'Matemático britânico' }],
+      actors: [{ name: 'I. J. Good', role: 'Autor da ideia (1965)', org: 'Trinity College (Oxford) e Atlas Computer Laboratory' }],
       sources: [
         {
           title: 'Intelligence explosion',

@@ -88,7 +88,7 @@ export const ARCHITECTURE_SKILLS: SkillSeed[] = [
         { year: 1998, event: 'LeNet-5 é descrito no artigo de referência de reconhecimento de documentos', importance: 5 },
         { year: 2012, event: 'AlexNet vence o ILSVRC e inaugura a era do deep learning em visão', importance: 5 },
       ],
-      actors: [{ name: 'Yann LeCun', role: 'Autor do LeNet', org: 'AT&T Bell Labs / NYU' }],
+      actors: [{ name: 'Yann LeCun', role: 'Autor do LeNet', org: 'AT&T Labs-Research (na época do artigo)' }],
       equations: [{ label: 'Convolução 2D', expression: 'S(i,j) = Σₘ Σₙ I(i+m, j+n) · K(m,n)' }],
       mermaidDiagram:
         'flowchart LR\n  A["Imagem HxWxC"] --> B["Conv 3x3 + ReLU"]\n  B --> C["Pooling 2x2"]\n  C --> D["Conv + Pooling"]\n  D --> E["Camadas densas"]\n  E --> F["Classes"]',
@@ -128,7 +128,7 @@ export const ARCHITECTURE_SKILLS: SkillSeed[] = [
         { year: 2015, event: 'Luong et al. propõem variações de atenção global e local', importance: 3 },
         { year: 2017, event: 'Transformer generaliza a atenção como único mecanismo de sequência', importance: 5 },
       ],
-      actors: [{ name: 'Dzmitry Bahdanau', role: 'Autor', org: 'Université de Montréal (Mila)' }],
+      actors: [{ name: 'Dzmitry Bahdanau', role: 'Autor', org: 'Jacobs University Bremen (no artigo de 2014)' }],
       equations: [
         { label: 'Peso de alinhamento', expression: 'αᵢⱼ = softmax_j(eᵢⱼ)' },
         { label: 'Vetor de contexto', expression: 'cᵢ = Σⱼ αᵢⱼ · hⱼ' },
