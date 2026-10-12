@@ -244,7 +244,7 @@ Estado em 2026-10-12. **Português (fonte) e inglês estão completos**: interfa
 **Para reativar um idioma:** devolver a entrada em `LOCALES` (`src/i18n/locales.ts`) e em `DICTS` (`src/i18n/index.ts`), e criar o overlay de conteúdo em `src/i18n/content/index.ts`. Os dicionários de es, fr, de, it, ja e zh-CN continuam em `src/i18n/ui/`, sem uso por enquanto.
 
 **A fazer, por idioma** (vale para cada um de es, fr, de, it, ja e zh-CN):
-- [ ] Interface: as chaves já existem, mas as novas do FAQ (`faq.tierQuestion`, `faq.statusQuestion`, `faq.recognize`, `faq.position`, `faq.examples`, `faq.reading`) e `drawer.openSource` e `drawer.sourceNotFound` estão com o texto em português.
+- [ ] Interface: as chaves já existem, mas as novas do FAQ (`faq.tierQuestion`, `faq.statusQuestion`, `faq.recognize`, `faq.position`, `faq.examples`, `faq.reading`) e `drawer.openSource`, `drawer.sourceNotFound`, `app.about`, `app.aboutTitle` e os `about.*` (slide Sobre) estão com o texto em português.
 - [ ] Habilidades: `src/i18n/content/<idioma>.ts` com o campo `skills`, mesmos ids e mesma ordem de `src/i18n/content/en.ts`.
 - [ ] Apresentação e história (36 passos): campo `presentation`, no modelo de `src/i18n/content/en-text.ts`.
 - [ ] FAQ, termos, patamares, maturidades e benchmarks: campos `faq`, `terms`, `tiers`, `statuses` e `benchmarks`.

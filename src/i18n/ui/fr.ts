@@ -149,6 +149,16 @@ export const fr: Record<UIKey, string> = {
   'drawer.open': 'Ouvrir',
   'drawer.sourceNotFound': 'Source introuvable.',
   'drawer.openSource': 'Ouvrir la source originale ↗',
+  'app.about': 'Sobre',
+  'app.aboutTitle': 'Sobre o projeto e a organização responsável',
+  'about.title': 'Sobre este projeto',
+  'about.close': 'Fechar sobre',
+  'about.p1': 'Mostra a evolução da inteligência artificial como uma árvore de habilidades: de 1950 até hoje, do machine learning clássico à superinteligência teórica.',
+  'about.p2': 'Cada habilidade traz as fontes citadas, como artigos, repositórios e textos de referência. É uma seleção editorial para explicar o campo, não um catálogo completo.',
+  'about.p3': 'O projeto é de código aberto, sob a licença MIT.',
+  'about.orgLabel': 'Organização responsável',
+  'about.orgText': 'Acesse para conhecer a organização:',
+  'about.start': 'Começar a explorar',
 
   // Mode d'emploi (hexagone)
   'guide.aboutThis': 'À propos de cette compétence',

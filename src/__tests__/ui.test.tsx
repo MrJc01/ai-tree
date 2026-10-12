@@ -19,6 +19,8 @@ const initial = useAppStore.getState()
 
 beforeEach(() => {
   localStorage.clear()
+  // Visita já feita: o slide Sobre não abre sozinho e não captura o Escape dos testes.
+  localStorage.setItem('ai-tech-tree:welcome-seen', '1')
   useAppStore.setState({
     ...initial,
     drawer: [],

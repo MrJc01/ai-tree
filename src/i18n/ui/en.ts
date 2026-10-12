@@ -149,6 +149,16 @@ export const en: Record<UIKey, string> = {
   'drawer.open': 'Open',
   'drawer.sourceNotFound': 'Source not found.',
   'drawer.openSource': 'Open original source ↗',
+  'app.about': 'About',
+  'app.aboutTitle': 'About the project and the organization behind it',
+  'about.title': 'About this project',
+  'about.close': 'Close about',
+  'about.p1': 'Shows the evolution of artificial intelligence as a tree of skills: from 1950 to today, from classical machine learning to theoretical superintelligence.',
+  'about.p2': 'Each skill cites its sources, such as papers, repositories and reference texts. It is an editorial selection to explain the field, not a complete catalog.',
+  'about.p3': 'The project is open source, under the MIT license.',
+  'about.orgLabel': 'Organization behind it',
+  'about.orgText': 'Visit to learn more about the organization:',
+  'about.start': 'Start exploring',
 
   // How to use (hexagon)
   'guide.aboutThis': 'About this skill',

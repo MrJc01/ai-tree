@@ -149,6 +149,9 @@ interface AppState {
   /** Painel de perguntas frequentes, aberto pelo botão FAQ. Enquanto está aberto, ESC é dele. */
   faqOpen: boolean
   setFaqOpen: (open: boolean) => void
+  /** Slide Sobre, aberto na primeira visita e pelo botão do cabeçalho. */
+  aboutOpen: boolean
+  setAboutOpen: (open: boolean) => void
 
   presentation: PresentationState
   /** Habilidade que o passo atual da apresentação está explicando. Recebe a borda de foco. */
@@ -208,6 +211,8 @@ export const useAppStore = create<AppState>((set) => ({
 
   faqOpen: false,
   setFaqOpen: (open) => set({ faqOpen: open }),
+  aboutOpen: false,
+  setAboutOpen: (open) => set({ aboutOpen: open }),
   presentation: loadPresentation(),
   presentationFocus: null,
   setPresentationFocus: (id) => set({ presentationFocus: id }),

@@ -149,6 +149,16 @@ export const ja: Record<UIKey, string> = {
   'drawer.open': '開く',
   'drawer.sourceNotFound': '出典が見つかりません。',
   'drawer.openSource': '元の出典を開く ↗',
+  'app.about': 'Sobre',
+  'app.aboutTitle': 'Sobre o projeto e a organização responsável',
+  'about.title': 'Sobre este projeto',
+  'about.close': 'Fechar sobre',
+  'about.p1': 'Mostra a evolução da inteligência artificial como uma árvore de habilidades: de 1950 até hoje, do machine learning clássico à superinteligência teórica.',
+  'about.p2': 'Cada habilidade traz as fontes citadas, como artigos, repositórios e textos de referência. É uma seleção editorial para explicar o campo, não um catálogo completo.',
+  'about.p3': 'O projeto é de código aberto, sob a licença MIT.',
+  'about.orgLabel': 'Organização responsável',
+  'about.orgText': 'Acesse para conhecer a organização:',
+  'about.start': 'Começar a explorar',
 
   // 使い方（ヘックス）
   'guide.aboutThis': 'このスキルについて',

@@ -61,11 +61,12 @@ export function SkillDrawer() {
   const jumpTo = useAppStore((s) => s.jumpTo)
   const closeDrawer = useAppStore((s) => s.closeDrawer)
   const faqOpen = useAppStore((s) => s.faqOpen)
+  const aboutOpen = useAppStore((s) => s.aboutOpen)
   const open = drawer.length > 0
 
   useEffect(() => {
     // Com o FAQ aberto, ESC fecha o FAQ e não mexe na gaveta.
-    if (!open || faqOpen) return
+    if (!open || faqOpen || aboutOpen) return
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault()
@@ -74,7 +75,7 @@ export function SkillDrawer() {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [open, faqOpen, popEntry])
+  }, [open, faqOpen, aboutOpen, popEntry])
 
   const desktop = useMedia(DESKTOP_QUERY)
   const crumbs = breadcrumbsFor(drawer)

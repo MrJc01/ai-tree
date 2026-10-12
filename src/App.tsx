@@ -16,6 +16,8 @@ import { ExportMenu } from './components/hud/ExportMenu'
 import { MobileMenu } from './components/hud/MobileMenu'
 import { DESKTOP_QUERY, useMedia } from './lib/useMedia'
 import { FaqPanel } from './components/faq/FaqPanel'
+import { AboutDialog } from './components/about/AboutDialog'
+import { isFirstVisit, markVisited } from './components/about/welcome'
 import { TimeSlider } from './components/hud/TimeSlider'
 import { useAppStore } from './store/appStore'
 import { t } from './i18n'
@@ -46,6 +48,7 @@ export default function App() {
       ? 'min(560px, calc(100% - min(620px, 60%) - 1.5rem))'
       : 'min(560px, calc(100% - 11rem))'
   const setFaqOpen = useAppStore((s) => s.setFaqOpen)
+  const setAboutOpen = useAppStore((s) => s.setAboutOpen)
   const presenting = useAppStore((s) => s.presentation.active)
   const presentationMode = useAppStore((s) => s.presentation.mode)
   const startPresentation = useAppStore((s) => s.startPresentation)
@@ -54,6 +57,13 @@ export default function App() {
   useEffect(() => {
     applyTheme(theme)
   }, [theme])
+
+  // Primeira visita neste navegador: abre o slide Sobre uma vez. Depois, o botão do cabeçalho abre quando quiser.
+  useEffect(() => {
+    if (!isFirstVisit()) return
+    markVisited()
+    setAboutOpen(true)
+  }, [setAboutOpen])
 
   // Link direto: #habilidade=llm abre a habilidade ao carregar, mesmo se uma apresentação estava aberta.
   // Também vale com a página aberta, quando o hash muda (colar um link na mesma aba).
@@ -111,6 +121,15 @@ export default function App() {
             >
               {t('app.faq')}
             </button>
+            <button
+              type="button"
+              onClick={() => setAboutOpen(true)}
+              aria-haspopup="dialog"
+              title={t('app.aboutTitle')}
+              className={toolButton}
+            >
+              {t('app.about')}
+            </button>
             <ArrangeMenu buttonClass={toolButton} />
             <ExportMenu buttonClass={toolButton} />
             {(['apresentacao', 'historia'] as const).map((m) => {
@@ -167,6 +186,7 @@ export default function App() {
           <FaqPanel />
         </main>
       </div>
+      <AboutDialog />
     </div>
   )
 }

@@ -30,6 +30,7 @@ export function MobileMenu() {
 
   const faqOpen = useAppStore((s) => s.faqOpen)
   const setFaqOpen = useAppStore((s) => s.setFaqOpen)
+  const setAboutOpen = useAppStore((s) => s.setAboutOpen)
   const resetLayout = useAppStore((s) => s.resetLayout)
   const setPositions = useAppStore((s) => s.setPositions)
   const showModels = useAppStore((s) => s.showModels)
@@ -98,6 +99,9 @@ export function MobileMenu() {
             </button>
             <button type="button" role="menuitem" className={itemClass} onClick={() => run(() => setFaqOpen(!faqOpen))}>
               {t('app.faq')} {faqOpen ? `· ${t('mobile.faqOpen')}` : ''}
+            </button>
+            <button type="button" role="menuitem" className={itemClass} onClick={() => run(() => setAboutOpen(true))}>
+              {t('app.about')}
             </button>
             <button type="button" role="menuitem" className={itemClass} onClick={() => run(toggleModels)}>
               {t('app.models')} · {showModels ? t('mobile.modelsOn') : t('mobile.modelsOff')}
