@@ -3,6 +3,8 @@
 [![CI](https://github.com/MrJc01/ai-tree/actions/workflows/ci.yml/badge.svg)](https://github.com/MrJc01/ai-tree/actions/workflows/ci.yml)
 [![Licença: MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-blue.svg)](LICENSE)
 
+**Versão no ar:** https://mrjc01.github.io/ai-tree/
+
 Uma árvore interativa da evolução da inteligência artificial, do machine learning clássico (T1) à superinteligência teórica (T5). Cada hexágono é uma habilidade, com explicação, histórico, atores, fontes, fluxograma e benchmarks. As ligações mostram o que depende de quê.
 
 ## Prints
