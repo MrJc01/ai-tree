@@ -90,6 +90,13 @@ describe('gaveta', () => {
 })
 
 describe('App', () => {
+  it('o botão crom.run do cabeçalho abre o site da organização em outra aba', () => {
+    render(<App />)
+    const link = screen.getByRole('link', { name: 'crom.run' })
+    expect(link).toHaveAttribute('href', 'https://crom.run')
+    expect(link).toHaveAttribute('target', '_blank')
+  })
+
   it('monta o cabeçalho, os controles e a contagem de habilidades', () => {
     render(<App />)
     expect(screen.getByRole('heading', { name: 'AI Tech Tree & Knowledge' })).toBeInTheDocument()

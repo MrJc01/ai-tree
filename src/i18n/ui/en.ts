@@ -159,6 +159,7 @@ export const en: Record<UIKey, string> = {
   'about.orgLabel': 'Organization behind it',
   'about.orgText': 'Visit to learn more about the organization:',
   'about.start': 'Start exploring',
+  'app.cromTitle': 'Opens the crom.run organization site in a new tab',
   'about.prev': 'Previous',
   'about.next': 'Next',
   'about.counter': '{current} of {total}',

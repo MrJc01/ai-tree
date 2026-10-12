@@ -160,6 +160,7 @@ export const pt = {
   'about.orgLabel': 'Organização responsável',
   'about.orgText': 'Acesse para conhecer a organização:',
   'about.start': 'Começar a explorar',
+  'app.cromTitle': 'Abre o site da organização crom.run em outra aba',
   'about.prev': 'Anterior',
   'about.next': 'Próximo',
   'about.counter': '{current} de {total}',

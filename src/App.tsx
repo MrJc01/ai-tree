@@ -130,6 +130,15 @@ export default function App() {
             >
               {t('app.about')}
             </button>
+            <a
+              href="https://crom.run"
+              target="_blank"
+              rel="noreferrer"
+              title={t('app.cromTitle')}
+              className={toolButton}
+            >
+              crom.run
+            </a>
             <ArrangeMenu buttonClass={toolButton} />
             <ExportMenu buttonClass={toolButton} />
             {(['apresentacao', 'historia'] as const).map((m) => {
