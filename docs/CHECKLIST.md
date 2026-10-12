@@ -86,6 +86,22 @@ Legenda: `[x]` feito com evidência · `[ ]` a fazer · **parcial** = implementa
 
 ---
 
+## 📥 Pedidos de 2026-10-12 (rodada 4)
+
+**Pedido do usuário:** "corrija e faça tudo que ta falando também", com a lista de pendências da rodada 3.
+
+**Feito, com evidência**
+- [x] **Modelos de 2026 com fonte oficial**: Claude Opus 5 (24/07/2026), Claude Fable 5 (09/06), Fable 5.1 (01/09), Mythos 5 (09/06) e Mythos 5.1 (01/09), das páginas `anthropic.com/claude/opus`, `/fable` e `/mythos`; os dois Mythos marcados como acesso restrito. GPT-6 Astra (lançamento 02/09/2026, na tabela oficial do ARC Prize), GPT-6 Sol (22/09) e GPT-6.1 Sol (22/09), das páginas da OpenAI. Gemini 4 Argon, como anunciado (28/09), na página do Google, ainda não lançado de forma ampla. Evidência: `models.ts` (19 modelos), `data.test.ts`, leitura no navegador.
+- [x] **Placares lidos nas páginas oficiais, no navegador** (o navegador executa o JavaScript dos sites). SWE-bench: **76,8%** (oficial, Verified, só bash), no lugar dos 96% do BenchLM, que usam outra configuração. ARC-AGI-2: **95%** (GPT-6 Astra). ARC-AGI-3: **62,7%** na configuração padrão e **99,9%** no Provider Adapter, que bate com o anúncio da OpenAI. MMLU-Pro: **91,16%**, com empate na tabela entre Gemini-3.1-Pro e Llama-3.1-Nemotron (as duas linhas têm as mesmas notas por área, provável duplicata). Arena: 1525 preliminar, conferido no DOM. Evidência: `benchmarks.ts`, teste E2E do Vault (agora `Placar atual: 76,8%`).
+- [x] **Exportar a árvore inteira**: enquadra a árvore, exporta e devolve a vista que o usuário tinha. Quatro opções nos dois menus (PNG e SVG, vista atual ou árvore inteira), vindas de uma lista única (`EXPORT_OPTIONS`). Evidência: PNG da árvore gerado e conferido (árvore completa, sem controles), teste E2E de download e `ui.test.tsx`.
+- [x] **Tablet**: o cabeçalho ficava apertado em 768 px (menu ausente) e 1024 px (contagem quebrava). Agora a barra de botões só aparece a partir de 1024 px, e a contagem de habilidades a partir de 1280 px. Evidência: capturas do cabeçalho em 768 e 1024 px.
+- [x] **Revisão dos 67 registros de atores**: 13 correções, todas com fonte, cada uma em uma busca. Monro e Robbins: filiação do artigo de 1951 é a Universidade da Carolina do Norte, não Columbia. I. J. Good: Trinity College (Oxford) e Atlas Computer Laboratory. Dario Amodei: Google Brain no artigo de 2016. Jared Kaplan: só OpenAI no artigo de 2020, sem Johns Hopkins. Bahdanau: Jacobs University Bremen no artigo de 2014, não Montréal. Yann LeCun: AT&T Labs-Research na época do LeNet. Chris Olah: OpenAI no *Zoom In*. Micikevicius: contribuição igual com Sharan Narang (Baidu). Newell e Simon: RAND e Carnegie Tech. Kalman: Research Institute for Advanced Study, Baltimore. Michael Ahn: primeiro autor só no arXiv (no CoRL é Brian Ichter). Danny Driess: Robotics at Google e TU Berlin. Os 5 relatórios de empresa (Gemini, GPT-4, Llama 3, DeepSeek) ficam atribuídos à própria empresa.
+
+**Pendente**
+- Gu e Dao (Mamba) e Ho (DDPM): afiliação confirmada por fonte secundária, não pela primeira página do artigo.
+- Os relatórios de empresa não foram buscados um a um: a autoria é da própria empresa.
+- Publicação: repositório público `ai-tree` com MIT, na rodada 4 (ver a seção de publicação).
+
 ## 📥 Pedidos de 2026-10-12 (rodada 3)
 
 **Respostas do usuário às perguntas abertas**
@@ -111,16 +127,16 @@ Legenda: `[x]` feito com evidência · `[ ]` a fazer · **parcial** = implementa
 **Pedido novo: "pense e pesquise o que mais pode estar faltando, e faça tudo"**
 
 **Lacunas levantadas (pesquisa de 2026-10-12), com estado:**
-- [~] **Modelos da árvore desatualizados (prioridade alta)**. **Feito**: Claude Opus 5.5 (22/09/2026), Sonnet 5.5 (28/09/2026) e Haiku 5.5 (07/10/2026), com a página oficial da Anthropic como link (lidas em anthropic.com/news e nas páginas de cada modelo). **Pendente**, sem página oficial confirmada: Claude Fable 5 e Mythos 5 (jornais citam 09/06/2026; o endereço anthropic.com/claude-fable-5 deu 404); GPT-5.6 Sol (openai.com deu 403, a data 09/07/2026 vem de imprensa); Gemini 4 (não anunciado no blog do Google; o Arena lista um nome de teste, "gemini-4-argon", como preliminar). Opus 5: datas conflitantes (24/07/2026 em fontes secundárias). Evidência: `models.ts`; `data.test.ts` passa.
-- [x] **ARC-AGI-3 com entrada**: lançado em 25/03/2026 (arcprize.org/blog/arc-agi-3-launch). Referência do lançamento: humanos 100%, IA de fronteira 0,51%. **Pendente**: placar atual (o leaderboard carrega por JavaScript; um agregador cita 30,2% para Opus 5 high, não confirmado). Evidência: `benchmarks.ts`.
-- [x] **Celular**: cabeçalho com menu (Vista, Organizar, Exportar, Apresentar); gaveta sobe por baixo com 60% da tela; painel da apresentação é faixa inferior com 40%; a câmera centraliza o foco na área livre de cima; controles e minimapa ocultos. Conferido no navegador em 375×812 (menu, gaveta, passo 3 da apresentação com o Transformer centralizado) e nos testes de ponta a ponta (perfil Pixel 5). **Pendente**: revisão em tablet (768 a 1024 px), não feita.
-- [~] **Placares sem leitura direta (fonte)**: swebench.com, arcprize.org, TIGER-Lab e arena.ai carregam por JavaScript. Só o arena.ai foi lido direto. Os demais estão marcados no Vault com a fonte real (agregador). Conferir antes de publicar.
+- [x] **Modelos da árvore desatualizados (prioridade alta)**: fechado na rodada 4 (ver lá). Pendentes de fonte oficial ficaram resolvidos: Fable 5/5.1, Mythos 5/5.1, GPT-6 Astra/Sol/6.1 Sol e Gemini 4 Argon (anunciado).
+- [x] **ARC-AGI-3 com entrada e placar oficial** (rodada 4): 62,7% na configuração padrão e 99,9% com o Provider Adapter, lidos na tabela oficial.
+- [x] **Celular e tablet**: cabeçalho com menu (Vista, Organizar, Exportar, Apresentar); gaveta sobe por baixo com 60% da tela; painel da apresentação é faixa inferior com 40%; câmera centraliza na área livre de cima; controles e minimapa ocultos. Conferido em 375×812, 768×1024 e 1024 px no navegador, e no perfil Pixel 5 dos testes de ponta a ponta.
+- [x] **Placares oficiais** (rodada 4): lidos nas tabelas renderizadas no navegador (SWE-bench, ARC Prize, TIGER-Lab, Arena). Valor do SWE-bench corrigido de 96% (BenchLM, outra configuração) para 76,8% (oficial, só bash). ImageNet segue sem placar oficial, com agregador marcado.
 - [x] **Testes de ponta a ponta** (Playwright): `npm run e2e`, 10 testes passando e 8 pulados por perfil (desktop e celular). Cobrem link direto, apresentação e "voltar ao último visto", Auto-organizar, exportação PNG real, Vault com placar atual, e o menu do celular. Rodam no CI (`ponta_a_ponta`). Evidência: saída do `playwright test`.
 - [x] **ESLint**: `npm run lint` sem erros (regras do TypeScript, React Hooks e Fast Refresh). Um erro real encontrado e corrigido: `MermaidDiagram` chamava setState dentro do efeito. Roda no CI.
 - [~] **Acessibilidade**: axe-core 4.10 na página: **0 violações**, 46 regras aprovadas. 63 casos de contraste ficaram "incompletos" (o axe não lê fundo com imagem, desfoque ou sobreposição do canvas). Medido à mão no tema escuro: título do hexágono 15,04:1; selo muted 4,91:1. No claro, valem os tokens da rodada anterior (16,9 e 4,51). **Pendente**: leitor de tela não testado com ferramenta própria.
-- [~] **Revisão de dados**: T4 e T5 agora citam leituras reais (Morris et al., "Levels of AGI", arXiv:2311.02462, 2023; Good, 1965; Bostrom, *Superintelligence*, 2014), e o FAQ as mostra (`levels.test.ts`). **Pendente**: revisão dos papéis dos atores das 51 habilidades, uma a uma.
+- [x] **Revisão de dados (atores)**: rodada 4 revisou os 67 registros. Foram 13 correções com fonte, e os 5 relatórios de empresa ficam atribuídos à própria empresa. Ver a rodada 4. **Pendente**: Gu/Dao (Mamba) e Ho (DDPM) têm afiliação por fonte secundária, não pela primeira página do artigo.
 - [x] **Trilhas que contornam os hexágonos**: a medição mostrou **7 cruzamentos** (arestas longas, como `transformer → mamba`, passando por dentro de um hexágono de um patamar intermediário). Correção: arestas que atravessam patamares ganham uma coluna livre entre os hexágonos, com faixa horizontal em cada ponta (`src/lib/route.ts`). Agora, zero cruzamentos. Evidência: `edges.test.ts` (controle do detector, rotas não vazias, zero cruzamentos); `logic.test.ts` (sem sobreposição horizontal, trilhas ortogonais); conferido no navegador.
-- [x] **Exportar PNG ou SVG** (botão Exportar no cabeçalho, e no menu do celular). Exporta a **vista atual** do canvas, com o zoom e a posição da tela; a árvore inteira em uma imagem fica para depois. Evidência: teste E2E de download (nome `ai-tree-AAAA-MM-DD.png`) e `ui.test.tsx`.
+- [x] **Exportar PNG ou SVG, vista atual e árvore inteira** (rodada 4): enquadra a árvore, exporta e devolve a vista. Evidência: PNG da árvore gerado e conferido, teste E2E e `ui.test.tsx`.
 - [x] **Histórico de passos da apresentação**: botão "Voltar ao último visto" com o título do passo de destino; a pilha guarda até 50 passos e fica salva na sessão. Evidência: `presentation.test.ts` (desfaz o salto de "Próximo", ignora o mesmo passo, limita a pilha), `navigation.test.ts` (leitura validada), e o E2E de apresentação.
 - [x] **Repositório git** iniciado (`ai-tree`, branch `main`, primeiro commit `76d2333`). O CI agora roda lint, tipos, testes, build e ponta a ponta. **Pendente**: criar o remoto no GitHub, se você quiser.
 - [x] **Tamanho do pacote**: o arquivo principal caiu de 689 kB para 173 kB, com React, React Flow e Framer Motion em pacotes separados. Os avisos que sobram são de módulos do Mermaid, carregados só quando um fluxograma é aberto. Evidência: saída do `npm run build`.
@@ -224,8 +240,8 @@ Este bloco é a lista única de tudo. Nada que foi pedido ou sugerido fica fora 
 ## ▶️ Retomar
 
 **Por onde começar na próxima conversa:**
-1. Pedir ao usuário a escolha do nome do repositório git (opções na resposta da rodada 3).
-2. Atacar as lacunas de prioridade alta: modelos de 2026 (com fonte para a data de cada um) e o layout de celular.
+1. Repositório público `ai-tree` com licença MIT: publicado na rodada 4 (ver lá). Próximo passo: acompanhar o primeiro CI no GitHub.
+2. Fontes ainda pendentes: a afiliação de Gu/Dao e Ho pela primeira página dos artigos.
 3. Antes de conferir no navegador, recarregar a página: depois de editar arquivos com efeitos, a aba aberta pode continuar com o código antigo.
 
 **Comandos:**
