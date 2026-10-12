@@ -163,6 +163,12 @@ export const es: Record<UIKey, string> = {
   'faq.count': '{shown} de {total} preguntas',
   'faq.none': 'Ninguna pregunta coincide con la búsqueda.',
   'faq.close': 'Cerrar FAQ',
+  'faq.tierQuestion': 'O que é o T{tier}, {name}?',
+  'faq.statusQuestion': 'O que significa "{name}"?',
+  'faq.recognize': 'Como reconhecer:',
+  'faq.position': 'Posição na árvore:',
+  'faq.examples': '{count} habilidades. Exemplos: {examples}.',
+  'faq.reading': 'Leitura: {reference}',
 
   // Leyenda y rótulos generales
   'legend.title': 'Leyenda',

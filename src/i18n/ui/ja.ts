@@ -163,6 +163,12 @@ export const ja: Record<UIKey, string> = {
   'faq.count': '{total}件中{shown}件',
   'faq.none': '検索に一致する質問はありません。',
   'faq.close': 'FAQを閉じる',
+  'faq.tierQuestion': 'O que é o T{tier}, {name}?',
+  'faq.statusQuestion': 'O que significa "{name}"?',
+  'faq.recognize': 'Como reconhecer:',
+  'faq.position': 'Posição na árvore:',
+  'faq.examples': '{count} habilidades. Exemplos: {examples}.',
+  'faq.reading': 'Leitura: {reference}',
 
   // 凡例と一般的なラベル
   'legend.title': '凡例',

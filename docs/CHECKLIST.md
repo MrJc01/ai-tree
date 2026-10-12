@@ -4,7 +4,7 @@ Memória do projeto entre conversas. Cada pedido do usuário entra aqui na hora 
 
 Legenda: `[x]` feito com evidência · `[ ]` a fazer · **parcial** = implementado, mas falta verificar ou concluir.
 
-> **Sobre commit:** o projeto ainda **não é um repositório git** (`git rev-parse` falha). Por isso nada foi commitado nem publicado. Ver pergunta 1 abaixo.
+> **Sobre commit:** o projeto é um repositório git (branch `main`). Os commits de tradução são locais e não foram publicados: o `git push` publica no GitHub Pages e depende de confirmação.
 
 ---
 
@@ -237,6 +237,26 @@ Este bloco é a lista única de tudo. Nada que foi pedido ou sugerido fica fora 
 - Mais habilidades, em especial nos patamares T4 e T5, onde a árvore ainda é fina.
 - Versão para impressão, com a árvore e o glossário.
 
+## 🌐 Traduções: o que falta
+
+Estado em 2026-10-12. **Português (fonte) e inglês estão completos**: interface, apresentação, história, FAQ, termos, patamares, maturidades, benchmarks e habilidades. O seletor mostra só esses dois idiomas.
+
+**Para reativar um idioma:** devolver a entrada em `LOCALES` (`src/i18n/locales.ts`) e em `DICTS` (`src/i18n/index.ts`), e criar o overlay de conteúdo em `src/i18n/content/index.ts`. Os dicionários de es, fr, de, it, ja e zh-CN continuam em `src/i18n/ui/`, sem uso por enquanto.
+
+**A fazer, por idioma** (vale para cada um de es, fr, de, it, ja e zh-CN):
+- [ ] Interface: as chaves já existem, mas as novas do FAQ (`faq.tierQuestion`, `faq.statusQuestion`, `faq.recognize`, `faq.position`, `faq.examples`, `faq.reading`) e `drawer.openSource` e `drawer.sourceNotFound` estão com o texto em português.
+- [ ] Habilidades: `src/i18n/content/<idioma>.ts` com o campo `skills`, mesmos ids e mesma ordem de `src/i18n/content/en.ts`.
+- [ ] Apresentação e história (36 passos): campo `presentation`, no modelo de `src/i18n/content/en-text.ts`.
+- [ ] FAQ, termos, patamares, maturidades e benchmarks: campos `faq`, `terms`, `tiers`, `statuses` e `benchmarks`.
+- [ ] Fluxogramas Mermaid: campo `mermaid` de cada habilidade que tem diagrama (6 habilidades).
+- [ ] Conferir com `npx vitest run src/__tests__/i18n.test.ts`: chaves, variáveis `{...}`, tamanho das listas e estrutura do texto, comparada com o português.
+
+**Pendências gerais:**
+- [ ] Datas: o Vault mostra dd/mm/aaaa em português e mm/dd/aaaa em inglês. Os outros idiomas precisam de regra própria (`formatDate` em `src/components/hud/BenchmarkVault.tsx`).
+- [ ] Ordenação de nomes usa `pt-BR` em `src/lib/arrange.ts` e `src/lib/search.ts`. Deveria usar o idioma atual.
+- [ ] No inglês, conferido no navegador: gaveta, apresentação, FAQ e Vault. **Não conferido:** os fluxogramas Mermaid em inglês.
+- [ ] Os números e as datas dos benchmarks foram mantidos iguais nos dois idiomas. Quem atualizar um placar precisa atualizar o português e o inglês juntos.
+
 ---
 
 ## ▶️ Retomar
@@ -248,7 +268,7 @@ Este bloco é a lista única de tudo. Nada que foi pedido ou sugerido fica fora 
 
 **Comandos:**
 - `npm run dev`: servidor em `http://localhost:5173` (já estava rodando pelo preview).
-- `npm test`: suíte (155 testes em 8 arquivos).
+- `npm test`: suíte (186 testes em 12 arquivos).
 - `npm run typecheck`: checagem de tipos.
 - `npm run build`: build de produção.
 

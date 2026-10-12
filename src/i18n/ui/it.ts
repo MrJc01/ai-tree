@@ -163,6 +163,12 @@ export const itDict: Record<UIKey, string> = {
   'faq.count': '{shown} di {total} domande',
   'faq.none': 'Nessuna domanda corrisponde alla ricerca.',
   'faq.close': 'Chiudi FAQ',
+  'faq.tierQuestion': 'O que é o T{tier}, {name}?',
+  'faq.statusQuestion': 'O que significa "{name}"?',
+  'faq.recognize': 'Como reconhecer:',
+  'faq.position': 'Posição na árvore:',
+  'faq.examples': '{count} habilidades. Exemplos: {examples}.',
+  'faq.reading': 'Leitura: {reference}',
 
   // Legenda ed etichette generali
   'legend.title': 'Legenda',

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown, X } from 'lucide-react'
-import { FAQ, filterFaq, type FaqItem } from '../../guide/faq'
+import { faqItems, filterFaq, type FaqItem } from '../../guide/faq'
 import { useAppStore } from '../../store/appStore'
 import { t } from '../../i18n'
 
@@ -46,7 +46,8 @@ export function FaqPanel() {
   const [query, setQuery] = useState('')
   const [expanded, setExpanded] = useState<Set<string>>(new Set())
 
-  const items = useMemo(() => filterFaq(FAQ, query), [query])
+  const all = useMemo(() => faqItems(), [])
+  const items = useMemo(() => filterFaq(all, query), [all, query])
 
   useEffect(() => {
     if (!open) return
@@ -99,7 +100,7 @@ export function FaqPanel() {
               className="w-full rounded-md border border-(--t-border) bg-(--t-surface) px-3 py-2 text-[13px] text-(--t-text) outline-none placeholder:text-(--t-text-muted) focus:border-(--t-accent)"
             />
             <p className="font-mono text-[10px] tracking-[0.12em] text-(--t-text-muted) uppercase" aria-live="polite">
-              {items.length} de {FAQ.length} perguntas
+              {t('faq.count', { shown: items.length, total: all.length })}
             </p>
           </div>
 

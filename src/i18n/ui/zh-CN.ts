@@ -163,6 +163,12 @@ export const zhCN: Record<UIKey, string> = {
   'faq.count': '{total} 个问题中显示 {shown} 个',
   'faq.none': '没有问题匹配搜索。',
   'faq.close': '关闭常见问题',
+  'faq.tierQuestion': 'O que é o T{tier}, {name}?',
+  'faq.statusQuestion': 'O que significa "{name}"?',
+  'faq.recognize': 'Como reconhecer:',
+  'faq.position': 'Posição na árvore:',
+  'faq.examples': '{count} habilidades. Exemplos: {examples}.',
+  'faq.reading': 'Leitura: {reference}',
 
   // 图例与通用标签
   'legend.title': '图例',

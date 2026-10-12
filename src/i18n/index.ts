@@ -1,23 +1,12 @@
 import { currentLocale } from './state'
 import { en } from './ui/en'
 import { pt, type UIKey } from './ui/pt'
-import { zhCN } from './ui/zh-CN'
-import { de } from './ui/de'
-import { es } from './ui/es'
-import { fr } from './ui/fr'
-import { itDict } from './ui/it'
-import { ja } from './ui/ja'
 import type { Locale } from './locales'
 
+/** Dicionários dos idiomas ativos. Os outros estão em src/i18n/ui/ à espera de tradução completa. */
 export const DICTS: Record<Locale, Record<UIKey, string>> = {
   pt,
   en,
-  es,
-  fr,
-  de,
-  it: itDict,
-  ja,
-  'zh-CN': zhCN,
 }
 
 /**

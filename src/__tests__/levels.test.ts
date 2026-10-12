@@ -1,10 +1,15 @@
 import { describe, expect, it } from 'vitest'
 import { SKILLS } from '../data'
-import { FAQ, TERMS } from '../guide/faq'
+import { faqItems, glossary } from '../guide/faq'
 import { describeHexagon } from '../guide/hexGuide'
-import { STATUS_DETAILS, TIER_DETAILS, statusExamples, tierExamples } from '../guide/levels'
+import { statusDetails, statusExamples, tierDetails, tierExamples } from '../guide/levels'
 import { tierLabel, statusLabel } from '../lib/skillMeta'
 import { MATURITY_STATUSES, type Tier } from '../types/skill'
+
+const FAQ = faqItems()
+const TERMS = glossary()
+const TIER_DETAILS = tierDetails()
+const STATUS_DETAILS = statusDetails()
 
 const ORIGINALS = SKILLS.filter((s) => !s.isDuplicateInstance)
 const TIERS: Tier[] = [1, 2, 3, 4, 5]
@@ -38,7 +43,6 @@ describe('patamares T1 a T5', () => {
 
 describe('maturidade', () => {
   it('T4 e T5 trazem leituras de referência, e o FAQ as mostra', async () => {
-    const { FAQ } = await import('../guide/faq')
     for (const tier of [4, 5] as const) {
       const detail = TIER_DETAILS.find((t) => t.tier === tier)
       expect(detail?.references?.length ?? 0, `T${tier}`).toBeGreaterThan(0)

@@ -5,7 +5,10 @@ import { LOCALES } from '../i18n/locales'
 import { setCurrentLocale } from '../i18n/state'
 import { pt } from '../i18n/ui/pt'
 import { SKILLS } from '../data'
-import { localSkillById, localSkills } from '../data/localized'
+import { localBenchmarks, localSkillById, localSkills } from '../data/localized'
+import { faqItems } from '../guide/faq'
+import { statusDetails, tierDetails } from '../guide/levels'
+import { stepsOf } from '../presentation/modes'
 
 /** Variáveis {nome} de um texto, em ordem. Tradução precisa manter exatamente as mesmas. */
 const placeholders = (text: string): string =>
@@ -68,4 +71,32 @@ describe('overlays de conteúdo', () => {
       }
     })
   }
+})
+
+describe('textos de apresentação, FAQ, níveis e benchmarks no inglês', () => {
+  /** Estrutura do conteúdo no idioma: quantos parágrafos há em cada texto, e quais campos existem. */
+  const shape = (locale: 'pt' | 'en') => {
+    setCurrentLocale(locale)
+    return {
+      steps: [...stepsOf('apresentacao'), ...stepsOf('historia')].map((s) => ({
+        id: s.id,
+        body: s.body.length,
+        notes: Boolean(s.notes),
+        actions: s.actions.length,
+      })),
+      faq: faqItems().map((f) => ({ id: f.id, answer: f.answer.length })),
+      tiers: tierDetails().map((d) => ({
+        tier: d.tier,
+        explanation: d.explanation.length,
+        criteria: d.criteria.length,
+        references: d.references?.length ?? 0,
+      })),
+      statuses: statusDetails().map((d) => ({ status: d.status, explanation: d.explanation.length, recognize: d.recognize.length })),
+      benchmarks: localBenchmarks().map((b) => ({ id: b.id, reference: Boolean(b.reference), current: Boolean(b.current), note: Boolean(b.current?.note) })),
+    }
+  }
+
+  it('o inglês tem a mesma estrutura do português, passo a passo', () => {
+    expect(shape('en')).toEqual(shape('pt'))
+  })
 })

@@ -1,6 +1,7 @@
 import type { Locale } from '../locales'
 import { currentLocale } from '../state'
 import { enContent } from './en'
+import { enText } from './en-text'
 import type { ContentOverlay } from './types'
 
 /**
@@ -8,7 +9,7 @@ import type { ContentOverlay } from './types'
  * sem overlay (ou um campo que ele não traz) mostra o texto original.
  */
 const OVERLAYS: Partial<Record<Locale, ContentOverlay>> = {
-  en: enContent,
+  en: { ...enContent, ...enText },
 }
 
 export function contentOverlay(locale: Locale = currentLocale()): ContentOverlay | undefined {

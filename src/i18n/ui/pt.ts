@@ -164,6 +164,12 @@ export const pt = {
   'faq.count': '{shown} de {total} perguntas',
   'faq.none': 'Nenhuma pergunta bate com a pesquisa.',
   'faq.close': 'Fechar FAQ',
+  'faq.tierQuestion': 'O que é o T{tier}, {name}?',
+  'faq.statusQuestion': 'O que significa "{name}"?',
+  'faq.recognize': 'Como reconhecer:',
+  'faq.position': 'Posição na árvore:',
+  'faq.examples': '{count} habilidades. Exemplos: {examples}.',
+  'faq.reading': 'Leitura: {reference}',
 
   // Legenda e rótulos gerais
   'legend.title': 'Legenda',

@@ -1,13 +1,11 @@
-/** Idiomas da interface e do conteúdo. O português é a fonte: os dados e os textos originais estão nele. */
+/**
+ * Idiomas disponíveis no seletor. Por enquanto só português (fonte) e inglês estão completos.
+ * Os dicionários dos outros idiomas continuam em src/i18n/ui/ e docs/CHECKLIST.md tem o que falta
+ * para reativá-los: basta devolvê-los a esta lista e ao DICTS de src/i18n/index.ts.
+ */
 export const LOCALES = [
   { code: 'pt', label: 'Português' },
   { code: 'en', label: 'English' },
-  { code: 'es', label: 'Español' },
-  { code: 'fr', label: 'Français' },
-  { code: 'de', label: 'Deutsch' },
-  { code: 'it', label: 'Italiano' },
-  { code: 'ja', label: '日本語' },
-  { code: 'zh-CN', label: '中文' },
 ] as const
 
 export type Locale = (typeof LOCALES)[number]['code']

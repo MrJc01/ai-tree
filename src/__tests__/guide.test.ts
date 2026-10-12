@@ -4,7 +4,13 @@ import { describeHexagon } from '../guide/hexGuide'
 import { summarizeSkill } from '../guide/skillSummary'
 import { HISTORY_STEPS } from '../presentation/history'
 import { PRESENTATION_STEPS } from '../presentation/steps'
+import { faqItems, filterFaq } from '../guide/faq'
+import { statusDetails, tierDetails } from '../guide/levels'
 import { type SkillNode } from '../types/skill'
+
+const FAQ = faqItems()
+const TIER_DETAILS = tierDetails()
+const STATUS_DETAILS = statusDetails()
 
 const SKILLS_FOR_HEX = [...SKILL_BY_ID.values()]
 
@@ -98,7 +104,6 @@ describe('resumo da habilidade', () => {
 
 describe('perguntas frequentes', () => {
   it('ids únicos, cada pergunta com resposta', async () => {
-    const { FAQ } = await import('../guide/faq')
     const ids = FAQ.map((f) => f.id)
     expect(new Set(ids).size).toBe(ids.length)
     for (const f of FAQ) {
@@ -108,14 +113,12 @@ describe('perguntas frequentes', () => {
   })
 
   it('os números citados batem com os roteiros reais', async () => {
-    const { FAQ } = await import('../guide/faq')
     const all = FAQ.flatMap((f) => f.answer).join(' ')
     expect(all).toContain(`${PRESENTATION_STEPS.length} passos`)
     expect(all).toContain(`${HISTORY_STEPS.length} passos`)
   })
 
   it('a pesquisa acha pela pergunta e pela resposta, sem se importar com acentos', async () => {
-    const { FAQ, filterFaq } = await import('../guide/faq')
     expect(filterFaq(FAQ, '')).toHaveLength(FAQ.length)
     expect(filterFaq(FAQ, 'NÉVOA').map((f) => f.id)).toContain('nevoa')
     expect(filterFaq(FAQ, 'placar oficial').map((f) => f.id)).toContain('placares')
@@ -125,8 +128,6 @@ describe('perguntas frequentes', () => {
 
 describe('FAQ traz os patamares e as maturidades', () => {
   it('há uma pergunta para cada patamar T1 a T5 e uma para cada maturidade, com a explicação completa', async () => {
-    const { FAQ } = await import('../guide/faq')
-    const { TIER_DETAILS, STATUS_DETAILS } = await import('../guide/levels')
     for (const t of TIER_DETAILS) {
       const item = FAQ.find((f) => f.id === `patamar-t${t.tier}`)
       expect(item, `T${t.tier} no FAQ`).toBeDefined()
@@ -142,7 +143,6 @@ describe('FAQ traz os patamares e as maturidades', () => {
   })
 
   it('as perguntas de patamar e maturidade trazem exemplos da árvore', async () => {
-    const { FAQ } = await import('../guide/faq')
     const detail = FAQ.filter((f) => f.id.startsWith('patamar-') || f.id.startsWith('maturidade-'))
     expect(detail).toHaveLength(9)
     for (const f of detail) expect(f.answer.join(' '), f.id).toMatch(/Exemplos: /)

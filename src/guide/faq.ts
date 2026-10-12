@@ -1,9 +1,13 @@
+import { contentOverlay } from '../i18n/content'
+import { currentLocale } from '../i18n/state'
+import { t } from '../i18n'
 import { normalizeText } from '../lib/search'
-import { STATUS_DETAILS, TIER_DETAILS, statusExamples, tierExamples } from './levels'
+import { statusDetails, statusExamples, tierDetails, tierExamples } from './levels'
 
 /**
  * Perguntas frequentes, mostradas no painel FAQ do cabeçalho. Edite aqui: a ordem da lista é a ordem na tela.
- * `id` é único. `answer` são parágrafos curtos. A pesquisa do painel procura no texto da pergunta e da resposta.
+ * `id` é único. `answer` são parágrafos curtos. O texto em português fica aqui; outros idiomas vêm do overlay
+ * de conteúdo, pelo mesmo `id`. A pesquisa do painel procura no texto da pergunta e da resposta.
  */
 export interface FaqItem {
   id: string
@@ -12,7 +16,7 @@ export interface FaqItem {
 }
 
 /** Termos que aparecem no sistema (LLM, AGI, benchmark, fonte...). Um por linha, na resposta da pergunta de termos. */
-export const TERMS: Array<{ term: string; text: string }> = [
+const TERMS: Array<{ term: string; text: string }> = [
   { term: 'Habilidade', text: 'Um nó da árvore: um conceito, uma arquitetura, uma técnica ou um problema.' },
   { term: 'Área', text: 'Coluna temática da árvore.' },
   { term: 'Patamar', text: 'Nível de evolução, de T1 a T5. A explicação de cada um está no FAQ.' },
@@ -31,7 +35,18 @@ export const TERMS: Array<{ term: string; text: string }> = [
   { term: 'Mermaid', text: 'Linguagem de texto para desenhar fluxogramas. Os diagramas desta aba são feitos com ela.' },
 ]
 
-const BASE_FAQ: FaqItem[] = [
+/** Termos no idioma atual (overlay, ou o português). */
+export function glossary(): Array<{ term: string; text: string }> {
+  return contentOverlay(currentLocale())?.terms ?? TERMS
+}
+
+interface BaseFaq {
+  id: string
+  question: string
+  answer: string[]
+}
+
+const BASE_FAQ: BaseFaq[] = [
   {
     id: 'o-que-e',
     question: 'O que é esta árvore?',
@@ -160,27 +175,36 @@ const BASE_FAQ: FaqItem[] = [
     ],
   },
   {
+    // A resposta é montada a partir do glossário, no idioma atual.
     id: 'termos',
     question: 'O que significam os termos (LLM, AGI, ASI, benchmark, fonte, Mermaid...)?',
-    answer: TERMS.map((t) => `${t.term}: ${t.text}`),
+    answer: [],
   },
 ]
 
+/** Um item do FAQ no idioma atual, com o texto do overlay quando há tradução. */
+function baseItem(base: BaseFaq): FaqItem {
+  const o = contentOverlay(currentLocale())?.faq?.[base.id]
+  const answer =
+    base.id === 'termos'
+      ? glossary().map((g) => `${g.term}: ${g.text}`)
+      : (o?.answer ?? base.answer)
+  return { id: base.id, question: o?.question ?? base.question, answer }
+}
 
-
-/** Uma pergunta por patamar (T1 a T5), com a explicação completa e exemplos da árvore. Texto vindo de levels.ts. */
+/** Uma pergunta por patamar (T1 a T5), com a explicação completa e exemplos da árvore. */
 function tierFaq(): FaqItem[] {
-  return TIER_DETAILS.map((t) => {
-    const ex = tierExamples(t.tier)
+  return tierDetails().map((d) => {
+    const ex = tierExamples(d.tier)
     return {
-      id: `patamar-t${t.tier}`,
-      question: `O que é o T${t.tier}, ${t.name}?`,
+      id: `patamar-t${d.tier}`,
+      question: t('faq.tierQuestion', { tier: d.tier, name: d.name }),
       answer: [
-        ...t.explanation,
-        `Como reconhecer: ${t.criteria.join(' ')}`,
-        `Posição na árvore: ${t.position}`,
-        `${ex.count} habilidades. Exemplos: ${ex.examples.join(', ')}.`,
-        ...(t.references ?? []).map((r) => `Leitura: ${r}`),
+        ...d.explanation,
+        `${t('faq.recognize')} ${d.criteria.join(' ')}`,
+        `${t('faq.position')} ${d.position}`,
+        t('faq.examples', { count: ex.count, examples: ex.examples.join(', ') }),
+        ...(d.references ?? []).map((reference) => t('faq.reading', { reference })),
       ],
     }
   })
@@ -188,22 +212,25 @@ function tierFaq(): FaqItem[] {
 
 /** Uma pergunta por maturidade, com a explicação completa, os sinais e exemplos da árvore. */
 function statusFaq(): FaqItem[] {
-  return STATUS_DETAILS.map((m) => {
+  return statusDetails().map((m) => {
     const ex = statusExamples(m.status)
     return {
       id: `maturidade-${m.status}`,
-      question: `O que significa "${m.name}"?`,
+      question: t('faq.statusQuestion', { name: m.name }),
       answer: [
         ...m.explanation,
-        `Como reconhecer: ${m.recognize.join(' ')}`,
-        `${ex.count} habilidades. Exemplos: ${ex.examples.join(', ')}.`,
+        `${t('faq.recognize')} ${m.recognize.join(' ')}`,
+        t('faq.examples', { count: ex.count, examples: ex.examples.join(', ') }),
       ],
     }
   })
 }
 
 /** Ordem final: o que é a árvore, os patamares, as maturidades e o restante. */
-export const FAQ: FaqItem[] = [BASE_FAQ[0], ...tierFaq(), ...statusFaq(), ...BASE_FAQ.slice(1)]
+export function faqItems(): FaqItem[] {
+  const base = BASE_FAQ.map(baseItem)
+  return [base[0], ...tierFaq(), ...statusFaq(), ...base.slice(1)]
+}
 
 /** Perguntas que batem com a pesquisa, pelo texto da pergunta ou da resposta. Sem pesquisa, devolve todas. */
 export function filterFaq(items: FaqItem[], query: string): FaqItem[] {

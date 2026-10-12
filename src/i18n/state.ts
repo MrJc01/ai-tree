@@ -11,7 +11,7 @@ export function currentLocale(): Locale {
 
 export function setCurrentLocale(locale: Locale): void {
   current = locale
-  if (typeof document !== 'undefined') document.documentElement.lang = locale === 'zh-CN' ? 'zh-CN' : locale
+  if (typeof document !== 'undefined') document.documentElement.lang = locale
 }
 
 export function getStoredLocale(): Locale {

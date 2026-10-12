@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { BENCHMARKS, MODELS } from '../../data'
+import { MODELS } from '../../data'
+import { localBenchmarks } from '../../data/localized'
 import { localSkills, localSkillById } from '../../data/localized'
 import { sourceHost } from '../../lib/graph'
 import { domainLabel, getEntityKey, statusLabel, tierLabel } from '../../lib/skillMeta'
@@ -357,7 +358,7 @@ function Sources({ skill, research }: { skill: SkillNode; research: boolean }) {
   const setBenchmark = useAppStore((s) => s.setBenchmark)
   const activeBenchmark = useAppStore((s) => s.benchmarkId)
   const entityKey = getEntityKey(skill)
-  const benchmarks = BENCHMARKS.filter((b) => b.measures.includes(entityKey))
+  const benchmarks = localBenchmarks().filter((b) => b.measures.includes(entityKey))
   const benchmarkRows = Object.entries(skill.content.benchmarks ?? {})
 
   return (
