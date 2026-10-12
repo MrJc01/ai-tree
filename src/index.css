@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+/*
+ * Tokens de tema. O padrão (:root) é White Clean. A classe `.dark` no <html>
+ * troca para Dark Clean. Todo componente lê estes tokens, nunca cores fixas.
+ */
+:root {
+  color-scheme: light;
+
+  --t-bg: #f8f9fa;
+  --t-surface: #ffffff;
+  --t-border: rgba(15, 23, 42, 0.1);
+  --t-text: #0f172a;
+  --t-text-muted: #64748b;
+  --t-accent: #2563eb;
+  --t-edge: #94a3b8;
+
+  --t-node-fill: #ffffff;
+  --t-node-stroke: #cbd5e1;
+  --t-node-inner: rgba(15, 23, 42, 0.06);
+  /* Elevação própria do tema claro: os hexágonos ganham sombra, o escuro não. */
+  --t-node-shadow: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.1));
+}
+
+.dark {
+  color-scheme: dark;
+
+  --t-bg: #0b0d11;
+  --t-surface: rgba(255, 255, 255, 0.03);
+  --t-border: rgba(255, 255, 255, 0.1);
+  --t-text: #e6e8ec;
+  --t-text-muted: #7b8496;
+  --t-accent: #38e8ff;
+  --t-edge: #3a4456;
+
+  --t-node-fill: #10141b;
+  --t-node-stroke: rgba(255, 255, 255, 0.14);
+  --t-node-inner: rgba(255, 255, 255, 0.05);
+  --t-node-shadow: none;
+}
+
+@theme inline {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--t-bg);
+  color: var(--t-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Liga os tokens ao React Flow, que lê estas variáveis em vez das padrão. */
+.react-flow {
+  --xy-background-color: var(--t-bg);
+  --xy-edge-stroke: var(--t-edge);
+  --xy-connectionline-stroke: var(--t-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Pulso dos nós destacados pelo filtro ou pelo benchmark. Só anima opacidade, para não pesar. */
+@keyframes hex-pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+.animate-hex-pulse {
+  animation: hex-pulse 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-hex-pulse {
+    animation: none;
+  }
+}

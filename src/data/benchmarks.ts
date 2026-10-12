@@ -1,0 +1,130 @@
+import type { Benchmark } from '../types/skill'
+
+/**
+ * Benchmarks do Vault. `measures` lista as entidades originais avaliadas por cada um.
+ * `reference` é o valor publicado no artigo de origem. `current` é o placar lido em `checkedAt`, com a página
+ * de onde saiu o dado e o placar oficial para conferir. Placares mudam: releia a fonte antes de citar um número.
+ */
+export const BENCHMARKS: Benchmark[] = [
+  {
+    id: 'swe-bench',
+    name: 'SWE-bench',
+    description: 'Resolver issues reais de repositórios do GitHub, com testes que verificam a correção.',
+    year: 2023,
+    measures: ['react', 'generative-agents', 'reasoning-rl'],
+    paperUrl: 'https://arxiv.org/abs/2310.06770',
+    officialUrl: 'https://www.swebench.com/',
+    reference: {
+      value: '1,96% resolvido (Claude 2, recuperação BM25)',
+      setting: 'Recuperação BM25; com oráculo de arquivos, o mesmo modelo chega a 4,80%',
+      source: 'https://arxiv.org/abs/2310.06770',
+    },
+    current: {
+      leader: 'Claude Opus 5 (Anthropic), SWE-bench Verified',
+      value: '96%',
+      checkedAt: '2026-10-12',
+      sourceDate: '2026-10-10',
+      sourceUrl: 'https://benchlm.ai/benchmarks/swe-verified',
+      sourceLabel: 'BenchLM',
+      officialUrl: 'https://www.swebench.com/',
+      note: 'Em seguida: Claude Mythos 5 (95,5%) e Claude Fable 5 (95%). O swebench.com carrega o placar por JavaScript, então o número veio do BenchLM, que agrega placares.',
+    },
+  },
+  {
+    id: 'mmlu-pro',
+    name: 'MMLU-Pro',
+    description: 'Versão mais difícil do MMLU, com 10 alternativas e questões de raciocínio.',
+    year: 2024,
+    measures: ['reasoning-rl', 'llm', 'chain-of-thought'],
+    paperUrl: 'https://arxiv.org/abs/2406.01574',
+    officialUrl: 'https://huggingface.co/spaces/TIGER-Lab/MMLU-Pro',
+    current: {
+      leader: 'Claude Fable 5.1 (Anthropic)',
+      value: '92,38%',
+      checkedAt: '2026-10-12',
+      sourceDate: '2026-09-01',
+      sourceUrl: 'https://www.vals.ai/benchmarks/mmlu_pro',
+      sourceLabel: 'Vals.ai',
+      officialUrl: 'https://huggingface.co/spaces/TIGER-Lab/MMLU-Pro',
+      note: 'Em seguida: Claude Opus 5 (91,59%) e Claude Fable 5 (91,50%). O placar do TIGER-Lab também carrega por JavaScript.',
+    },
+  },
+  {
+    id: 'arc-agi',
+    name: 'ARC-AGI',
+    description:
+      'Tarefas de abstração e raciocínio em grades, pensadas para não serem resolvidas por memorização. O placar atual é do ARC-AGI-2.',
+    year: 2019,
+    measures: ['recursive-self-improvement', 'reasoning-rl', 'chain-of-thought'],
+    paperUrl: 'https://arxiv.org/abs/1911.01547',
+    officialUrl: 'https://arcprize.org/leaderboard',
+    current: {
+      leader: 'Tufa Labs (equipe), ARC-AGI-2',
+      value: '88,06%',
+      checkedAt: '2026-10-12',
+      sourceDate: '2026-10-09',
+      sourceUrl:
+        'https://toolnavs.com/article/2447-arc-agi-2-high-score-refresh-tufa-labs-tops-the-board-at-8806-past-the-85-bonus',
+      sourceLabel: 'ToolNavs (cita a ARC Prize)',
+      officialUrl: 'https://arcprize.org/leaderboard',
+      note: 'Resultado parcial: a pontuação do Kaggle usa cerca de metade dos dados de teste. A página oficial abre no ARC-AGI-3; use o filtro ARC-AGI-2.',
+    },
+  },
+  {
+    id: 'arena-elo',
+    name: 'Arena (Elo)',
+    description: 'Ranking por preferência humana em comparações pareadas, com pontuação Elo.',
+    year: 2024,
+    measures: ['rlhf', 'constitutional-ai', 'llm'],
+    paperUrl: 'https://arxiv.org/abs/2403.04132',
+    officialUrl: 'https://arena.ai/leaderboard/text',
+    current: {
+      leader: 'gemini-4-argon-high (preliminar), ranking de texto',
+      value: '1525 ±9',
+      checkedAt: '2026-10-12',
+      sourceDate: '2026-10-08',
+      sourceUrl: 'https://arena.ai/leaderboard/text',
+      sourceLabel: 'Arena (arena.ai)',
+      officialUrl: 'https://arena.ai/leaderboard/text',
+      note: 'Em seguida: claude-opus-5.5-high (1507) e claude-opus-4-6-high (1504). A pontuação preliminar pode mudar.',
+    },
+  },
+  {
+    id: 'mmlu',
+    name: 'MMLU',
+    description: 'Questões de múltipla escolha em 57 áreas, do ensino médio à pós-graduação.',
+    year: 2020,
+    measures: ['llm', 'multimodal-fm', 'reasoning-rl'],
+    paperUrl: 'https://arxiv.org/abs/2009.03300',
+    officialUrl: 'https://arxiv.org/abs/2009.03300',
+    reference: {
+      value: '43,9% (GPT-3 175B, few-shot)',
+      setting: 'Few-shot; o resultado é de Hendrycks et al., não do artigo do GPT-3',
+      source: 'https://arxiv.org/abs/2009.03300',
+    },
+  },
+  {
+    id: 'imagenet',
+    name: 'ImageNet (ILSVRC)',
+    description: 'Classificação de imagens em 1000 classes. A competição anual marcou a virada do deep learning.',
+    year: 2012,
+    measures: ['cnn', 'resnet', 'vit'],
+    paperUrl: 'https://doi.org/10.1109/CVPR.2009.5206848',
+    officialUrl: 'https://www.image-net.org/',
+    reference: {
+      value: '15,3% de erro top-5 (AlexNet, ILSVRC 2012)',
+      setting: 'Segundo colocado no mesmo ano: 26,2%',
+      source: 'https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks',
+    },
+    current: {
+      leader: 'CoCa ViT-G/14 (Google), ajustado para ImageNet-1k',
+      value: '91,0% top-1',
+      checkedAt: '2026-10-12',
+      sourceDate: '2026-03',
+      sourceUrl: 'https://www.codesota.com/browse/computer-vision/image-classification/imagenet',
+      sourceLabel: 'Codesota',
+      officialUrl: 'https://www.image-net.org/',
+      note: 'O ImageNet não mantém placar atual. A entrada é de 2022 (arxiv.org/abs/2205.01917); a página do Codesota foi revisada em março de 2026.',
+    },
+  },
+]
