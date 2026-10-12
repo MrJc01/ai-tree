@@ -148,6 +148,7 @@ export const zhCN: Record<UIKey, string> = {
   'drawer.company': '公司',
   'drawer.open': '打开',
   'drawer.sourceNotFound': '未找到来源。',
+  'drawer.openSource': '打开原始来源 ↗',
 
   // 使用说明（六边形）
   'guide.aboutThis': '关于此技能',

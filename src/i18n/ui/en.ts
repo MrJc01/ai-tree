@@ -148,6 +148,7 @@ export const en: Record<UIKey, string> = {
   'drawer.company': 'Company',
   'drawer.open': 'Open',
   'drawer.sourceNotFound': 'Source not found.',
+  'drawer.openSource': 'Open original source ↗',
 
   // How to use (hexagon)
   'guide.aboutThis': 'About this skill',

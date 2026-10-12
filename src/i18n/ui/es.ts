@@ -148,6 +148,7 @@ export const es: Record<UIKey, string> = {
   'drawer.company': 'Empresa',
   'drawer.open': 'Abrir',
   'drawer.sourceNotFound': 'Fuente no encontrada.',
+  'drawer.openSource': 'Abrir fuente original ↗',
 
   // Cómo usar (hexágono)
   'guide.aboutThis': 'Sobre esta habilidad',

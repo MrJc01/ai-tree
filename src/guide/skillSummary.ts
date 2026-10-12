@@ -1,4 +1,5 @@
-import { BENCHMARKS, MODELS, SKILL_BY_ID } from '../data'
+import { BENCHMARKS, MODELS } from '../data'
+import { localSkillById } from '../data/localized'
 import { domainLabel, getEntityKey, statusLabel, tierLabel } from '../lib/skillMeta'
 import type { SkillNode } from '../types/skill'
 import { t } from '../i18n'
@@ -19,7 +20,7 @@ export interface SkillSummary {
 }
 
 const names = (ids: string[]): string[] =>
-  ids.map((id) => SKILL_BY_ID.get(id)?.name).filter((n): n is string => Boolean(n))
+  ids.map((id) => localSkillById(id)?.name).filter((n): n is string => Boolean(n))
 
 /**
  * Resume uma habilidade para a aba "Como usar": onde ela está na árvore, o que depende dela,
@@ -27,7 +28,7 @@ const names = (ids: string[]): string[] =>
  */
 export function summarizeSkill(skill: SkillNode): SkillSummary {
   const entity = getEntityKey(skill)
-  const original = skill.isDuplicateInstance ? SKILL_BY_ID.get(entity) : undefined
+  const original = skill.isDuplicateInstance ? localSkillById(entity) : undefined
 
   const prereqs = names(skill.prerequisites)
   const unlocks = names(skill.unlocks)

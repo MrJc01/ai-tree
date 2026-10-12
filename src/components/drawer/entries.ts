@@ -1,15 +1,15 @@
-import { SKILL_BY_ID } from '../../data'
+import { localSkillById } from '../../data/localized'
 import { domainLabel } from '../../lib/skillMeta'
 import type { DrawerEntry } from '../../store/appStore'
 import type { SkillSource, SkillNode } from '../../types/skill'
 import { t } from '../../i18n'
 
 export function sourceFor(entry: Extract<DrawerEntry, { kind: 'source' }>): SkillSource | undefined {
-  return SKILL_BY_ID.get(entry.skillId)?.content.sources[entry.index]
+  return localSkillById(entry.skillId)?.content.sources[entry.index]
 }
 
 export function skillFor(entry: Extract<DrawerEntry, { kind: 'skill' }>): SkillNode | undefined {
-  return SKILL_BY_ID.get(entry.id)
+  return localSkillById(entry.id)
 }
 
 /** Rótulo de uma folha da pilha, usado no breadcrumb. */

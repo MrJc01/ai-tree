@@ -9,7 +9,7 @@ import { itDict } from './ui/it'
 import { ja } from './ui/ja'
 import type { Locale } from './locales'
 
-const DICTS: Record<Locale, Record<UIKey, string>> = {
+export const DICTS: Record<Locale, Record<UIKey, string>> = {
   pt,
   en,
   es,

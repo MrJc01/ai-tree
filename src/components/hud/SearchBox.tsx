@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { SKILLS } from '../../data'
+import { localSkills } from '../../data/localized'
 import { searchSkills } from '../../lib/search'
 import { domainLabel } from '../../lib/skillMeta'
 import { useAppStore } from '../../store/appStore'
@@ -18,7 +18,7 @@ export function SearchBox({ focusNonce }: SearchBoxProps) {
   const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const openSkill = useAppStore((s) => s.openSkill)
-  const results = useMemo(() => searchSkills(query, SKILLS), [query])
+  const results = useMemo(() => searchSkills(query, localSkills()), [query])
 
   useEffect(() => {
     if (focusNonce > 0) inputRef.current?.focus()

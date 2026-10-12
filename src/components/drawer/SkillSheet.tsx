@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { BENCHMARKS, MODELS, SKILL_BY_ID } from '../../data'
+import { BENCHMARKS, MODELS } from '../../data'
+import { localSkills, localSkillById } from '../../data/localized'
 import { sourceHost } from '../../lib/graph'
 import { domainLabel, getEntityKey, statusLabel, tierLabel } from '../../lib/skillMeta'
 import { useAppStore } from '../../store/appStore'
@@ -306,9 +307,9 @@ function Diagram({ skill }: { skill: SkillNode }) {
 function Graph({ skill }: { skill: SkillNode }) {
   const pushEntry = useAppStore((s) => s.pushEntry)
   const entityKey = getEntityKey(skill)
-  const prereqs = skill.prerequisites.map((id) => SKILL_BY_ID.get(id)).filter((s): s is SkillNode => Boolean(s))
-  const unlocks = skill.unlocks.map((id) => SKILL_BY_ID.get(id)).filter((s): s is SkillNode => Boolean(s))
-  const replicas = [...SKILL_BY_ID.values()].filter((s) => s.id !== skill.id && getEntityKey(s) === entityKey)
+  const prereqs = skill.prerequisites.map((id) => localSkillById(id)).filter((s): s is SkillNode => Boolean(s))
+  const unlocks = skill.unlocks.map((id) => localSkillById(id)).filter((s): s is SkillNode => Boolean(s))
+  const replicas = localSkills().filter((s) => s.id !== skill.id && getEntityKey(s) === entityKey)
 
   const column = (title: string, list: SkillNode[]) => (
     <div className="min-w-0 flex-1 space-y-2">

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
-import { SKILLS } from '../../data'
+import { localSkills } from '../../data/localized'
 import { isTyping } from '../../lib/dom'
 import { domainLabel, statusLabel } from '../../lib/skillMeta'
 import { useAppStore } from '../../store/appStore'
@@ -12,7 +12,7 @@ import { t } from '../../i18n'
 /** Empresas do grafo, ordenadas pelo número de habilidades que aparecem. */
 function companiesByCount(): Array<{ name: string; count: number }> {
   const counts = new Map<string, number>()
-  for (const skill of SKILLS) {
+  for (const skill of localSkills()) {
     if (skill.isDuplicateInstance) continue
     for (const company of skill.metadata.companies) counts.set(company, (counts.get(company) ?? 0) + 1)
   }

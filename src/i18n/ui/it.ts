@@ -148,6 +148,7 @@ export const itDict: Record<UIKey, string> = {
   'drawer.company': 'Azienda',
   'drawer.open': 'Apri',
   'drawer.sourceNotFound': 'Fonte non trovata.',
+  'drawer.openSource': 'Apri fonte originale ↗',
 
   // Come usare (esagono)
   'guide.aboutThis': 'Su questa competenza',

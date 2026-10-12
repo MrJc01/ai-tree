@@ -1,4 +1,4 @@
-import { SKILLS } from '../data'
+import { localSkills } from '../data/localized'
 import { domainLabel, statusLabel, tierLabel } from '../lib/skillMeta'
 import type { MaturityStatus, SkillNode, Tier } from '../types/skill'
 
@@ -160,11 +160,11 @@ export const STATUS_DETAILS: StatusDetail[] = [
 ]
 
 /** Originais da árvore (sem réplicas), para contar e dar exemplos sem repetir a mesma habilidade. */
-const ORIGINALS: SkillNode[] = SKILLS.filter((s) => !s.isDuplicateInstance)
+const originals = (): SkillNode[] => localSkills().filter((s) => !s.isDuplicateInstance)
 
 /** Quantas habilidades há no patamar, e até `limit` exemplos (nomes, em ordem alfabética). */
 export function tierExamples(tier: Tier, limit = 6): { count: number; examples: string[] } {
-  const list = ORIGINALS.filter((s) => s.tier === tier)
+  const list = originals().filter((s) => s.tier === tier)
   return {
     count: list.length,
     examples: list
@@ -176,7 +176,7 @@ export function tierExamples(tier: Tier, limit = 6): { count: number; examples: 
 
 /** Quantas habilidades têm a maturidade, e até `limit` exemplos. */
 export function statusExamples(status: MaturityStatus, limit = 6): { count: number; examples: string[] } {
-  const list = ORIGINALS.filter((s) => s.metadata.status === status)
+  const list = originals().filter((s) => s.metadata.status === status)
   return {
     count: list.length,
     examples: list

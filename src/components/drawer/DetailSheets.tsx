@@ -1,5 +1,6 @@
 import { sourceTypeLabel } from './labels'
-import { MODELS, SKILLS, SKILL_BY_ID } from '../../data'
+import { MODELS } from '../../data'
+import { localSkills, localSkillById } from '../../data/localized'
 import { sourceHost } from '../../lib/graph'
 import { domainLabel } from '../../lib/skillMeta'
 import { useAppStore } from '../../store/appStore'
@@ -10,7 +11,7 @@ import { t } from '../../i18n'
 /** Folha de um paper ou fonte. Mostra o resumo, o link e a habilidade de origem. */
 export function SourceSheet({ skillId, index }: { skillId: string; index: number }) {
   const pushEntry = useAppStore((s) => s.pushEntry)
-  const skill = SKILL_BY_ID.get(skillId)
+  const skill = localSkillById(skillId)
   const source = sourceFor({ kind: 'source', skillId, index })
   const density = useAppStore((s) => s.density)
 
@@ -33,7 +34,7 @@ export function SourceSheet({ skillId, index }: { skillId: string; index: number
         rel="noreferrer noopener"
         className="inline-flex items-center gap-2 rounded-md border border-(--t-accent) px-3 py-2 text-[13px] text-(--t-accent) hover:bg-(--t-accent) hover:text-(--t-bg)"
       >
-        Abrir fonte original ↗
+        {t('drawer.openSource')}
       </a>
       {density === 'research' && <p className="font-mono text-[11px] break-all text-(--t-text-muted)">{source.url}</p>}
 
@@ -52,7 +53,7 @@ export function CompanySheet({ name }: { name: string }) {
   const toggleCompany = useAppStore((s) => s.toggleCompany)
   const active = useAppStore((s) => s.companies.includes(name))
 
-  const skills = SKILLS.filter((s) => s.metadata.companies.includes(name) && !s.isDuplicateInstance)
+  const skills = localSkills().filter((s) => s.metadata.companies.includes(name) && !s.isDuplicateInstance)
   const models = MODELS.filter((m) => m.vendor === name)
 
   return (

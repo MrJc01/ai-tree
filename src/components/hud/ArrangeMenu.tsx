@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
-import { SKILLS } from '../../data'
+import { localSkills } from '../../data/localized'
 import { ARRANGE_MODES, arrangePositions, type ArrangeMode } from '../../lib/arrange'
 import { useAppStore } from '../../store/appStore'
 import { t } from '../../i18n'
@@ -25,7 +25,7 @@ export function ArrangeMenu({ buttonClass }: { buttonClass: string }) {
   }, [open])
 
   const apply = (mode: ArrangeMode) => {
-    setPositions(arrangePositions(SKILLS, mode))
+    setPositions(arrangePositions(localSkills(), mode))
     setOpen(false)
   }
 

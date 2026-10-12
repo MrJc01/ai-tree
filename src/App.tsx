@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { SKILL_BY_ID } from './data'
+import { localSkillById, localSkills } from './data/localized'
 import { hashForSkill, skillIdFromHash } from './lib/deeplink'
 import { focusedSkillOf } from './store/appStore'
 import { Moon, Sun } from 'lucide-react'
@@ -61,7 +61,7 @@ export default function App() {
   useEffect(() => {
     const openFromLink = () => {
       const fromLink = skillIdFromHash(window.location.hash)
-      if (fromLink && SKILL_BY_ID.has(fromLink)) {
+      if (fromLink && localSkillById(fromLink) !== undefined) {
         // Um link pede aquela habilidade: encerra a apresentação que estava aberta na sessão e abre a habilidade.
         useAppStore.getState().stopPresentation()
         useAppStore.getState().openSkill(fromLink)
@@ -157,7 +157,7 @@ export default function App() {
       <div className="relative flex min-h-0 flex-1">
         <PresentationPanel />
         <main className="relative min-h-0 min-w-0 flex-1 overflow-hidden">
-          <SkillCanvas skills={SKILLS} />
+          <SkillCanvas skills={localSkills()} />
           <div className="absolute top-3 left-3 z-20 flex flex-col gap-2" style={{ width: topPanelWidth }}>
             <FilterBar />
           </div>

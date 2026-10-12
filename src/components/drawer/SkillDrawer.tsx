@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronLeft, X } from 'lucide-react'
-import { SKILL_BY_ID } from '../../data'
+import { localSkillById } from '../../data/localized'
 import { DRAWER_MAX_SHARE, DRAWER_MAX_WIDTH, MOBILE_DRAWER_SHARE } from '../../lib/geometry'
 import { DESKTOP_QUERY, useMedia } from '../../lib/useMedia'
 import { useAppStore, type DrawerEntry } from '../../store/appStore'
@@ -29,7 +29,7 @@ function entryKey(entry: DrawerEntry): string {
 function renderEntry(entry: DrawerEntry) {
   switch (entry.kind) {
     case 'skill': {
-      const skill = SKILL_BY_ID.get(entry.id)
+      const skill = localSkillById(entry.id)
       return skill ? (
         <SkillSheet skill={skill} />
       ) : (

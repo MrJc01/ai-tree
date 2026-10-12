@@ -148,6 +148,7 @@ export const ja: Record<UIKey, string> = {
   'drawer.company': '企業',
   'drawer.open': '開く',
   'drawer.sourceNotFound': '出典が見つかりません。',
+  'drawer.openSource': '元の出典を開く ↗',
 
   // 使い方（ヘックス）
   'guide.aboutThis': 'このスキルについて',

@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import { Menu, X } from 'lucide-react'
-import { SKILLS } from '../../data'
+import { localSkills } from '../../data/localized'
 import { ARRANGE_MODES, arrangePositions } from '../../lib/arrange'
 import { EXPORT_OPTIONS, exportCanvas, type ExportFormat, type ExportScope } from '../../lib/exportCanvas'
 import { useAppStore } from '../../store/appStore'
@@ -111,7 +111,7 @@ export function MobileMenu() {
                 type="button"
                 role="menuitem"
                 className={itemClass}
-                onClick={() => run(() => setPositions(arrangePositions(SKILLS, mode.id)))}
+                onClick={() => run(() => setPositions(arrangePositions(localSkills(), mode.id)))}
               >
                 {t(mode.labelKey)}
               </button>

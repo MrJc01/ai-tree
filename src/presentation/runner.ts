@@ -1,4 +1,4 @@
-import { SKILLS } from '../data'
+import { localSkills } from '../data/localized'
 import { autoArrangePositions } from '../lib/arrange'
 import { TIMELINE_MAX, useAppStore } from '../store/appStore'
 import type { PresentationAction } from './steps'
@@ -84,7 +84,7 @@ export function runAction(action: PresentationAction): void {
       return
     case 'layout':
       if (action.value === 'padrao') s.resetLayout()
-      else s.setPositions(autoArrangePositions(SKILLS))
+      else s.setPositions(autoArrangePositions(localSkills()))
       return
   }
 }

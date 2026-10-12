@@ -1,4 +1,5 @@
-import { BENCHMARKS, MODELS, SKILL_BY_ID } from '../data'
+import { BENCHMARKS, MODELS } from '../data'
+import { localSkillById } from '../data/localized'
 import { getYear } from '../lib/graph'
 import { domainLabel, getEntityKey, statusLabel, tierLabel } from '../lib/skillMeta'
 import type { SkillNode } from '../types/skill'
@@ -22,7 +23,7 @@ export interface HexGuide {
 }
 
 const names = (ids: string[]): string[] =>
-  ids.map((id) => SKILL_BY_ID.get(id)?.name).filter((n): n is string => Boolean(n))
+  ids.map((id) => localSkillById(id)?.name).filter((n): n is string => Boolean(n))
 
 export function describeHexagon(skill: SkillNode): HexGuide {
   const entity = getEntityKey(skill)

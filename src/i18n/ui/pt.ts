@@ -149,6 +149,7 @@ export const pt = {
   'drawer.company': 'Empresa',
   'drawer.open': 'Abrir',
   'drawer.sourceNotFound': 'Fonte não encontrada.',
+  'drawer.openSource': 'Abrir fonte original ↗',
 
   // Como usar (hexágono)
   'guide.aboutThis': 'Sobre esta habilidade',
