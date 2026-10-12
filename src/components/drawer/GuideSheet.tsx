@@ -1,6 +1,7 @@
 import { describeHexagon, type HexItem } from '../../guide/hexGuide'
 import { summarizeSkill } from '../../guide/skillSummary'
 import type { SkillNode } from '../../types/skill'
+import { t } from '../../i18n'
 
 function Items({ items }: { items: HexItem[] }) {
   return (
@@ -27,7 +28,7 @@ export function GuideSheet({ skill }: { skill: SkillNode }) {
     <div className="space-y-7">
       <section aria-labelledby="guia-sobre-esta" className="space-y-3 rounded-lg border border-(--t-border) p-4">
         <h2 id="guia-sobre-esta" className="text-[14px] font-semibold">
-          Sobre esta habilidade
+          {t('guide.aboutThis')}
         </h2>
         <p className="text-[13px] leading-relaxed">{summary.paragraph}</p>
         {summary.replicaNote && <p className="text-[12px] text-(--t-text-muted)">{summary.replicaNote}</p>}
@@ -43,21 +44,20 @@ export function GuideSheet({ skill }: { skill: SkillNode }) {
 
       <section aria-labelledby="guia-ler-hexagono" className="space-y-3">
         <h2 id="guia-ler-hexagono" className="text-[15px] font-semibold tracking-tight">
-          Como ler este hexágono
+          {t('guide.readHex')}
         </h2>
         <Items items={guide.visual} />
       </section>
 
       <section aria-labelledby="guia-usar-habilidade" className="space-y-3">
         <h2 id="guia-usar-habilidade" className="text-[15px] font-semibold tracking-tight">
-          Como usar esta habilidade
+          {t('guide.useThis')}
         </h2>
         <Items items={guide.steps} />
       </section>
 
       <p className="text-[12px] text-(--t-text-muted)">
-        Dúvidas sobre o sistema em geral (filtros, linha do tempo, apresentação, atalhos, patamares e maturidade) estão no
-        FAQ, no botão FAQ do topo.
+        {t('guide.footer')}
       </p>
     </div>
   )

@@ -217,6 +217,9 @@ function Overview({ skill, research }: { skill: SkillNode; research: boolean }) 
           </ul>
         </Section>
       )}
+      <div className="border-t border-(--t-border) pt-6">
+        <GuideSheet skill={skill} />
+      </div>
     </div>
   )
 }
