@@ -1,5 +1,22 @@
 import { expect, test } from '@playwright/test'
 
+// O slide Sobre abre sozinho na primeira visita e cobriria a página. Os testes começam com a visita já feita;
+// o teste da primeira visita usa um contexto limpo.
+test.beforeEach(async ({ context }) => {
+  await context.addInitScript(() => localStorage.setItem('ai-tech-tree:welcome-seen', '1'))
+})
+
+test('primeira visita abre o slide Sobre, e a segunda visita não', async ({ browser }) => {
+  const context = await browser.newContext()
+  const page = await context.newPage()
+  await page.goto('/')
+  await expect(page.getByRole('dialog')).toBeVisible()
+  await page.keyboard.press('Escape')
+  await page.reload()
+  await expect(page.getByRole('dialog')).toBeHidden()
+  await context.close()
+})
+
 test('link direto abre a habilidade, e a aba Como usar explica o hexágono aberto', async ({ page }) => {
   await page.goto('/#habilidade=llm')
   await expect(page.getByRole('heading', { name: 'Modelos de Linguagem em Larga Escala (LLM)' })).toBeVisible()
