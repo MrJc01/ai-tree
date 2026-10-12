@@ -1,27 +1,28 @@
 import type { Domain, MaturityStatus, SkillNode, Tier } from '../types/skill'
+import { t } from '../i18n'
+import type { UIKey } from '../i18n/ui/pt'
 
-export const DOMAIN_LABELS: Record<Domain, string> = {
-  architectures: 'Arquiteturas & Redes',
-  compute: 'Compute & Hardware',
-  reasoning: 'Raciocínio & LLMs',
-  robotics: 'Robótica & Embodiment',
-  alignment: 'Alinhamento & Governança',
-}
+const DOMAIN_KEYS = {
+  architectures: 'domain.architectures',
+  compute: 'domain.compute',
+  reasoning: 'domain.reasoning',
+  robotics: 'domain.robotics',
+  alignment: 'domain.alignment',
+} as const satisfies Record<Domain, UIKey>
 
-export const TIER_LABELS: Record<Tier, string> = {
-  1: 'Machine Learning Clássico',
-  2: 'Narrow AI & Deep Learning',
-  3: 'Advanced AI & Agentes Autônomos',
-  4: 'Proto-AGI / AGI',
-  5: 'ASI (Superinteligência Teórica)',
-}
+const TIER_KEYS = { 1: 'tier.1', 2: 'tier.2', 3: 'tier.3', 4: 'tier.4', 5: 'tier.5' } as const satisfies Record<Tier, UIKey>
 
-export const STATUS_LABELS: Record<MaturityStatus, string> = {
-  theoretical: 'Teórico',
-  research: 'Experimental',
-  production: 'Produção',
-  commodity: 'Comoditizado',
-}
+const STATUS_KEYS = {
+  theoretical: 'status.theoretical',
+  research: 'status.research',
+  production: 'status.production',
+  commodity: 'status.commodity',
+} as const satisfies Record<MaturityStatus, UIKey>
+
+/** Rótulos no idioma atual (a árvore é remontada quando o idioma muda, então a chamada sempre lê o certo). */
+export const domainLabel = (domain: Domain): string => t(DOMAIN_KEYS[domain])
+export const tierLabel = (tier: Tier): string => t(TIER_KEYS[tier])
+export const statusLabel = (status: MaturityStatus): string => t(STATUS_KEYS[status])
 
 /**
  * Chave da entidade conceitual. Todas as réplicas de uma mesma habilidade

@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
-import { STATUS_LABELS } from '../../lib/skillMeta'
+import { statusLabel } from '../../lib/skillMeta'
 import { MATURITY_STATUSES } from '../../types/skill'
 import { STATUS_TONE } from '../drawer/labels'
+import { t } from '../../i18n'
 
 /** Miniatura do hexágono, para a legenda. Usa as mesmas proporções do hexágono da árvore. */
 function HexSample({ children }: { children?: ReactNode }) {
@@ -37,8 +38,8 @@ export function Legend() {
             <span className="absolute top-1 size-1 rounded-full bg-amber-400" aria-hidden />
           </HexSample>
         }
-        title="Hexágono e ponto colorido"
-        text="Cada hexágono é uma habilidade. O ponto é a cor de assinatura, a mesma em todas as réplicas."
+        title={t('legend.hexTitle')}
+        text={t('legend.hexText')}
       />
       <Item
         sample={
@@ -47,8 +48,8 @@ export function Legend() {
             <span className="absolute right-0 bottom-0 border-r border-b border-(--t-accent)" style={{ width: 8, height: 8 }} />
           </span>
         }
-        title="Cantoneiras"
-        text="Aparecem com o mouse sobre a habilidade, ou quando ela é destacada por um filtro ou benchmark."
+        title={t('legend.brackets')}
+        text={t('legend.bracketsText')}
       />
       <Item
         sample={
@@ -58,18 +59,18 @@ export function Legend() {
             </svg>
           </span>
         }
-        title="Contorno tracejado"
-        text="Réplica: a mesma habilidade aparece também em outra área."
+        title={t('legend.dashedTitle')}
+        text={t('legend.dashedText')}
       />
       <Item
-        sample={<span className="inline-flex size-7 shrink-0 items-center justify-center text-[10px] font-medium text-(--t-text)" aria-hidden>15%</span>}
-        title="Cinza e apagado"
-        text="Fora do filtro de área, empresa ou maturidade, ou fora do benchmark escolhido."
+        sample={<span className="inline-flex size-7 shrink-0 items-center justify-center text-[10px] font-medium text-(--t-text)" aria-hidden>{t('legend.ghostSample')}</span>}
+        title={t('legend.ghostTitle')}
+        text={t('legend.ghostText')}
       />
       <Item
-        sample={<span className="inline-flex size-7 shrink-0 items-center justify-center text-[9px] text-(--t-text-muted) opacity-60" aria-hidden>névoa</span>}
-        title="Névoa"
-        text="Tecnologia posterior à data do Time Slider. Some sem sair da posição."
+        sample={<span className="inline-flex size-7 shrink-0 items-center justify-center text-[9px] text-(--t-text-muted) opacity-60" aria-hidden>{t('legend.fogSample')}</span>}
+        title={t('legend.fog')}
+        text={t('legend.fogText')}
       />
       <Item
         sample={
@@ -80,22 +81,22 @@ export function Legend() {
             </svg>
           </span>
         }
-        title="Trilha com pulso"
-        text="Dependência. A energia sai do pré-requisito e segue até a habilidade que ele desbloqueia."
+        title={t('legend.trailTitle')}
+        text={t('legend.trailText')}
       />
       <li>
-        <p className="mb-1 text-[12px] font-medium">Patamares T1 a T5</p>
-        <p className="mb-2 text-[11px] leading-relaxed text-(--t-text-muted)">Níveis de evolução, da base (T1, machine learning clássico) ao topo (T5, superinteligência teórica). A explicação completa de cada um está no FAQ.</p>
+        <p className="mb-1 text-[12px] font-medium">{t('legend.tiersTitle')}</p>
+        <p className="mb-2 text-[11px] leading-relaxed text-(--t-text-muted)">{t('legend.tiersText')}</p>
       </li>
       <li>
-        <p className="mb-1.5 text-[12px] font-medium">Maturidade (selo)</p>
+        <p className="mb-1.5 text-[12px] font-medium">{t('legend.maturityTitle')}</p>
         <div className="flex flex-wrap gap-1.5">
           {MATURITY_STATUSES.map((st) => (
             <span
               key={st}
               className={`rounded border px-1.5 py-0.5 font-mono text-[10px] tracking-[0.12em] uppercase ${STATUS_TONE[st]}`}
             >
-              {STATUS_LABELS[st]}
+              {statusLabel(st)}
             </span>
           ))}
         </div>

@@ -1,31 +1,17 @@
 import type { MaturityStatus, SkillNode } from '../types/skill'
 import { HEX_WIDTH, nodePositionAt } from './geometry'
 import { getYear } from './graph'
+import type { UIKey } from '../i18n/ui/pt'
 
 /** Tipos de organização que o menu Auto-organizar oferece. Cada um reordena só os slots dentro de cada patamar e área. */
 export type ArrangeMode = 'cruzamentos' | 'cronologica' | 'maturidade' | 'alfabetica'
 
-export const ARRANGE_MODES: Array<{ id: ArrangeMode; label: string; description: string }> = [
-  {
-    id: 'cruzamentos',
-    label: 'Menos cruzamentos',
-    description: 'Aproxima as habilidades ligadas entre si, para as trilhas se cruzarem menos.',
-  },
-  {
-    id: 'cronologica',
-    label: 'Cronológica',
-    description: 'Dentro de cada patamar, da data mais antiga para a mais nova, da esquerda para a direita.',
-  },
-  {
-    id: 'maturidade',
-    label: 'Por maturidade',
-    description: 'Dentro de cada patamar, do comoditizado ao teórico, da esquerda para a direita.',
-  },
-  {
-    id: 'alfabetica',
-    label: 'Alfabética',
-    description: 'Dentro de cada patamar, em ordem de nome.',
-  },
+/** Rótulos e descrições são chaves de tradução: o menu lê o texto no idioma atual. */
+export const ARRANGE_MODES: Array<{ id: ArrangeMode; labelKey: UIKey; descKey: UIKey }> = [
+  { id: 'cruzamentos', labelKey: 'arrange.cruzamentos', descKey: 'arrange.cruzamentosDesc' },
+  { id: 'cronologica', labelKey: 'arrange.cronologica', descKey: 'arrange.cronologicaDesc' },
+  { id: 'maturidade', labelKey: 'arrange.maturidade', descKey: 'arrange.maturidadeDesc' },
+  { id: 'alfabetica', labelKey: 'arrange.alfabetica', descKey: 'arrange.alfabeticaDesc' },
 ]
 
 const MATURITY_RANK: Record<MaturityStatus, number> = { commodity: 0, production: 1, research: 2, theoretical: 3 }

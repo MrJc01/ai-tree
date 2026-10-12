@@ -6,15 +6,18 @@ export type ExportFormat = 'png' | 'svg'
 export type ExportScope = 'view' | 'tree'
 
 /** Opções exibidas nos dois menus (desktop e celular). Uma lista só, para não divergirem. */
-export const EXPORT_OPTIONS: Array<{ format: ExportFormat; scope: ExportScope; label: string; description: string }> = [
-  { format: 'png', scope: 'view', label: 'PNG · vista atual', description: 'Imagem da tela, com o zoom e a posição atuais.' },
-  { format: 'png', scope: 'tree', label: 'PNG · árvore inteira', description: 'A árvore toda numa imagem, para slides.' },
-  { format: 'svg', scope: 'view', label: 'SVG · vista atual', description: 'Vetorial, da tela atual, para editar em outro programa.' },
-  { format: 'svg', scope: 'tree', label: 'SVG · árvore inteira', description: 'Vetorial, com a árvore toda.' },
+/** Rótulos são chaves de tradução, lidas no idioma atual pelos menus. */
+export const EXPORT_OPTIONS: Array<{ format: ExportFormat; scope: ExportScope; labelKey: UIKey; descKey: UIKey }> = [
+  { format: 'png', scope: 'view', labelKey: 'export.pngView', descKey: 'export.pngViewDesc' },
+  { format: 'png', scope: 'tree', labelKey: 'export.pngTree', descKey: 'export.pngTreeDesc' },
+  { format: 'svg', scope: 'view', labelKey: 'export.svgView', descKey: 'export.svgViewDesc' },
+  { format: 'svg', scope: 'tree', labelKey: 'export.svgTree', descKey: 'export.svgTreeDesc' },
 ]
 
 /** Elementos do canvas que não entram na imagem: controles, minimapa e atribuição. */
 const EXCLUDED = '.react-flow__controls, .react-flow__minimap, .react-flow__attribution, .react-flow__panel'
+
+import type { UIKey } from '../i18n/ui/pt'
 
 const nextFrame = () => new Promise<void>((resolve) => requestAnimationFrame(() => resolve()))
 

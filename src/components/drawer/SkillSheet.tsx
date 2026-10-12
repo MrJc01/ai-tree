@@ -2,31 +2,33 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { BENCHMARKS, MODELS, SKILL_BY_ID } from '../../data'
 import { sourceHost } from '../../lib/graph'
-import { DOMAIN_LABELS, getEntityKey, STATUS_LABELS, TIER_LABELS } from '../../lib/skillMeta'
+import { domainLabel, getEntityKey, statusLabel, tierLabel } from '../../lib/skillMeta'
 import { useAppStore } from '../../store/appStore'
 import type { SkillNode } from '../../types/skill'
 import { MermaidDiagram } from './MermaidDiagram'
 import { GuideSheet } from './GuideSheet'
-import { SOURCE_TYPE_LABEL, STATUS_TONE } from './labels'
+import { sourceTypeLabel, STATUS_TONE } from './labels'
 import { Badge, Chip, Section } from './shared'
 import { sortHistory, type HistoryOrder } from '../../lib/timeline'
+import { t } from '../../i18n'
+import type { UIKey } from '../../i18n/ui/pt'
 
 type TabId = 'overview' | 'history' | 'actors' | 'diagram' | 'graph' | 'sources' | 'guia'
 
-const TABS: Array<{ id: TabId; label: string }> = [
-  { id: 'overview', label: 'Visão Geral' },
-  { id: 'history', label: 'História' },
-  { id: 'actors', label: 'Atores & Labs' },
-  { id: 'diagram', label: 'Fluxograma' },
-  { id: 'graph', label: 'Grafo' },
-  { id: 'sources', label: 'Fontes & Benchmarks' },
-  { id: 'guia', label: 'Como usar' },
+const TABS: Array<{ id: TabId; labelKey: UIKey }> = [
+  { id: 'overview', labelKey: 'drawer.overview' },
+  { id: 'history', labelKey: 'drawer.history' },
+  { id: 'actors', labelKey: 'drawer.actors' },
+  { id: 'diagram', labelKey: 'drawer.diagram' },
+  { id: 'graph', labelKey: 'drawer.graph' },
+  { id: 'sources', labelKey: 'drawer.sources' },
+  { id: 'guia', labelKey: 'drawer.guide' },
 ]
 
-const ORDER_LABEL: Record<HistoryOrder, string> = {
-  desc: 'Decrescente',
-  asc: 'Crescente',
-  impact: 'Por impacto',
+const ORDER_KEYS: Record<HistoryOrder, UIKey> = {
+  desc: 'drawer.order.desc',
+  asc: 'drawer.order.asc',
+  impact: 'drawer.order.impact',
 }
 
 
@@ -40,12 +42,12 @@ export function SkillSheet({ skill }: { skill: SkillNode }) {
     <div className="flex h-full flex-col">
       <header className="space-y-3 border-b border-(--t-border) px-6 pt-5 pb-4">
         <div className="flex flex-wrap items-center gap-2">
-          <Badge>{DOMAIN_LABELS[skill.domain]}</Badge>
+          <Badge>{domainLabel(skill.domain)}</Badge>
           <Badge>
-            T{skill.tier} · {TIER_LABELS[skill.tier]}
+            T{skill.tier} · {tierLabel(skill.tier)}
           </Badge>
-          <Badge className={STATUS_TONE[skill.metadata.status]}>{STATUS_LABELS[skill.metadata.status]}</Badge>
-          {skill.isDuplicateInstance && <Badge>Réplica</Badge>}
+          <Badge className={STATUS_TONE[skill.metadata.status]}>{statusLabel(skill.metadata.status)}</Badge>
+          {skill.isDuplicateInstance && <Badge>{t('drawer.replica')}</Badge>}
         </div>
         <h2 className="text-xl leading-tight font-semibold tracking-tight">{skill.name}</h2>
         <TabStrip tab={tab} onSelect={setTab} />
@@ -94,22 +96,22 @@ function TabStrip({ tab, onSelect }: { tab: TabId; onSelect: (id: TabId) => void
       <div
         ref={listRef}
         role="tablist"
-        aria-label="Seções da habilidade"
+        aria-label={t('drawer.tabs')}
         onScroll={measure}
         className="flex min-w-0 flex-1 gap-1 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {TABS.map((t) => (
+        {TABS.map((item) => (
           <button
-            key={t.id}
+            key={item.id}
             type="button"
             role="tab"
-            aria-selected={tab === t.id}
-            onClick={() => onSelect(t.id)}
+            aria-selected={tab === item.id}
+            onClick={() => onSelect(item.id)}
             className={`shrink-0 border-b-2 px-2.5 pt-1 pb-2 text-[12px] transition-colors ${
-              tab === t.id ? 'border-(--t-accent) text-(--t-text)' : 'border-transparent text-(--t-text-muted) hover:text-(--t-text)'
+              tab === item.id ? 'border-(--t-accent) text-(--t-text)' : 'border-transparent text-(--t-text-muted) hover:text-(--t-text)'
             }`}
           >
-            {t.label}
+            {t(item.labelKey)}
           </button>
         ))}
       </div>
@@ -120,7 +122,7 @@ function TabStrip({ tab, onSelect }: { tab: TabId; onSelect: (id: TabId) => void
 
 function TabArrow({ direction, visible, onClick }: { direction: 'left' | 'right'; visible: boolean; onClick: () => void }) {
   const Icon = direction === 'left' ? ChevronLeft : ChevronRight
-  const label = direction === 'left' ? 'Rolar abas para a esquerda' : 'Rolar abas para a direita'
+  const label = direction === 'left' ? t('drawer.scrollLeft') : t('drawer.scrollRight')
   return (
     <button
       type="button"
@@ -144,15 +146,15 @@ function Overview({ skill, research }: { skill: SkillNode; research: boolean }) 
 
   return (
     <div className="space-y-6">
-      {research && <p className="font-mono text-[11px] text-(--t-text-muted)">Introduzido em {skill.metadata.dateIntroduced}</p>}
+      {research && <p className="font-mono text-[11px] text-(--t-text-muted)">{t('drawer.introduced', { date: skill.metadata.dateIntroduced })}</p>}
       <p className="text-[14px] leading-relaxed">{skill.content.overview}</p>
 
-      <Section title="Por que importa">
+      <Section title={t('drawer.whyMatters')}>
         <p className="text-[13px] leading-relaxed text-(--t-text-muted)">{skill.content.impact}</p>
       </Section>
 
       {research && skill.content.equations && skill.content.equations.length > 0 && (
-        <Section title="Equações">
+        <Section title={t('drawer.equations')}>
           <ul className="space-y-2">
             {skill.content.equations.map((eq) => (
               <li key={eq.label} className="rounded-md border border-(--t-border) p-3">
@@ -165,7 +167,7 @@ function Overview({ skill, research }: { skill: SkillNode; research: boolean }) 
       )}
 
       {skill.metadata.companies.length > 0 && (
-        <Section title="Empresas e instituições">
+        <Section title={t('drawer.companies')}>
           <div className="flex flex-wrap gap-1.5">
             {skill.metadata.companies.map((company) => (
               <Chip key={company} onClick={() => pushEntry({ kind: 'company', name: company })}>
@@ -177,7 +179,7 @@ function Overview({ skill, research }: { skill: SkillNode; research: boolean }) 
       )}
 
       {models.length > 0 && (
-        <Section title="Modelos associados">
+        <Section title={t('drawer.models')}>
           <ul className="space-y-1 text-[13px]">
             {models.map((m) => (
               <li key={m.id}>
@@ -196,7 +198,7 @@ function Overview({ skill, research }: { skill: SkillNode; research: boolean }) 
       )}
 
       {skill.content.sources.length > 0 && (
-        <Section title="Links rápidos">
+        <Section title={t('drawer.quickLinks')}>
           <ul className="space-y-1.5">
             {skill.content.sources.slice(0, 3).map((src, index) => (
               <li key={src.url}>
@@ -222,15 +224,15 @@ function History({ skill, research }: { skill: SkillNode; research: boolean }) {
   const events = sortHistory(skill.content.history, order)
 
   if (events.length === 0) {
-    return <p className="text-[13px] text-(--t-text-muted)">Sem marcos cadastrados para esta habilidade.</p>
+    return <p className="text-[13px] text-(--t-text-muted)">{t('drawer.noMilestones')}</p>
   }
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap gap-1.5" role="group" aria-label="Ordenação da timeline">
-        {(Object.keys(ORDER_LABEL) as HistoryOrder[]).map((o) => (
+      <div className="flex flex-wrap gap-1.5" role="group" aria-label={t('drawer.timelineOrder')}>
+        {(Object.keys(ORDER_KEYS) as HistoryOrder[]).map((o) => (
           <Chip key={o} active={order === o} onClick={() => setOrder(o)}>
-            {ORDER_LABEL[o]}
+            {t(ORDER_KEYS[o])}
           </Chip>
         ))}
       </div>
@@ -244,7 +246,7 @@ function History({ skill, research }: { skill: SkillNode; research: boolean }) {
             />
             {research && <p className="font-mono text-[11px] text-(--t-text-muted)">{ev.year}</p>}
             <p className="text-[13px] leading-relaxed">{ev.event}</p>
-            <p className="mt-1 flex items-center gap-1" aria-label={`Impacto ${ev.importance} de 5`}>
+            <p className="mt-1 flex items-center gap-1" aria-label={t('drawer.impactAria', { value: ev.importance })}>
               {[1, 2, 3, 4, 5].map((n) => (
                 <span
                   key={n}
@@ -252,7 +254,7 @@ function History({ skill, research }: { skill: SkillNode; research: boolean }) {
                   style={{ background: n <= ev.importance ? skill.signatureColor : 'var(--t-border)' }}
                 />
               ))}
-              {research && <span className="ml-2 font-mono text-[10px] text-(--t-text-muted)">impacto {ev.importance}/5</span>}
+              {research && <span className="ml-2 font-mono text-[10px] text-(--t-text-muted)">{t('drawer.impact', { value: ev.importance })}</span>}
             </p>
           </li>
         ))}
@@ -264,7 +266,7 @@ function History({ skill, research }: { skill: SkillNode; research: boolean }) {
 function Actors({ skill, research }: { skill: SkillNode; research: boolean }) {
   const pushEntry = useAppStore((s) => s.pushEntry)
   if (skill.content.actors.length === 0 && skill.metadata.companies.length === 0) {
-    return <p className="text-[13px] text-(--t-text-muted)">Sem atores cadastrados para esta habilidade.</p>
+    return <p className="text-[13px] text-(--t-text-muted)">{t('drawer.noActors')}</p>
   }
   return (
     <div className="space-y-6">
@@ -280,7 +282,7 @@ function Actors({ skill, research }: { skill: SkillNode; research: boolean }) {
         </ul>
       )}
       {skill.metadata.companies.length > 0 && (
-        <Section title="Empresas pioneiras e instituições">
+        <Section title={t('drawer.companiesPioneer')}>
           <div className="flex flex-wrap gap-1.5">
             {skill.metadata.companies.map((company) => (
               <Chip key={company} onClick={() => pushEntry({ kind: 'company', name: company })}>
@@ -296,7 +298,7 @@ function Actors({ skill, research }: { skill: SkillNode; research: boolean }) {
 
 function Diagram({ skill }: { skill: SkillNode }) {
   if (!skill.content.mermaidDiagram) {
-    return <p className="text-[13px] text-(--t-text-muted)">Ainda não há fluxograma para esta habilidade.</p>
+    return <p className="text-[13px] text-(--t-text-muted)">{t('drawer.noDiagram')}</p>
   }
   return <MermaidDiagram code={skill.content.mermaidDiagram} />
 }
@@ -311,7 +313,7 @@ function Graph({ skill }: { skill: SkillNode }) {
   const column = (title: string, list: SkillNode[]) => (
     <div className="min-w-0 flex-1 space-y-2">
       <p className="font-mono text-[10px] tracking-[0.14em] text-(--t-text-muted) uppercase">{title}</p>
-      {list.length === 0 && <p className="text-[12px] text-(--t-text-muted)">Nenhum</p>}
+      {list.length === 0 && <p className="text-[12px] text-(--t-text-muted)">{t('drawer.none')}</p>}
       {list.map((s) => (
         <button
           key={s.id}
@@ -320,7 +322,7 @@ function Graph({ skill }: { skill: SkillNode }) {
           className="w-full rounded-md border border-(--t-border) px-2.5 py-2 text-left transition-colors hover:border-(--t-accent)"
         >
           <span className="block text-[12px] font-medium">{s.name}</span>
-          <span className="font-mono text-[10px] text-(--t-text-muted)">T{s.tier} · {DOMAIN_LABELS[s.domain]}</span>
+          <span className="font-mono text-[10px] text-(--t-text-muted)">T{s.tier} · {domainLabel(s.domain)}</span>
         </button>
       ))}
     </div>
@@ -329,20 +331,20 @@ function Graph({ skill }: { skill: SkillNode }) {
   return (
     <div className="space-y-6">
       <p className="text-[12px] text-(--t-text-muted)">
-        Pré-requisitos entram por baixo e as habilidades que ela desbloqueia saem por cima. Clique para abrir cada uma.
+        {t('drawer.explainGraph')}
       </p>
       <div className="flex items-start gap-3">
-        {column('Pré-requisitos', prereqs)}
+        {column(t('drawer.prereqs'), prereqs)}
         <div className="flex w-28 shrink-0 flex-col items-center gap-1 pt-6 text-center">
           <span className="size-2 rounded-full" style={{ background: skill.signatureColor, boxShadow: `0 0 8px ${skill.signatureColor}` }} />
           <span className="text-[12px] font-medium">{skill.name}</span>
         </div>
-        {column('Desbloqueia', unlocks)}
+        {column(t('drawer.unlocks'), unlocks)}
       </div>
       {replicas.length > 0 && (
         <p className="text-[12px] text-(--t-text-muted)">
           Também aparece em:{' '}
-          {replicas.map((r) => DOMAIN_LABELS[r.domain]).join(', ')}
+          {replicas.map((r) => domainLabel(r.domain)).join(', ')}
         </p>
       )}
     </div>
@@ -360,7 +362,7 @@ function Sources({ skill, research }: { skill: SkillNode; research: boolean }) {
   return (
     <div className="space-y-6">
       {skill.content.sources.length === 0 ? (
-        <p className="text-[13px] text-(--t-text-muted)">Sem fontes cadastradas para esta habilidade.</p>
+        <p className="text-[13px] text-(--t-text-muted)">{t('drawer.noSources')}</p>
       ) : (
         <ul className="space-y-3">
           {skill.content.sources.map((src, index) => (
@@ -371,7 +373,7 @@ function Sources({ skill, research }: { skill: SkillNode; research: boolean }) {
                 className="w-full rounded-md border border-(--t-border) p-3 text-left transition-colors hover:border-(--t-accent)"
               >
                 <span className="mb-1.5 flex flex-wrap gap-1.5">
-                  <Badge>{SOURCE_TYPE_LABEL[src.type]}</Badge>
+                  <Badge>{sourceTypeLabel(src.type)}</Badge>
                   <Badge>{sourceHost(src.url)}</Badge>
                 </span>
                 <span className="block text-[13px] font-medium">{src.title}</span>
@@ -383,7 +385,7 @@ function Sources({ skill, research }: { skill: SkillNode; research: boolean }) {
       )}
 
       {benchmarks.length > 0 && (
-        <Section title="Benchmarks que avaliam esta habilidade">
+        <Section title={t('drawer.benchmarksThat')}>
           <div className="flex flex-wrap gap-1.5">
             {benchmarks.map((b) => (
               <Chip key={b.id} active={activeBenchmark === b.id} onClick={() => setBenchmark(b.id)}>
@@ -395,7 +397,7 @@ function Sources({ skill, research }: { skill: SkillNode; research: boolean }) {
       )}
 
       {research && benchmarkRows.length > 0 && (
-        <Section title="Métricas registradas">
+        <Section title={t('drawer.metrics')}>
           <table className="w-full text-[12px]">
             <tbody>
               {benchmarkRows.map(([key, value]) => (

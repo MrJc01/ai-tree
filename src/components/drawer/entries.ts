@@ -1,7 +1,8 @@
 import { SKILL_BY_ID } from '../../data'
-import { DOMAIN_LABELS } from '../../lib/skillMeta'
+import { domainLabel } from '../../lib/skillMeta'
 import type { DrawerEntry } from '../../store/appStore'
 import type { SkillSource, SkillNode } from '../../types/skill'
+import { t } from '../../i18n'
 
 export function sourceFor(entry: Extract<DrawerEntry, { kind: 'source' }>): SkillSource | undefined {
   return SKILL_BY_ID.get(entry.skillId)?.content.sources[entry.index]
@@ -17,7 +18,7 @@ export function entryLabel(entry: DrawerEntry): string {
     case 'skill':
       return skillFor(entry)?.name ?? entry.id
     case 'source':
-      return sourceFor(entry)?.title ?? 'Fonte'
+      return sourceFor(entry)?.title ?? t('drawer.sourceSheet')
     case 'company':
       return entry.name
   }
@@ -29,7 +30,7 @@ export function breadcrumbsFor(stack: DrawerEntry[]): Array<{ label: string; dep
   const first = stack[0]
   const area = first.kind === 'skill' ? skillFor(first)?.domain : undefined
   const crumbs: Array<{ label: string; depth: number | null }> = []
-  if (area) crumbs.push({ label: DOMAIN_LABELS[area], depth: null })
+  if (area) crumbs.push({ label: domainLabel(area), depth: null })
   stack.forEach((entry, depth) => crumbs.push({ label: entryLabel(entry), depth }))
   return crumbs
 }

@@ -9,6 +9,7 @@ import { CompanySheet, SourceSheet } from './DetailSheets'
 import { breadcrumbsFor } from './entries'
 import { DensityToggle } from './shared'
 import { SkillSheet } from './SkillSheet'
+import { t } from '../../i18n'
 
 const SPRING = { type: 'spring', stiffness: 320, damping: 32, mass: 0.9 } as const
 /** Quanto cada folha de baixo fica exposta à esquerda da folha de cima. */
@@ -83,7 +84,7 @@ export function SkillDrawer() {
       {open && (
         <motion.aside
           key="drawer"
-          aria-label="Detalhes da habilidade"
+          aria-label={t('drawer.aside')}
           initial={desktop ? { x: '100%' } : { y: '100%' }}
           animate={{ x: 0, y: 0 }}
           exit={desktop ? { x: '100%' } : { y: '100%' }}
@@ -104,13 +105,13 @@ export function SkillDrawer() {
               <button
                 type="button"
                 onClick={popEntry}
-                aria-label="Voltar"
+                aria-label={t('drawer.back')}
                 className="inline-flex size-8 shrink-0 items-center justify-center rounded-md border border-(--t-border) text-(--t-text-muted) hover:text-(--t-text)"
               >
                 <ChevronLeft size={16} />
               </button>
             )}
-            <nav aria-label="Caminho" className="min-w-0 flex-1 overflow-hidden text-[12px] leading-relaxed">
+            <nav aria-label={t('drawer.path')} className="min-w-0 flex-1 overflow-hidden text-[12px] leading-relaxed">
               {crumbs.map((c, i) => (
                 <span key={`${c.label}-${i}`}>
                   {i > 0 && <span className="mx-1.5 text-(--t-text-muted)">&gt;</span>}
@@ -135,7 +136,7 @@ export function SkillDrawer() {
             <button
               type="button"
               onClick={closeDrawer}
-              aria-label="Fechar gaveta"
+              aria-label={t('a11y.closeDrawer')}
               className="inline-flex size-8 shrink-0 items-center justify-center rounded-md border border-(--t-border) text-(--t-text-muted) hover:text-(--t-text)"
             >
               <X size={16} />

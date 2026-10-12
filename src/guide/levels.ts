@@ -1,5 +1,5 @@
 import { SKILLS } from '../data'
-import { DOMAIN_LABELS, STATUS_LABELS, TIER_LABELS } from '../lib/skillMeta'
+import { domainLabel, statusLabel, tierLabel } from '../lib/skillMeta'
 import type { MaturityStatus, SkillNode, Tier } from '../types/skill'
 
 /**
@@ -31,7 +31,7 @@ export interface StatusDetail {
 export const TIER_DETAILS: TierDetail[] = [
   {
     tier: 1,
-    name: TIER_LABELS[1],
+    name: tierLabel(1),
     explanation: [
       'São os métodos clássicos de aprendizado de máquina e as ideias matemáticas que sustentam todo o resto: estatística, modelos lineares, árvores de decisão, máquinas de vetores de suporte, o gradiente descendente e o próprio neurônio artificial.',
       'Muitos deles já são simples e interpretáveis, e funcionam bem com dados limitados.',
@@ -45,7 +45,7 @@ export const TIER_DETAILS: TierDetail[] = [
   },
   {
     tier: 2,
-    name: TIER_LABELS[2],
+    name: tierLabel(2),
     explanation: [
       'São as redes neurais profundas treinadas para uma tarefa específica: reconhecer imagens, traduzir frases, transcrever fala, jogar um jogo. A palavra "estreita" quer dizer exatamente isso: a rede é muito boa numa tarefa e não generaliza sozinha para outra.',
       'Aqui surgiram as arquiteturas que dominaram a área, como as redes convolucionais e a atenção.',
@@ -59,7 +59,7 @@ export const TIER_DETAILS: TierDetail[] = [
   },
   {
     tier: 3,
-    name: TIER_LABELS[3],
+    name: tierLabel(3),
     explanation: [
       'São os modelos de linguagem grandes e os sistemas que usam essas capacidades para agir: usam ferramentas, planejam em vários passos, consultam a web e executam código. Um agente, nesse sentido, é um sistema que percebe, decide e age em sequência para cumprir um objetivo.',
       'Um mesmo modelo serve para muitas tarefas de texto, o que é uma virada em relação ao T2. Ainda assim, comete erros e costuma precisar de supervisão.',
@@ -73,7 +73,7 @@ export const TIER_DETAILS: TierDetail[] = [
   },
   {
     tier: 4,
-    name: TIER_LABELS[4],
+    name: tierLabel(4),
     explanation: [
       'São os sistemas que se aproximam da inteligência geral: modelos multimodais (que entendem texto, imagem e áudio juntos), raciocínio longo, agentes que operam em muitos domínios e robôs que transferem o que aprenderam para tarefas novas.',
       'Não há consenso de que a AGI, a inteligência geral no nível humano, já tenha sido alcançada. No app, este patamar marca o que está mais perto disso, e a discussão continua aberta.',
@@ -90,7 +90,7 @@ export const TIER_DETAILS: TierDetail[] = [
   },
   {
     tier: 5,
-    name: TIER_LABELS[5],
+    name: tierLabel(5),
     explanation: [
       'É a superinteligência: uma inteligência que supera amplamente o humano em praticamente todos os domínios, inclusive na própria pesquisa em IA. Não existe. É um cenário teórico, usado para pensar riscos, controle e governança antes que qualquer coisa parecida apareça.',
       'As habilidades desse patamar não são produtos. São hipóteses de trabalho.',
@@ -111,7 +111,7 @@ export const TIER_DETAILS: TierDetail[] = [
 export const STATUS_DETAILS: StatusDetail[] = [
   {
     status: 'theoretical',
-    name: STATUS_LABELS.theoretical,
+    name: statusLabel('theoretical'),
     explanation: [
       'Uma proposta, um cenário ou um argumento sem implementação consolidada. Pode ser uma previsão, um experimento mental ou uma análise de riscos.',
       'Serve para pensar o caminho e não para ser usado hoje.',
@@ -123,7 +123,7 @@ export const STATUS_DETAILS: StatusDetail[] = [
   },
   {
     status: 'research',
-    name: STATUS_LABELS.research,
+    name: statusLabel('research'),
     explanation: [
       'Pesquisa ativa: há artigos, protótipos e resultados publicados, mas a técnica ainda não foi adotada amplamente em produtos.',
       'É onde a área está testando ideias, e algumas dessas ideias ainda vão virar produção.',
@@ -135,7 +135,7 @@ export const STATUS_DETAILS: StatusDetail[] = [
   },
   {
     status: 'production',
-    name: STATUS_LABELS.production,
+    name: statusLabel('production'),
     explanation: [
       'Em uso real, em produtos e serviços que as pessoas usam hoje. A técnica já passou pela fase de prova e está sendo aplicada no dia a dia.',
       'Ainda há variantes competindo entre si, e ela ainda não virou o básico do campo.',
@@ -147,7 +147,7 @@ export const STATUS_DETAILS: StatusDetail[] = [
   },
   {
     status: 'commodity',
-    name: STATUS_LABELS.commodity,
+    name: statusLabel('commodity'),
     explanation: [
       'Técnica padrão: disponível em qualquer biblioteca, ensinada como o básico e usada sem precisar de justificativa especial. Deixou de ser diferencial e virou infraestrutura.',
       'Um exemplo é o gradiente descendente: quase ninguém o reinventa, todo mundo o usa.',
@@ -188,5 +188,5 @@ export function statusExamples(status: MaturityStatus, limit = 6): { count: numb
 
 /** Área de cada exemplo, para dar contexto sem ambiguidade (ex.: "Transformer (Arquiteturas & Redes)"). */
 export function describeExample(skill: SkillNode): string {
-  return `${skill.name} (${DOMAIN_LABELS[skill.domain]})`
+  return `${skill.name} (${domainLabel(skill.domain)})`
 }

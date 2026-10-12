@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { EXPORT_OPTIONS, exportCanvas, type ExportFormat, type ExportScope } from '../../lib/exportCanvas'
+import { t } from '../../i18n'
 
 /**
  * Botão Exportar: salva o canvas como PNG ou SVG, da vista atual ou da árvore inteira.
@@ -24,9 +25,9 @@ export function ExportMenu({ buttonClass }: { buttonClass: string }) {
     setOpen(false)
     setStatus(null)
     try {
-      if (!(await exportCanvas(format, scope))) setStatus('Canvas não encontrado')
+      if (!(await exportCanvas(format, scope))) setStatus(t('export.noCanvas'))
     } catch {
-      setStatus('Não foi possível exportar esta vista')
+      setStatus(t('export.failed'))
     }
   }
 
@@ -46,10 +47,10 @@ export function ExportMenu({ buttonClass }: { buttonClass: string }) {
         aria-expanded={open}
         aria-controls={open ? menuId : undefined}
         onClick={() => setOpen((v) => !v)}
-        title="Salva a vista atual do canvas como imagem"
+        title={t('app.exportTitle')}
         className={`${buttonClass} gap-1.5`}
       >
-        Exportar
+        {t('app.export')}
         <ChevronDown size={12} aria-hidden />
       </button>
 
@@ -57,7 +58,7 @@ export function ExportMenu({ buttonClass }: { buttonClass: string }) {
         <div
           id={menuId}
           role="menu"
-          aria-label="Formato da exportação"
+          aria-label={t('export.menu')}
           className="absolute top-full right-0 z-30 mt-2 w-[min(300px,calc(100vw-2rem))] space-y-0.5 rounded-xl border border-(--t-border) bg-(--t-surface) p-1.5 shadow-lg backdrop-blur-md"
         >
           {EXPORT_OPTIONS.map((o) => (
@@ -68,8 +69,8 @@ export function ExportMenu({ buttonClass }: { buttonClass: string }) {
               onClick={() => void exportAs(o.format, o.scope)}
               className="block w-full rounded-lg px-3 py-2 text-left transition-colors hover:bg-(--t-bg)"
             >
-              <span className="block text-[13px] font-medium">{o.label}</span>
-              <span className="block text-[12px] text-(--t-text-muted)">{o.description}</span>
+              <span className="block text-[13px] font-medium">{t(o.labelKey)}</span>
+              <span className="block text-[12px] text-(--t-text-muted)">{t(o.descKey)}</span>
             </button>
           ))}
         </div>

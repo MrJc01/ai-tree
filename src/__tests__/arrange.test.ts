@@ -20,7 +20,7 @@ function rowsLeftToRight(mode: ArrangeMode): SkillNode[][] {
 describe('tipos de organização', () => {
   it('há quatro tipos, com ids e nomes únicos', () => {
     expect(ARRANGE_MODES.map((m) => m.id)).toEqual(['cruzamentos', 'cronologica', 'maturidade', 'alfabetica'])
-    expect(new Set(ARRANGE_MODES.map((m) => m.label)).size).toBe(ARRANGE_MODES.length)
+    expect(new Set(ARRANGE_MODES.map((m) => m.labelKey)).size).toBe(ARRANGE_MODES.length)
   })
 
   it('todo tipo posiciona todas as habilidades, sem dois hexágonos no mesmo slot de uma célula', () => {

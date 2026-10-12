@@ -8,16 +8,17 @@ import { applyTheme } from './theme/theme'
 import { SkillCanvas } from './components/SkillCanvas'
 import { SkillDrawer } from './components/drawer/SkillDrawer'
 import { PresentationPanel } from './components/presentation/PresentationPanel'
-import { PRESENTATION_MODES } from './presentation/modes'
 import { BenchmarkVault } from './components/hud/BenchmarkVault'
 import { FilterBar } from './components/hud/FilterBar'
 import { ArrangeMenu } from './components/hud/ArrangeMenu'
+import { LanguageSelect } from './components/hud/LanguageSelect'
 import { ExportMenu } from './components/hud/ExportMenu'
 import { MobileMenu } from './components/hud/MobileMenu'
 import { DESKTOP_QUERY, useMedia } from './lib/useMedia'
 import { FaqPanel } from './components/faq/FaqPanel'
 import { TimeSlider } from './components/hud/TimeSlider'
 import { useAppStore } from './store/appStore'
+import { t } from './i18n'
 
 const UNIQUE_COUNT = SKILLS.filter((s) => !s.isDuplicateInstance).length
 
@@ -29,6 +30,7 @@ const toolButton =
 
 export default function App() {
   const theme = useAppStore((s) => s.theme)
+  const locale = useAppStore((s) => s.locale)
   const setTheme = useAppStore((s) => s.setTheme)
   const showModels = useAppStore((s) => s.showModels)
   const toggleModels = useAppStore((s) => s.toggleModels)
@@ -82,12 +84,12 @@ export default function App() {
   const nextTheme = theme === 'dark' ? 'light' : 'dark'
 
   return (
-    <div className="flex h-dvh flex-col">
+    <div key={locale} className="flex h-dvh flex-col">
       <header className="relative z-40 flex h-14 shrink-0 items-center justify-between gap-3 border-b border-(--t-border) bg-(--t-surface) px-4">
         <div className="flex min-w-0 items-baseline gap-3">
-          <h1 className="truncate text-sm font-semibold tracking-tight">AI Tech Tree & Knowledge</h1>
+          <h1 className="truncate text-sm font-semibold tracking-tight">{t('app.title')}</h1>
           <span className="hidden whitespace-nowrap font-mono text-[11px] text-(--t-text-muted) xl:inline">
-            {UNIQUE_COUNT} habilidades
+            {t('app.count', { count: UNIQUE_COUNT })}
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -95,19 +97,19 @@ export default function App() {
             <button
               type="button"
               onClick={resetLayout}
-              title="Volta cada hexágono para a posição padrão da área e do patamar"
+              title={t('app.resetTitle')}
               className={toolButton}
             >
-              Padrão
+              {t('app.reset')}
             </button>
             <button
               type="button"
               onClick={() => setFaqOpen(!faqOpen)}
               aria-pressed={faqOpen}
-              title="Perguntas frequentes e pesquisa sobre o sistema"
+              title={t('app.faqTitle')}
               className={`${toolButton} ${faqOpen ? 'border-(--t-accent) bg-(--t-accent) text-(--t-bg)' : 'hover:text-(--t-text)'}`}
             >
-              FAQ
+              {t('app.faq')}
             </button>
             <ArrangeMenu buttonClass={toolButton} />
             <ExportMenu buttonClass={toolButton} />
@@ -119,14 +121,10 @@ export default function App() {
                   type="button"
                   onClick={() => (on ? stopPresentation() : startPresentation(m))}
                   aria-pressed={on}
-                  title={
-                    m === 'apresentacao'
-                      ? 'Roteiro para apresentar o sistema: como ler, como explorar, filtros e modelos'
-                      : 'Conta a história da IA em ordem, de 1950 até hoje, com a linha do tempo avançando junto'
-                  }
+                  title={m === 'apresentacao' ? t('app.presentationTitle') : t('app.historyTitle')}
                   className={`${toolButton} ${on ? 'border-(--t-accent) bg-(--t-accent) text-(--t-bg)' : 'hover:text-(--t-text)'}`}
                 >
-                  {PRESENTATION_MODES[m].label}
+                  {m === 'apresentacao' ? t('app.presentation') : t('app.history')}
                 </button>
               )
             })}
@@ -140,14 +138,15 @@ export default function App() {
                   : 'border-(--t-border) text-(--t-text-muted) hover:text-(--t-text)'
               }`}
             >
-              Modelos
+              {t('app.models')}
             </button>
           </div>
           <MobileMenu />
+          <LanguageSelect />
           <button
             type="button"
             onClick={() => setTheme(nextTheme)}
-            aria-label={`Trocar para o tema ${nextTheme === 'dark' ? 'escuro' : 'claro'}`}
+            aria-label={nextTheme === 'dark' ? t('app.themeToDark') : t('app.themeToLight')}
             className={iconButton}
           >
             {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}

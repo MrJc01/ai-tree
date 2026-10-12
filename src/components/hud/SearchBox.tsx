@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { SKILLS } from '../../data'
 import { searchSkills } from '../../lib/search'
-import { DOMAIN_LABELS } from '../../lib/skillMeta'
+import { domainLabel } from '../../lib/skillMeta'
 import { useAppStore } from '../../store/appStore'
+import { t } from '../../i18n'
 
 interface SearchBoxProps {
   /** Quando muda, o campo ganha o foco. O painel de filtros usa isso para a tecla /. */
@@ -43,12 +44,12 @@ export function SearchBox({ focusNonce }: SearchBoxProps) {
             inputRef.current?.blur()
           }
         }}
-        placeholder="Nome da habilidade"
-        aria-label="Buscar habilidade"
+        placeholder={t('search.placeholder')}
+        aria-label={t('search.label')}
         className="w-full rounded-md border border-(--t-border) bg-(--t-surface) px-3 py-2 text-[13px] text-(--t-text) outline-none placeholder:text-(--t-text-muted) focus:border-(--t-accent)"
       />
       {query.trim() && (
-        <ul role="listbox" aria-label="Resultados da busca" className="max-h-64 space-y-0.5 overflow-y-auto">
+        <ul role="listbox" aria-label={t('search.results')} className="max-h-64 space-y-0.5 overflow-y-auto">
           {results.map((s) => (
             <li key={s.id} role="option" aria-selected={false}>
               <button
@@ -58,13 +59,13 @@ export function SearchBox({ focusNonce }: SearchBoxProps) {
               >
                 <span className="min-w-0 truncate">{s.name}</span>
                 <span className="shrink-0 font-mono text-[10px] text-(--t-text-muted)">
-                  T{s.tier} · {DOMAIN_LABELS[s.domain]}
+                  T{s.tier} · {domainLabel(s.domain)}
                 </span>
               </button>
             </li>
           ))}
           {results.length === 0 && (
-            <li className="px-2.5 py-2 text-[12px] text-(--t-text-muted)">Nenhuma habilidade encontrada.</li>
+            <li className="px-2.5 py-2 text-[12px] text-(--t-text-muted)">{t('search.noResults')}</li>
           )}
         </ul>
       )}

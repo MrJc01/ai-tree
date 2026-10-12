@@ -7,6 +7,7 @@ import { DESKTOP_QUERY, useMedia } from '../../lib/useMedia'
 import { runPresentationStep } from '../../presentation/runner'
 import { PRESENTATION_MODES, stepsOf } from '../../presentation/modes'
 import { useAppStore } from '../../store/appStore'
+import { t } from '../../i18n'
 
 const PANEL_WIDTH = 360
 
@@ -56,7 +57,7 @@ export function PresentationPanel() {
 
   return (
     <motion.aside
-      aria-label="Roteiro da apresentação"
+      aria-label={t('presentation.aside')}
       aria-hidden={!active}
       inert={!active}
       initial={false}
@@ -70,12 +71,12 @@ export function PresentationPanel() {
       <div style={desktop ? { width: PANEL_WIDTH } : undefined} className="flex h-full w-full flex-col">
         <div className="flex items-center justify-between border-b border-(--t-border) px-5 py-3">
           <span className="font-mono text-[10px] tracking-[0.16em] text-(--t-text-muted) uppercase">
-            {PRESENTATION_MODES[mode].title} · passo {index + 1} de {total}
+            {t(PRESENTATION_MODES[mode].titleKey)} · {t('presentation.step', { current: index + 1, total })}
           </span>
           <button
             type="button"
             onClick={stopPresentation}
-            aria-label="Encerrar apresentação"
+            aria-label={t('presentation.close')}
             className="inline-flex size-7 items-center justify-center rounded-md border border-(--t-border) text-(--t-text-muted) hover:text-(--t-text)"
           >
             <X size={14} />
@@ -108,8 +109,8 @@ export function PresentationPanel() {
             </div>
           )}
 
-          <section className="mt-6" aria-label="Roteiro completo">
-            <h3 className="mb-2 font-mono text-[10px] tracking-[0.16em] text-(--t-text-muted) uppercase">Roteiro</h3>
+          <section className="mt-6" aria-label={t('presentation.altNav')}>
+            <h3 className="mb-2 font-mono text-[10px] tracking-[0.16em] text-(--t-text-muted) uppercase">{t('presentation.roadmapTitle')}</h3>
             <ol className="space-y-0.5">
               {steps.map((s, i) => (
                 <li key={s.id}>
@@ -138,11 +139,11 @@ export function PresentationPanel() {
             type="button"
             onClick={backToLastSeen}
             disabled={!lastSeen}
-            title={lastSeen ? `Volta para: ${lastSeen.title}` : 'Ainda não há passo anterior visto'}
+            title={lastSeen ? t('presentation.backTo', { title: lastSeen.title }) : t('presentation.noBack')}
             className="inline-flex max-w-full items-center gap-1.5 text-[11px] text-(--t-text-muted) transition-colors hover:text-(--t-text) disabled:cursor-not-allowed disabled:opacity-40"
           >
             <Undo2 size={12} className="shrink-0" />
-            <span className="truncate">{lastSeen ? `Voltar ao último visto: ${lastSeen.title}` : 'Voltar ao último visto'}</span>
+            <span className="truncate">{lastSeen ? `${t('presentation.backToLast')}: ${lastSeen.title}` : t('presentation.backToLast')}</span>
           </button>
         </div>
         <div className="flex items-center justify-between gap-2 px-4 py-3">
@@ -152,16 +153,16 @@ export function PresentationPanel() {
             disabled={index === 0}
             className="inline-flex items-center gap-1 rounded-md border border-(--t-border) px-3 py-1.5 text-[12px] text-(--t-text-muted) transition-colors hover:text-(--t-text) disabled:cursor-not-allowed disabled:opacity-40"
           >
-            <ChevronLeft size={14} /> Anterior
+            <ChevronLeft size={14} /> {t('presentation.prev')}
           </button>
-          <span className="font-mono text-[9px] text-(--t-text-muted)">← → para navegar</span>
+          <span className="font-mono text-[9px] text-(--t-text-muted)">{t('presentation.keys')}</span>
           <button
             type="button"
             onClick={nextStep}
             disabled={isLast}
             className="inline-flex items-center gap-1 rounded-md border border-(--t-accent) bg-(--t-accent) px-3 py-1.5 text-[12px] text-(--t-bg) transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
           >
-            {isLast ? 'Fim' : 'Próximo'} {!isLast && <ChevronRight size={14} />}
+            {isLast ? t('presentation.end') : t('presentation.next')} {!isLast && <ChevronRight size={14} />}
           </button>
         </div>
       </div>

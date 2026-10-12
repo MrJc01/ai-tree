@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown, X } from 'lucide-react'
 import { FAQ, filterFaq, type FaqItem } from '../../guide/faq'
 import { useAppStore } from '../../store/appStore'
+import { t } from '../../i18n'
 
 const SPRING = { type: 'spring', stiffness: 320, damping: 34, mass: 0.9 } as const
 
@@ -69,7 +70,7 @@ export function FaqPanel() {
       {open && (
         <motion.aside
           key="faq"
-          aria-label="Perguntas frequentes"
+          aria-label={t('faq.title')}
           initial={{ x: '100%' }}
           animate={{ x: 0 }}
           exit={{ x: '100%' }}
@@ -77,11 +78,11 @@ export function FaqPanel() {
           className="absolute inset-y-0 right-0 z-40 flex w-[min(420px,100%)] flex-col border-l border-(--t-border) bg-(--t-bg) shadow-2xl"
         >
           <div className="flex items-center justify-between border-b border-(--t-border) px-5 py-3">
-            <h2 className="text-[15px] font-semibold tracking-tight">Perguntas frequentes</h2>
+            <h2 className="text-[15px] font-semibold tracking-tight">{t('faq.title')}</h2>
             <button
               type="button"
               onClick={() => setFaqOpen(false)}
-              aria-label="Fechar perguntas frequentes"
+              aria-label={t('faq.closeAria')}
               className="inline-flex size-8 items-center justify-center rounded-md border border-(--t-border) text-(--t-text-muted) hover:text-(--t-text)"
             >
               <X size={16} />
@@ -93,8 +94,8 @@ export function FaqPanel() {
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Pesquisar nas perguntas"
-              aria-label="Pesquisar nas perguntas"
+              placeholder={t('faq.search')}
+              aria-label={t('faq.searchLabel')}
               className="w-full rounded-md border border-(--t-border) bg-(--t-surface) px-3 py-2 text-[13px] text-(--t-text) outline-none placeholder:text-(--t-text-muted) focus:border-(--t-accent)"
             />
             <p className="font-mono text-[10px] tracking-[0.12em] text-(--t-text-muted) uppercase" aria-live="polite">

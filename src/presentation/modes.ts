@@ -1,15 +1,16 @@
 import { HISTORY_STEPS } from './history'
 import { PRESENTATION_STEPS, type PresentationStep } from './steps'
+import type { UIKey } from '../i18n/ui/pt'
 
 /** Os dois roteiros: a apresentação do sistema e a história da IA contada desde o começo. */
 export type PresentationMode = 'apresentacao' | 'historia'
 
 export const PRESENTATION_MODES: Record<
   PresentationMode,
-  { label: string; title: string; steps: PresentationStep[] }
+  { titleKey: UIKey; steps: PresentationStep[] }
 > = {
-  apresentacao: { label: 'Apresentação', title: 'Apresentação', steps: PRESENTATION_STEPS },
-  historia: { label: 'História', title: 'História da IA', steps: HISTORY_STEPS },
+  apresentacao: { titleKey: 'presentation.apresentacaoTitle', steps: PRESENTATION_STEPS },
+  historia: { titleKey: 'presentation.historyTitle', steps: HISTORY_STEPS },
 }
 
 export function stepsOf(mode: PresentationMode): PresentationStep[] {

@@ -5,7 +5,7 @@ import type { TierNode } from '../components/nodes/TierLabel'
 import { DOMAINS, type SkillNode } from '../types/skill'
 import { BAND_WIDTH, DOMAIN_GAP, HEX_HEIGHT, HEX_WIDTH, MARGIN_X, nodePosition, rowTop } from './geometry'
 import { routeEdges } from './route'
-import { DOMAIN_LABELS, getEntityKey, TIER_LABELS } from './skillMeta'
+import { domainLabel, getEntityKey, tierLabel } from './skillMeta'
 
 export { HEX_HEIGHT, HEX_RADIUS, HEX_WIDTH, nodePosition, nodePositionAt } from './geometry'
 
@@ -51,7 +51,7 @@ export function layoutSkills(
     id: `band:${domain}`,
     type: 'band',
     position: { x: MARGIN_X + col * BAND_WIDTH, y: BAND_LABEL_Y },
-    data: { label: DOMAIN_LABELS[domain], width: BAND_WIDTH - DOMAIN_GAP },
+    data: { label: domainLabel(domain), width: BAND_WIDTH - DOMAIN_GAP },
     draggable: false,
     selectable: false,
     focusable: false,
@@ -62,7 +62,7 @@ export function layoutSkills(
     id: `tier:${tier}`,
     type: 'tier',
     position: { x: 16, y: rowTop(5 - tier) + HEX_HEIGHT / 2 - 26 },
-    data: { tier, label: TIER_LABELS[tier], width: TIER_LABEL_WIDTH },
+    data: { tier, label: tierLabel(tier), width: TIER_LABEL_WIDTH },
     draggable: false,
     selectable: false,
     focusable: false,

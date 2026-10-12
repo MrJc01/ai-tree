@@ -3,13 +3,14 @@ import { Handle, Position, type Node, type NodeProps } from '@xyflow/react'
 import { motion } from 'framer-motion'
 import { MODELS } from '../../data/models'
 import { HEX_HEIGHT, HEX_RADIUS, HEX_WIDTH, type HandleId } from '../../lib/layout'
-import { getEntityKey, STATUS_LABELS } from '../../lib/skillMeta'
+import { getEntityKey, statusLabel } from '../../lib/skillMeta'
 import { isGrayscale, OPACITY, toVisualContext, visualStateFor } from '../../lib/visibility'
 import { nearestInDirection, type Direction } from '../../lib/keynav'
 import { activeFocusOf, useAppStore } from '../../store/appStore'
 import { useHoverStore } from '../../store/hoverStore'
 import type { SkillNode } from '../../types/skill'
 import { ModelOrbit } from './ModelOrbit'
+import { t } from '../../i18n'
 
 export type HexFlowNode = Node<{ skill: SkillNode }, 'hex'>
 
@@ -141,7 +142,7 @@ function HexNodeComponent({ data }: NodeProps<HexFlowNode>) {
     <motion.div
       role="button"
       tabIndex={0}
-      aria-label={`${skill.name}, tier ${skill.tier}, ${STATUS_LABELS[skill.metadata.status]}`}
+      aria-label={`${skill.name}, ${t('hex.tier', { tier: skill.tier })}, ${statusLabel(skill.metadata.status)}`}
       className="relative cursor-grab outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--t-accent) active:cursor-grabbing"
       style={rootStyle}
       animate={{ scale: isActive ? 1.05 : 1 }}
@@ -231,7 +232,7 @@ function HexNodeComponent({ data }: NodeProps<HexFlowNode>) {
         </span>
         <span className="line-clamp-2 text-[13px] leading-tight font-medium text-(--t-text)">{skill.name}</span>
         <span className="absolute bottom-5 font-mono text-[9px] tracking-[0.14em] text-(--t-text-muted) uppercase">
-          {STATUS_LABELS[skill.metadata.status]}
+          {statusLabel(skill.metadata.status)}
         </span>
       </div>
 

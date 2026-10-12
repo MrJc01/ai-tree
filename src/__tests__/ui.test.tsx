@@ -313,4 +313,3 @@ describe('menu do cabeçalho no celular', () => {
     expect(screen.queryByRole('menu', { name: 'Menu' })).not.toBeInTheDocument()
   })
 })
-

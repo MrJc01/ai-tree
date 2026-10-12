@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { SKILLS } from '../../data'
 import { isTyping } from '../../lib/dom'
-import { DOMAIN_LABELS, STATUS_LABELS } from '../../lib/skillMeta'
+import { domainLabel, statusLabel } from '../../lib/skillMeta'
 import { useAppStore } from '../../store/appStore'
 import { DOMAINS, MATURITY_STATUSES } from '../../types/skill'
 import { Chip } from '../drawer/shared'
 import { Legend } from './Legend'
 import { SearchBox } from './SearchBox'
+import { t } from '../../i18n'
 
 /** Empresas do grafo, ordenadas pelo número de habilidades que aparecem. */
 function companiesByCount(): Array<{ name: string; count: number }> {
@@ -62,13 +63,13 @@ export function FilterBar() {
     <div className="w-full rounded-xl border border-(--t-border) bg-(--t-surface) backdrop-blur-md">
       <div className="flex items-center justify-between gap-2 px-3 py-2">
         <div className="flex items-center gap-3">
-          <SectionButton label="Filtros" expanded={open === 'filtros'} onClick={() => toggle('filtros')}>
+          <SectionButton label={t('filter.filters')} expanded={open === 'filtros'} onClick={() => toggle('filtros')}>
             {active > 0 && (
               <span className="ml-2 rounded-full bg-(--t-accent) px-1.5 py-px text-[9px] text-(--t-bg)">{active}</span>
             )}
           </SectionButton>
-          <SectionButton label="Legenda" expanded={open === 'legenda'} onClick={() => toggle('legenda')} />
-          <SectionButton label="Buscar" expanded={open === 'busca'} onClick={() => toggle('busca')} />
+          <SectionButton label={t('filter.legend')} expanded={open === 'legenda'} onClick={() => toggle('legenda')} />
+          <SectionButton label={t('filter.search')} expanded={open === 'busca'} onClick={() => toggle('busca')} />
         </div>
         {active > 0 && (
           <button
@@ -76,28 +77,28 @@ export function FilterBar() {
             onClick={clearFilters}
             className="font-mono text-[10px] text-(--t-text-muted) underline-offset-2 hover:underline"
           >
-            Limpar
+            {t('filter.clear')}
           </button>
         )}
       </div>
 
       {open === 'filtros' && (
         <div className="max-h-[52vh] space-y-3 overflow-y-auto border-t border-(--t-border) px-3 py-3">
-          <FilterRow label="Área">
+          <FilterRow label={t('filter.area')}>
             {DOMAINS.map((d) => (
               <Chip key={d} active={domains.includes(d)} onClick={() => toggleDomain(d)}>
-                {DOMAIN_LABELS[d]}
+                {domainLabel(d)}
               </Chip>
             ))}
           </FilterRow>
-          <FilterRow label="Maturidade">
+          <FilterRow label={t('filter.maturity')}>
             {MATURITY_STATUSES.map((st) => (
               <Chip key={st} active={statuses.includes(st)} onClick={() => toggleStatus(st)}>
-                {STATUS_LABELS[st]}
+                {statusLabel(st)}
               </Chip>
             ))}
           </FilterRow>
-          <FilterRow label="Empresa">
+          <FilterRow label={t('filter.company')}>
             {companyList.map((c) => (
               <Chip key={c.name} active={companies.includes(c.name)} onClick={() => toggleCompany(c.name)}>
                 {c.name} <span className="ml-1 opacity-60">{c.count}</span>

@@ -1,6 +1,8 @@
 import { create } from 'zustand'
 import { stepsOf, type PresentationMode } from '../presentation/modes'
 import { getStoredTheme, persistTheme, type Theme } from '../theme/theme'
+import { getStoredLocale, persistLocale, setCurrentLocale } from '../i18n/state'
+import type { Locale } from '../i18n/locales'
 import type { Domain, MaturityStatus } from '../types/skill'
 
 export type Density = 'streamline' | 'research'
@@ -161,6 +163,8 @@ interface AppState {
 
   theme: Theme
   setTheme: (theme: Theme) => void
+  locale: Locale
+  setLocale: (locale: Locale) => void
   /** Posição de cada nó quando foi movido à mão ou organizado. Nós fora deste mapa seguem o padrão. */
   positions: Record<string, Position>
   setPositions: (positions: Record<string, Position>) => void
@@ -193,6 +197,9 @@ interface AppState {
   setBenchmark: (id: string | null) => void
 }
 
+const initialLocale = getStoredLocale()
+setCurrentLocale(initialLocale)
+
 export const useAppStore = create<AppState>((set) => ({
   focus: null,
   requestFocus: (id) => set((s) => ({ focus: { id, nonce: (s.focus?.nonce ?? 0) + 1 } })),
@@ -219,6 +226,12 @@ export const useAppStore = create<AppState>((set) => ({
     }),
 
   theme: getStoredTheme(),
+  locale: initialLocale,
+  setLocale: (locale) => {
+    persistLocale(locale)
+    setCurrentLocale(locale)
+    set({ locale })
+  },
   setTheme: (theme) => {
     persistTheme(theme)
     set({ theme })

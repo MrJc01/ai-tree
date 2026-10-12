@@ -1,10 +1,11 @@
+import { sourceTypeLabel } from './labels'
 import { MODELS, SKILLS, SKILL_BY_ID } from '../../data'
 import { sourceHost } from '../../lib/graph'
-import { DOMAIN_LABELS } from '../../lib/skillMeta'
+import { domainLabel } from '../../lib/skillMeta'
 import { useAppStore } from '../../store/appStore'
 import { Badge, Chip, Section } from './shared'
-import { SOURCE_TYPE_LABEL } from './labels'
 import { sourceFor } from './entries'
+import { t } from '../../i18n'
 
 /** Folha de um paper ou fonte. Mostra o resumo, o link e a habilidade de origem. */
 export function SourceSheet({ skillId, index }: { skillId: string; index: number }) {
@@ -14,13 +15,13 @@ export function SourceSheet({ skillId, index }: { skillId: string; index: number
   const density = useAppStore((s) => s.density)
 
   if (!skill || !source) {
-    return <p className="p-6 text-[13px] text-(--t-text-muted)">Fonte não encontrada.</p>
+    return <p className="p-6 text-[13px] text-(--t-text-muted)">{t('drawer.sourceNotFound')}</p>
   }
 
   return (
     <div className="space-y-6 px-6 py-5">
       <div className="flex flex-wrap gap-1.5">
-        <Badge>{SOURCE_TYPE_LABEL[source.type]}</Badge>
+        <Badge>{sourceTypeLabel(source.type)}</Badge>
         <Badge>{sourceHost(source.url)}</Badge>
       </div>
       <h2 className="text-lg leading-snug font-semibold tracking-tight">{source.title}</h2>
@@ -36,9 +37,9 @@ export function SourceSheet({ skillId, index }: { skillId: string; index: number
       </a>
       {density === 'research' && <p className="font-mono text-[11px] break-all text-(--t-text-muted)">{source.url}</p>}
 
-      <Section title="Relacionado">
+      <Section title={t('drawer.related')}>
         <Chip onClick={() => pushEntry({ kind: 'skill', id: skill.id })}>
-          {skill.name} · {DOMAIN_LABELS[skill.domain]}
+          {skill.name} · {domainLabel(skill.domain)}
         </Chip>
       </Section>
     </div>
@@ -69,10 +70,10 @@ export function CompanySheet({ name }: { name: string }) {
           active ? 'border-(--t-accent) bg-(--t-accent) text-(--t-bg)' : 'border-(--t-border) hover:border-(--t-accent)'
         }`}
       >
-        {active ? 'Remover filtro desta empresa' : 'Filtrar a árvore por esta empresa'}
+        {active ? t('company.removeFilter') : t('company.addFilter')}
       </button>
 
-      <Section title="Habilidades">
+      <Section title={t('company.skills')}>
         <ul className="space-y-1.5">
           {skills.map((s) => (
             <li key={s.id}>
@@ -83,14 +84,14 @@ export function CompanySheet({ name }: { name: string }) {
               >
                 {s.name}
               </button>
-              <span className="ml-2 font-mono text-[10px] text-(--t-text-muted)">{DOMAIN_LABELS[s.domain]}</span>
+              <span className="ml-2 font-mono text-[10px] text-(--t-text-muted)">{domainLabel(s.domain)}</span>
             </li>
           ))}
         </ul>
       </Section>
 
       {models.length > 0 && (
-        <Section title="Modelos">
+        <Section title={t('app.models')}>
           <ul className="space-y-1.5 text-[13px]">
             {models.map((m) => (
               <li key={m.id}>

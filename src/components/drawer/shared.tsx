@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { useAppStore, type Density } from '../../store/appStore'
+import { t } from '../../i18n'
 
 export function Badge({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
@@ -25,8 +26,8 @@ export function DensityToggle() {
   const density = useAppStore((s) => s.density)
   const setDensity = useAppStore((s) => s.setDensity)
   const options: Array<{ value: Density; label: string }> = [
-    { value: 'streamline', label: 'Streamline' },
-    { value: 'research', label: 'Research' },
+    { value: 'streamline', label: t('drawer.streamline') },
+    { value: 'research', label: t('drawer.research') },
   ]
   return (
     <div role="group" aria-label="Densidade de dados" className="inline-flex rounded-md border border-(--t-border) p-0.5">

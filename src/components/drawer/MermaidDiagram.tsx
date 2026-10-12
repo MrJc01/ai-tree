@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useAppStore } from '../../store/appStore'
+import { t } from '../../i18n'
 
 interface MermaidDiagramProps {
   code: string
@@ -34,7 +35,7 @@ export function MermaidDiagram({ code }: MermaidDiagramProps) {
         const { svg: output } = await mermaid.render(`flow-${renderCounter}`, code)
         if (!cancelled) setResult({ key, svg: output })
       } catch (err) {
-        if (!cancelled) setResult({ key, error: err instanceof Error ? err.message : 'Falha ao renderizar o diagrama' })
+        if (!cancelled) setResult({ key, error: err instanceof Error ? err.message : t('diagram.fail') })
       }
     }
 
@@ -50,12 +51,12 @@ export function MermaidDiagram({ code }: MermaidDiagramProps) {
   if (current?.error) {
     return (
       <p role="alert" className="rounded border border-(--t-border) p-3 font-mono text-[11px] text-(--t-text-muted)">
-        Não foi possível renderizar o fluxograma: {current.error}
+        {t('diagram.error', { error: current.error })}
       </p>
     )
   }
   if (!current?.svg) {
-    return <p className="font-mono text-[11px] text-(--t-text-muted)">Renderizando fluxograma…</p>
+    return <p className="font-mono text-[11px] text-(--t-text-muted)">{t('diagram.loading')}</p>
   }
   return (
     <div

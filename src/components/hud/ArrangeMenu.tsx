@@ -3,6 +3,7 @@ import { ChevronDown } from 'lucide-react'
 import { SKILLS } from '../../data'
 import { ARRANGE_MODES, arrangePositions, type ArrangeMode } from '../../lib/arrange'
 import { useAppStore } from '../../store/appStore'
+import { t } from '../../i18n'
 
 /**
  * Botão Auto-organizar com um dropdown para escolher o tipo de organização. Fecha ao escolher,
@@ -44,10 +45,10 @@ export function ArrangeMenu({ buttonClass }: { buttonClass: string }) {
         aria-expanded={open}
         aria-controls={open ? menuId : undefined}
         onClick={() => setOpen((v) => !v)}
-        title="Escolha o tipo de organização dos hexágonos"
+        title={t('arrange.title')}
         className={`${buttonClass} gap-1.5`}
       >
-        Auto-organizar
+        {t('arrange.button')}
         <ChevronDown size={12} aria-hidden />
       </button>
 
@@ -55,7 +56,7 @@ export function ArrangeMenu({ buttonClass }: { buttonClass: string }) {
         <div
           id={menuId}
           role="menu"
-          aria-label="Tipo de organização"
+          aria-label={t('arrange.menu')}
           className="absolute top-full right-0 z-30 mt-2 w-[min(320px,calc(100vw-2rem))] space-y-0.5 rounded-xl border border-(--t-border) bg-(--t-surface) p-1.5 shadow-lg backdrop-blur-md"
         >
           {ARRANGE_MODES.map((mode) => (
@@ -66,8 +67,8 @@ export function ArrangeMenu({ buttonClass }: { buttonClass: string }) {
               onClick={() => apply(mode.id)}
               className="block w-full rounded-lg px-3 py-2 text-left transition-colors hover:bg-(--t-bg)"
             >
-              <span className="block text-[13px] font-medium">{mode.label}</span>
-              <span className="block text-[12px] text-(--t-text-muted)">{mode.description}</span>
+              <span className="block text-[13px] font-medium">{t(mode.labelKey)}</span>
+              <span className="block text-[12px] text-(--t-text-muted)">{t(mode.descKey)}</span>
             </button>
           ))}
         </div>

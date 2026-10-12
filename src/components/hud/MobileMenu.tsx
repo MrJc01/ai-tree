@@ -3,8 +3,8 @@ import { Menu, X } from 'lucide-react'
 import { SKILLS } from '../../data'
 import { ARRANGE_MODES, arrangePositions } from '../../lib/arrange'
 import { EXPORT_OPTIONS, exportCanvas, type ExportFormat, type ExportScope } from '../../lib/exportCanvas'
-import { PRESENTATION_MODES } from '../../presentation/modes'
 import { useAppStore } from '../../store/appStore'
+import { t } from '../../i18n'
 
 const itemClass =
   'block w-full rounded-lg px-3 py-2 text-left text-[13px] transition-colors hover:bg-(--t-bg) disabled:opacity-40'
@@ -57,9 +57,9 @@ export function MobileMenu() {
     setOpen(false)
     setStatus(null)
     try {
-      if (!(await exportCanvas(format, scope))) setStatus('Canvas não encontrado')
+      if (!(await exportCanvas(format, scope))) setStatus(t('export.noCanvas'))
     } catch {
-      setStatus('Não foi possível exportar esta vista')
+      setStatus(t('export.failed'))
     }
   }
 
@@ -75,7 +75,7 @@ export function MobileMenu() {
     >
       <button
         type="button"
-        aria-label="Menu"
+        aria-label={t('mobile.menu')}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={open ? menuId : undefined}
@@ -89,22 +89,22 @@ export function MobileMenu() {
         <div
           id={menuId}
           role="menu"
-          aria-label="Menu"
+          aria-label={t('mobile.menu')}
           className="absolute top-full right-0 z-50 mt-2 max-h-[70dvh] w-[min(300px,calc(100vw-2rem))] space-y-2 overflow-y-auto rounded-xl border border-(--t-border) bg-(--t-surface) p-2 shadow-lg backdrop-blur-md"
         >
-          <Group title="Vista">
+          <Group title={t('mobile.view')}>
             <button type="button" role="menuitem" className={itemClass} onClick={() => run(resetLayout)}>
-              Padrão: volta ao layout curado
+              {t('mobile.resetItem')}
             </button>
             <button type="button" role="menuitem" className={itemClass} onClick={() => run(() => setFaqOpen(!faqOpen))}>
-              FAQ {faqOpen ? '· aberto' : ''}
+              {t('app.faq')} {faqOpen ? `· ${t('mobile.faqOpen')}` : ''}
             </button>
             <button type="button" role="menuitem" className={itemClass} onClick={() => run(toggleModels)}>
-              Modelos · {showModels ? 'ligados' : 'desligados'}
+              {t('app.models')} · {showModels ? t('mobile.modelsOn') : t('mobile.modelsOff')}
             </button>
           </Group>
 
-          <Group title="Organizar">
+          <Group title={t('mobile.organize')}>
             {ARRANGE_MODES.map((mode) => (
               <button
                 key={mode.id}
@@ -113,12 +113,12 @@ export function MobileMenu() {
                 className={itemClass}
                 onClick={() => run(() => setPositions(arrangePositions(SKILLS, mode.id)))}
               >
-                {mode.label}
+                {t(mode.labelKey)}
               </button>
             ))}
           </Group>
 
-          <Group title="Exportar">
+          <Group title={t('export.group')}>
             {EXPORT_OPTIONS.map((o) => (
               <button
                 key={`${o.format}-${o.scope}`}
@@ -127,12 +127,12 @@ export function MobileMenu() {
                 className={itemClass}
                 onClick={() => void exportFormat(o.format, o.scope)}
               >
-                {o.label}
+                {t(o.labelKey)}
               </button>
             ))}
           </Group>
 
-          <Group title="Apresentar">
+          <Group title={t('mobile.presentGroup')}>
             {(['apresentacao', 'historia'] as const).map((m) => {
               const on = presenting && presentationMode === m
               return (
@@ -143,7 +143,7 @@ export function MobileMenu() {
                   className={itemClass}
                   onClick={() => run(() => (on ? stopPresentation() : startPresentation(m)))}
                 >
-                  {PRESENTATION_MODES[m].label} {on ? '· em andamento' : ''}
+                  {m === 'apresentacao' ? t('app.presentation') : t('app.history')} {on ? `· ${t('mobile.presenting')}` : ''}
                 </button>
               )
             })}

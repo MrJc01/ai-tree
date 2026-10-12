@@ -3,7 +3,7 @@ import { SKILLS } from '../data'
 import { FAQ, TERMS } from '../guide/faq'
 import { describeHexagon } from '../guide/hexGuide'
 import { STATUS_DETAILS, TIER_DETAILS, statusExamples, tierExamples } from '../guide/levels'
-import { TIER_LABELS, STATUS_LABELS } from '../lib/skillMeta'
+import { tierLabel, statusLabel } from '../lib/skillMeta'
 import { MATURITY_STATUSES, type Tier } from '../types/skill'
 
 const ORIGINALS = SKILLS.filter((s) => !s.isDuplicateInstance)
@@ -13,7 +13,7 @@ describe('patamares T1 a T5', () => {
   it('há uma explicação para cada patamar, sem repetir nenhum', () => {
     expect(TIER_DETAILS.map((t) => t.tier).sort()).toEqual(TIERS)
     for (const t of TIER_DETAILS) {
-      expect(t.name, `T${t.tier}`).toBe(TIER_LABELS[t.tier])
+      expect(t.name, `T${t.tier}`).toBe(tierLabel(t.tier))
       expect(t.explanation.length, `T${t.tier} explicação`).toBeGreaterThanOrEqual(2)
       expect(t.criteria.length, `T${t.tier} critérios`).toBeGreaterThanOrEqual(2)
       expect(t.position.length, `T${t.tier} posição`).toBeGreaterThan(40)
@@ -50,7 +50,7 @@ describe('maturidade', () => {
   it('há uma explicação para cada uma das quatro maturidades', () => {
     expect(STATUS_DETAILS.map((m) => m.status).sort()).toEqual([...MATURITY_STATUSES].sort())
     for (const m of STATUS_DETAILS) {
-      expect(m.name, m.status).toBe(STATUS_LABELS[m.status])
+      expect(m.name, m.status).toBe(statusLabel(m.status))
       expect(m.explanation.length, m.status).toBeGreaterThanOrEqual(2)
       expect(m.recognize.length, m.status).toBeGreaterThanOrEqual(2)
     }

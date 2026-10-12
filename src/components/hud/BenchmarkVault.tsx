@@ -4,6 +4,7 @@ import { sourceHost } from '../../lib/graph'
 import { useAppStore } from '../../store/appStore'
 import type { Benchmark } from '../../types/skill'
 import { Badge } from '../drawer/shared'
+import { t } from '../../i18n'
 
 /**
  * Hub de benchmarks. Clicar em um benchmark destaca na grade as habilidades que ele avalia.
@@ -24,19 +25,19 @@ export function BenchmarkVault() {
         onClick={() => setOpen((v) => !v)}
         className="rounded-md border border-(--t-border) bg-(--t-surface) px-3 py-1.5 font-mono text-[10px] tracking-[0.14em] text-(--t-text-muted) uppercase backdrop-blur-md hover:text-(--t-text)"
       >
-        Benchmarks {active ? `· ${active.name}` : ''}
+        {t('vault.button')} {active ? `· ${active.name}` : ''}
       </button>
 
       {open && (
         <section
-          aria-label="Benchmark Vault"
+          aria-label={t('vault.title')}
           className="max-h-[70vh] w-[min(380px,calc(100vw-2rem))] space-y-3 overflow-y-auto rounded-xl border border-(--t-border) bg-(--t-surface) p-3 backdrop-blur-md"
         >
           <div className="flex items-center justify-between">
-            <h2 className="text-[13px] font-semibold">Benchmark Vault</h2>
+            <h2 className="text-[13px] font-semibold">{t('vault.title')}</h2>
             {active && (
               <button type="button" onClick={() => setBenchmark(null)} className="font-mono text-[10px] text-(--t-text-muted) underline-offset-2 hover:underline">
-                Limpar destaque
+                {t('vault.clear')}
               </button>
             )}
           </div>
@@ -69,7 +70,7 @@ function BenchmarkRow({ benchmark: b, active, onToggle }: { benchmark: Benchmark
         <span className="flex items-center gap-2">
           <span className="text-[13px] font-medium">{b.name}</span>
           <Badge>{b.year}</Badge>
-          <Badge>{b.measures.length} hab.</Badge>
+          <Badge>{t('vault.habs', { count: b.measures.length })}</Badge>
         </span>
         <span className="mt-1 block text-[12px] text-(--t-text-muted)">{b.description}</span>
       </button>
@@ -77,23 +78,23 @@ function BenchmarkRow({ benchmark: b, active, onToggle }: { benchmark: Benchmark
       {current ? (
         <div className="mt-2 rounded-md border border-(--t-border) p-2 text-[11px]">
           <p>
-            <span className="text-(--t-text-muted)">Placar atual: </span>
+            <span className="text-(--t-text-muted)">{t('vault.currentScore')}</span>
             <span className="font-mono font-medium">{current.value}</span>
           </p>
           <p className="text-(--t-text-muted)">{current.leader}</p>
           <p className="mt-1 font-mono text-[10px] text-(--t-text-muted)">
-            Lido em {formatDate(current.checkedAt)}
-            {current.sourceDate && ` · dado da fonte de ${formatDate(current.sourceDate)}`}
+            {t('vault.readAt', { date: formatDate(current.checkedAt) })}
+            {current.sourceDate && ` · ${t('vault.sourceDate', { date: formatDate(current.sourceDate) })}`}
           </p>
           {current.note && <p className="mt-1 text-(--t-text-muted)">{current.note}</p>}
         </div>
       ) : (
-        <p className="mt-2 text-[11px] text-(--t-text-muted)">Sem placar atual verificado nesta leitura.</p>
+        <p className="mt-2 text-[11px] text-(--t-text-muted)">{t('vault.noScore')}</p>
       )}
 
       {b.reference && (
         <p className="mt-2 text-[11px]">
-          <span className="text-(--t-text-muted)">Referência publicada: </span>
+          <span className="text-(--t-text-muted)">{t('vault.reference')}</span>
           <span className="font-mono">{b.reference.value}</span>
           <span className="block text-(--t-text-muted)">{b.reference.setting}</span>
         </p>
@@ -101,15 +102,15 @@ function BenchmarkRow({ benchmark: b, active, onToggle }: { benchmark: Benchmark
 
       <p className="mt-2 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[10px]">
         <a href={b.paperUrl} target="_blank" rel="noreferrer noopener" className="underline-offset-2 hover:underline">
-          Paper · {sourceHost(b.paperUrl)}
+          {t('vault.paper')} · {sourceHost(b.paperUrl)}
         </a>
         {current && current.sourceUrl !== b.officialUrl && (
           <a href={current.sourceUrl} target="_blank" rel="noreferrer noopener" className="underline-offset-2 hover:underline">
-            Fonte da leitura · {sourceHost(current.sourceUrl)}
+            {t('vault.readSource')} · {sourceHost(current.sourceUrl)}
           </a>
         )}
         <a href={b.officialUrl} target="_blank" rel="noreferrer noopener" className="underline-offset-2 hover:underline">
-          Placar oficial · {sourceHost(b.officialUrl)}
+          {t('vault.officialScore')} · {sourceHost(b.officialUrl)}
         </a>
       </p>
     </li>

@@ -1,7 +1,8 @@
 import { BENCHMARKS, MODELS, SKILL_BY_ID } from '../data'
 import { getYear } from '../lib/graph'
-import { DOMAIN_LABELS, getEntityKey, STATUS_LABELS, TIER_LABELS } from '../lib/skillMeta'
+import { domainLabel, getEntityKey, statusLabel, tierLabel } from '../lib/skillMeta'
 import type { SkillNode } from '../types/skill'
+import { t } from '../i18n'
 
 /**
  * Explicação do hexágono aberto. Fala só desta habilidade: o que cada parte dele significa para ela
@@ -35,88 +36,62 @@ export function describeHexagon(skill: SkillNode): HexGuide {
 
   const visual: HexItem[] = [
     {
-      term: 'Ponto colorido',
-      text: isReplica
-        ? `É a cor de assinatura de ${skill.name}. Esta é uma réplica: a mesma cor aparece na habilidade original.`
-        : `É a cor de assinatura de ${skill.name}. É a identidade desta habilidade: ela aparece com essa cor em qualquer lugar da árvore.`,
+      term: t('hexg.dotTerm'),
+      text: isReplica ? t('hexg.dotReplica', { name: skill.name }) : t('hexg.dotOriginal', { name: skill.name }),
     },
     {
-      term: `Patamar T${skill.tier}`,
-      text: `Este hexágono está na linha T${skill.tier} (${TIER_LABELS[skill.tier]}), na área ${DOMAIN_LABELS[skill.domain]}.`,
+      term: t('hexg.tierTerm', { tier: skill.tier }),
+      text: t('hexg.tierText', { tier: skill.tier, label: tierLabel(skill.tier), domain: domainLabel(skill.domain) }),
     },
     {
-      term: `Selo "${STATUS_LABELS[skill.metadata.status]}"`,
-      text: `A maturidade desta habilidade, escrita na base do hexágono.`,
+      term: t('hexg.badgeTerm', { status: statusLabel(skill.metadata.status) }),
+      text: t('hexg.badgeText'),
     },
     {
-      term: 'Contorno',
-      text: isReplica
-        ? 'Tracejado: esta é uma réplica. Os dados completos ficam na habilidade original.'
-        : 'Contínuo: esta é a instância original da habilidade.',
+      term: t('hexg.outlineTerm'),
+      text: isReplica ? t('hexg.outlineReplica') : t('hexg.outlineOriginal'),
     },
+    { term: t('hexg.blueTerm'), text: t('hexg.blueText', { name: skill.name }) },
+    { term: t('legend.brackets'), text: t('legend.bracketsText') },
     {
-      term: 'Borda azul',
-      text: `Aparece enquanto ${skill.name} está em foco: aberta na gaveta, ou explicada no passo da apresentação.`,
-    },
-    {
-      term: 'Cantoneiras',
-      text: 'Aparecem com o mouse sobre o hexágono, ou quando um filtro ou benchmark destaca a habilidade.',
-    },
-    {
-      term: 'Névoa',
-      text: Number.isNaN(year)
-        ? 'Sem data cadastrada.'
-        : `${skill.name} só aparece com o Time Slider em ${year} ou depois. Antes disso, fica em névoa.`,
+      term: t('legend.fog'),
+      text: Number.isNaN(year) ? t('hexg.noDate') : t('hexg.fogText', { name: skill.name, year }),
     },
   ]
   if (models.length) {
-    visual.push({
-      term: 'Órbitas',
-      text: `Modelos ligados a esta habilidade: ${models.join(', ')}. Eles aparecem em volta do hexágono com o botão Modelos.`,
-    })
+    visual.push({ term: t('hexg.orbitTerm'), text: t('hexg.orbitText', { models: models.join(', ') }) })
   }
 
   const steps: HexItem[] = [
     {
-      term: 'De onde vem',
-      text: prereqs.length
-        ? `Aba Grafo: os pré-requisitos são ${prereqs.join(', ')}. Clique em um para abri-lo.`
-        : `Aba Grafo: ${skill.name} não depende de outra habilidade da árvore. É uma base.`,
+      term: t('hexg.fromTerm'),
+      text: prereqs.length ? t('hexg.fromText', { list: prereqs.join(', ') }) : t('hexg.fromBase', { name: skill.name }),
     },
     {
-      term: 'Para onde vai',
-      text: unlocks.length
-        ? `Aba Grafo: ela desbloqueia ${unlocks.join(', ')}. Clique em um para seguir a cadeia.`
-        : `Ainda não desbloqueia outra habilidade desta árvore.`,
+      term: t('hexg.toTerm'),
+      text: unlocks.length ? t('hexg.toText', { list: unlocks.join(', ') }) : t('hexg.toNone'),
     },
     {
-      term: 'Fontes',
+      term: t('hexg.sourcesTerm'),
       text: sources
-        ? `Aba Fontes & Benchmarks: ${sources} fonte${sources > 1 ? 's' : ''}. Clique em uma para abrir a folha com o resumo e o link do original.`
-        : 'Esta habilidade não tem fontes cadastradas.',
+        ? sources === 1
+          ? t('hexg.sourcesOne')
+          : t('hexg.sourcesMany', { count: sources })
+        : t('hexg.sourcesNone'),
     },
     {
-      term: 'Como funciona',
-      text: skill.content.mermaidDiagram
-        ? 'Aba Fluxograma: o diagrama de como a técnica funciona.'
-        : 'Esta habilidade não tem fluxograma cadastrado.',
+      term: t('hexg.howTerm'),
+      text: skill.content.mermaidDiagram ? t('hexg.howText') : t('hexg.howNone'),
     },
     {
-      term: 'Benchmarks',
-      text: benchmarks.length
-        ? `Aba Fontes & Benchmarks: ela é medida por ${benchmarks.join(', ')}. Clique em um benchmark para destacar as habilidades que ele mede.`
-        : 'Nenhum benchmark da árvore mede esta habilidade diretamente.',
+      term: t('hexg.benchTerm'),
+      text: benchmarks.length ? t('hexg.benchText', { list: benchmarks.join(', ') }) : t('hexg.benchNone'),
     },
     {
-      term: 'No tempo',
-      text: Number.isNaN(year)
-        ? 'Sem data para usar no Time Slider.'
-        : `Para ver ${skill.name} no mapa, arraste o Time Slider até ${year}.`,
+      term: t('hexg.timeTerm'),
+      text: Number.isNaN(year) ? t('hexg.timeNone') : t('hexg.timeText', { name: skill.name, year }),
     },
-    {
-      term: 'Compartilhar',
-      text: `Copie o endereço da página: ele termina em #habilidade=${entity}, e abre esta habilidade para quem recebe.`,
-    },
+    { term: t('hexg.shareTerm'), text: t('hexg.shareText', { entity }) },
   ]
 
   return { visual, steps }

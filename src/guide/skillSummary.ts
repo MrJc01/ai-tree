@@ -1,6 +1,7 @@
 import { BENCHMARKS, MODELS, SKILL_BY_ID } from '../data'
-import { DOMAIN_LABELS, getEntityKey, STATUS_LABELS, TIER_LABELS } from '../lib/skillMeta'
+import { domainLabel, getEntityKey, statusLabel, tierLabel } from '../lib/skillMeta'
 import type { SkillNode } from '../types/skill'
+import { t } from '../i18n'
 
 export interface SkillFact {
   label: string
@@ -34,28 +35,38 @@ export function summarizeSkill(skill: SkillNode): SkillSummary {
   const benchmarks = BENCHMARKS.filter((b) => b.measures.includes(entity)).map((b) => b.name)
 
   const facts: SkillFact[] = [
-    { label: 'Área', value: DOMAIN_LABELS[skill.domain] },
-    { label: 'Patamar', value: `T${skill.tier} · ${TIER_LABELS[skill.tier]}` },
-    { label: 'Maturidade', value: STATUS_LABELS[skill.metadata.status] },
-    { label: 'Introduzida em', value: skill.metadata.dateIntroduced },
-    { label: 'Pré-requisitos', value: prereqs.length ? `${prereqs.length}: ${prereqs.join(', ')}` : 'nenhum (é uma base)' },
-    { label: 'Desbloqueia', value: unlocks.length ? `${unlocks.length}: ${unlocks.join(', ')}` : 'nada ainda na árvore' },
-    { label: 'Fontes', value: String(skill.content.sources.length) },
+    { label: t('summary.area'), value: domainLabel(skill.domain) },
+    { label: t('summary.tier'), value: `T${skill.tier} · ${tierLabel(skill.tier)}` },
+    { label: t('summary.status'), value: statusLabel(skill.metadata.status) },
+    { label: t('summary.introduced'), value: skill.metadata.dateIntroduced },
+    {
+      label: t('summary.prereqs'),
+      value: prereqs.length ? `${prereqs.length}: ${prereqs.join(', ')}` : t('summary.noneBase'),
+    },
+    {
+      label: t('summary.unlocks'),
+      value: unlocks.length ? `${unlocks.length}: ${unlocks.join(', ')}` : t('summary.noneUnlocks'),
+    },
+    { label: t('summary.sources'), value: String(skill.content.sources.length) },
   ]
-  if (models.length) facts.push({ label: 'Modelos', value: models.join(', ') })
-  if (benchmarks.length) facts.push({ label: 'Benchmarks', value: benchmarks.join(', ') })
+  if (models.length) facts.push({ label: t('summary.models'), value: models.join(', ') })
+  if (benchmarks.length) facts.push({ label: t('summary.benchmarks'), value: benchmarks.join(', ') })
 
   const base = prereqs.length
-    ? `Para existir, ela depende de ${prereqs.length === 1 ? 'uma habilidade' : `${prereqs.length} habilidades`}: ${prereqs.join(', ')}.`
-    : 'Ela é uma base: não depende de outra habilidade da árvore.'
+    ? prereqs.length === 1
+      ? t('summary.dependsOne', { list: prereqs.join(', ') })
+      : t('summary.dependsMany', { count: prereqs.length, list: prereqs.join(', ') })
+    : t('summary.base')
   const next = unlocks.length
-    ? `Ela abre caminho para ${unlocks.length === 1 ? 'uma habilidade' : `${unlocks.length} habilidades`}: ${unlocks.join(', ')}.`
-    : 'Ainda não desbloqueia outra habilidade desta árvore.'
+    ? unlocks.length === 1
+      ? t('summary.opensOne', { list: unlocks.join(', ') })
+      : t('summary.opensMany', { count: unlocks.length, list: unlocks.join(', ') })
+    : t('summary.opensNone')
   const paragraph = [
-    `${skill.name} está no patamar T${skill.tier}, ${TIER_LABELS[skill.tier]}, na área ${DOMAIN_LABELS[skill.domain]}.`,
+    t('summary.tierLine', { name: skill.name, tier: skill.tier, label: tierLabel(skill.tier), domain: domainLabel(skill.domain) }),
     base,
     next,
-    `A maturidade desta habilidade é ${STATUS_LABELS[skill.metadata.status]}. O que cada maturidade significa está no FAQ.`,
+    t('summary.maturity', { status: statusLabel(skill.metadata.status) }),
   ].join(' ')
 
   return {
@@ -63,7 +74,7 @@ export function summarizeSkill(skill: SkillNode): SkillSummary {
     facts,
     paragraph,
     replicaNote: original
-      ? `Esta é uma réplica. Os dados completos estão na habilidade original, "${original.name}", na área ${DOMAIN_LABELS[original.domain]}.`
+      ? t('summary.replica', { original: original.name, domain: domainLabel(original.domain) })
       : undefined,
   }
 }
