@@ -58,12 +58,12 @@ describe('navegação por setas', () => {
 describe('apresentação salva na sessão', () => {
   it('lê um estado válido sem mudar nada', async () => {
     const { parsePresentation } = await import('../store/appStore')
-    expect(parsePresentation('{"active":true,"index":4,"mode":"historia"}')).toEqual({ active: true, index: 4, mode: 'historia' })
+    expect(parsePresentation('{"active":true,"index":4,"mode":"historia"}')).toEqual({ active: true, index: 4, mode: 'historia', trail: [] })
   })
 
   it('volta ao padrão com dado ausente, JSON quebrado ou campos inválidos', async () => {
     const { parsePresentation } = await import('../store/appStore')
-    const padrao = { active: false, index: 0, mode: 'apresentacao' }
+    const padrao = { active: false, index: 0, mode: 'apresentacao', trail: [] }
     expect(parsePresentation(null)).toEqual(padrao)
     expect(parsePresentation('{quebrado')).toEqual(padrao)
     expect(parsePresentation('{"active":"sim","index":2}')).toEqual(padrao)
@@ -74,5 +74,12 @@ describe('apresentação salva na sessão', () => {
     expect(parsePresentation('{"active":true,"index":999,"mode":"apresentacao"}').index).toBe(16)
     expect(parsePresentation('{"active":true,"index":-5,"mode":"apresentacao"}').index).toBe(0)
     expect(parsePresentation('{"active":true,"index":2,"mode":"qualquer"}').mode).toBe('apresentacao')
+  })
+
+  it('a pilha de passos vistos é lida, filtrada e limitada ao roteiro', async () => {
+    const { parsePresentation } = await import('../store/appStore')
+    const p = parsePresentation('{"active":true,"index":3,"mode":"apresentacao","trail":[0,"x",2,999,-4]}')
+    expect(p.trail).toEqual([0, 2, 16, 0])
+    expect(parsePresentation('{"active":true,"index":3,"mode":"apresentacao","trail":"nada"}').trail).toEqual([])
   })
 })

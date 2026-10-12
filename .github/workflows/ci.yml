@@ -14,9 +14,32 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Lint
+        run: npm run lint
       - name: Tipos
         run: npm run typecheck
       - name: Testes
         run: npm test
       - name: Build
         run: npm run build
+
+  ponta_a_ponta:
+    runs-on: ubuntu-latest
+    needs: checar
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Navegador de teste
+        run: npx playwright install --with-deps chromium
+      - name: Ponta a ponta (desktop e celular)
+        run: npm run e2e
+      - name: Relatório de falhas
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: test-results/

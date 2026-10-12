@@ -1,7 +1,9 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Undo2, X } from 'lucide-react'
+import { MOBILE_PRESENTATION_SHARE } from '../../lib/geometry'
 import { isTyping } from '../../lib/dom'
+import { DESKTOP_QUERY, useMedia } from '../../lib/useMedia'
 import { runPresentationStep } from '../../presentation/runner'
 import { PRESENTATION_MODES, stepsOf } from '../../presentation/modes'
 import { useAppStore } from '../../store/appStore'
@@ -14,6 +16,7 @@ const PANEL_WIDTH = 360
  */
 export function PresentationPanel() {
   const active = useAppStore((s) => s.presentation.active)
+  const desktop = useMedia(DESKTOP_QUERY)
   const index = useAppStore((s) => s.presentation.index)
   const mode = useAppStore((s) => s.presentation.mode)
   const steps = stepsOf(mode)
@@ -21,6 +24,9 @@ export function PresentationPanel() {
   const nextStep = useAppStore((s) => s.nextStep)
   const prevStep = useAppStore((s) => s.prevStep)
   const goToStep = useAppStore((s) => s.goToStep)
+  const trail = useAppStore((s) => s.presentation.trail)
+  const backToLastSeen = useAppStore((s) => s.backToLastSeen)
+  const lastSeen = trail.length > 0 ? stepsOf(mode)[trail[trail.length - 1]] : undefined
   const stopPresentation = useAppStore((s) => s.stopPresentation)
 
   // Cada passo leva a tela ao estado que o texto descreve, inclusive ao abrir a apresentação.
@@ -54,12 +60,14 @@ export function PresentationPanel() {
       aria-hidden={!active}
       inert={!active}
       initial={false}
-      animate={{ width: active ? PANEL_WIDTH : 0 }}
+      animate={desktop ? { width: active ? PANEL_WIDTH : 0 } : { height: active ? `${MOBILE_PRESENTATION_SHARE * 100}%` : 0 }}
       transition={{ type: 'spring', stiffness: 300, damping: 34 }}
-      className="relative h-full shrink-0 overflow-hidden bg-(--t-surface) backdrop-blur-md"
-      style={{ borderRight: active ? '1px solid var(--t-border)' : 'none' }}
+      className={`overflow-hidden bg-(--t-surface) backdrop-blur-md ${
+        desktop ? 'relative h-full shrink-0' : 'absolute inset-x-0 bottom-0 z-40 rounded-t-xl border-t border-(--t-border)'
+      }`}
+      style={{ borderRight: desktop && active ? '1px solid var(--t-border)' : 'none' }}
     >
-      <div style={{ width: PANEL_WIDTH }} className="flex h-full flex-col">
+      <div style={desktop ? { width: PANEL_WIDTH } : undefined} className="flex h-full w-full flex-col">
         <div className="flex items-center justify-between border-b border-(--t-border) px-5 py-3">
           <span className="font-mono text-[10px] tracking-[0.16em] text-(--t-text-muted) uppercase">
             {PRESENTATION_MODES[mode].title} · passo {index + 1} de {total}
@@ -125,7 +133,19 @@ export function PresentationPanel() {
           </section>
         </div>
 
-        <div className="flex items-center justify-between gap-2 border-t border-(--t-border) px-4 py-3">
+        <div className="border-t border-(--t-border) px-4 pt-3">
+          <button
+            type="button"
+            onClick={backToLastSeen}
+            disabled={!lastSeen}
+            title={lastSeen ? `Volta para: ${lastSeen.title}` : 'Ainda não há passo anterior visto'}
+            className="inline-flex max-w-full items-center gap-1.5 text-[11px] text-(--t-text-muted) transition-colors hover:text-(--t-text) disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            <Undo2 size={12} className="shrink-0" />
+            <span className="truncate">{lastSeen ? `Voltar ao último visto: ${lastSeen.title}` : 'Voltar ao último visto'}</span>
+          </button>
+        </div>
+        <div className="flex items-center justify-between gap-2 px-4 py-3">
           <button
             type="button"
             onClick={prevStep}

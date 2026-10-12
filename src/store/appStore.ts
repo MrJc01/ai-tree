@@ -34,10 +34,13 @@ export interface PresentationState {
   active: boolean
   index: number
   mode: PresentationMode
+  /** Passos já vistos, do mais antigo ao mais recente, sem o atual. "Voltar ao último visto" usa a última entrada. */
+  trail: number[]
 }
 
 const PRESENTATION_KEY = 'ai-tech-tree:presentation'
-const DEFAULT_PRESENTATION: PresentationState = { active: false, index: 0, mode: 'apresentacao' }
+const TRAIL_LIMIT = 50
+const DEFAULT_PRESENTATION: PresentationState = { active: false, index: 0, mode: 'apresentacao', trail: [] }
 
 /**
  * Lê o estado da apresentação salvo na sessão. Valida o que veio: modo desconhecido, índice fora do roteiro
@@ -50,7 +53,11 @@ export function parsePresentation(raw: string | null): PresentationState {
     const mode: PresentationMode = p.mode === 'historia' ? 'historia' : 'apresentacao'
     if (typeof p.index !== 'number' || typeof p.active !== 'boolean') return DEFAULT_PRESENTATION
     const last = stepsOf(mode).length - 1
-    return { active: p.active, mode, index: Math.min(last, Math.max(0, Math.trunc(p.index))) }
+    const clamp = (n: number) => Math.min(last, Math.max(0, Math.trunc(n)))
+    const trail = Array.isArray(p.trail)
+      ? p.trail.filter((n): n is number => typeof n === 'number' && Number.isFinite(n)).map(clamp).slice(-TRAIL_LIMIT)
+      : []
+    return { active: p.active, mode, index: clamp(p.index), trail }
   } catch {
     return DEFAULT_PRESENTATION
   }
@@ -124,6 +131,13 @@ function clampFor(mode: PresentationMode, i: number): number {
   return Math.min(stepsOf(mode).length - 1, Math.max(0, i))
 }
 
+/** Vai para outro passo e guarda o atual na pilha de vistos. Ficar no mesmo passo não gera entrada. */
+function moveTo(p: PresentationState, target: number, active: boolean): PresentationState {
+  const next = clampFor(p.mode, target)
+  if (next === p.index) return { ...p, active }
+  return { ...p, active, index: next, trail: [...p.trail, p.index].slice(-TRAIL_LIMIT) }
+}
+
 interface AppState {
   focus: FocusRequest | null
   requestFocus: (id: string) => void
@@ -143,6 +157,7 @@ interface AppState {
   goToStep: (index: number) => void
   nextStep: () => void
   prevStep: () => void
+  backToLastSeen: () => void
 
   theme: Theme
   setTheme: (theme: Theme) => void
@@ -189,19 +204,19 @@ export const useAppStore = create<AppState>((set) => ({
   presentation: loadPresentation(),
   presentationFocus: null,
   setPresentationFocus: (id) => set({ presentationFocus: id }),
-  startPresentation: (mode = 'apresentacao') => set({ presentation: { active: true, index: 0, mode } }),
+  startPresentation: (mode = 'apresentacao') => set({ presentation: { active: true, index: 0, mode, trail: [] } }),
   stopPresentation: () =>
     set((s) => ({ presentation: { ...s.presentation, active: false }, presentationFocus: null })),
-  goToStep: (index) =>
-    set((s) => ({ presentation: { ...s.presentation, active: true, index: clampFor(s.presentation.mode, index) } })),
-  nextStep: () =>
-    set((s) => ({
-      presentation: { ...s.presentation, index: clampFor(s.presentation.mode, s.presentation.index + 1) },
-    })),
-  prevStep: () =>
-    set((s) => ({
-      presentation: { ...s.presentation, index: clampFor(s.presentation.mode, s.presentation.index - 1) },
-    })),
+  goToStep: (index) => set((s) => ({ presentation: moveTo(s.presentation, index, true) })),
+  nextStep: () => set((s) => ({ presentation: moveTo(s.presentation, s.presentation.index + 1, s.presentation.active) })),
+  prevStep: () => set((s) => ({ presentation: moveTo(s.presentation, s.presentation.index - 1, s.presentation.active) })),
+  backToLastSeen: () =>
+    set((s) => {
+      const { trail, mode } = s.presentation
+      if (trail.length === 0) return s
+      const previous = trail[trail.length - 1]
+      return { presentation: { ...s.presentation, index: clampFor(mode, previous), trail: trail.slice(0, -1) } }
+    }),
 
   theme: getStoredTheme(),
   setTheme: (theme) => {

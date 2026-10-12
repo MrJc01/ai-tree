@@ -61,3 +61,24 @@ export const DRAWER_MAX_WIDTH = 620
 export const DRAWER_MAX_SHARE = 0.6
 export const drawerWidthIn = (canvasWidth: number): number =>
   Math.min(DRAWER_MAX_WIDTH, canvasWidth * DRAWER_MAX_SHARE)
+
+/** No celular, a gaveta sobe por baixo com essa fração da altura, e o painel da apresentação com a outra. */
+export const MOBILE_DRAWER_SHARE = 0.6
+export const MOBILE_PRESENTATION_SHARE = 0.4
+
+/**
+ * Parte do canvas coberta pela gaveta e pelo painel da apresentação. No desktop, cobrem a direita (a gaveta)
+ * e a esquerda já foi descontada do canvas. No celular, cobrem a parte de baixo; a gaveta tem prioridade.
+ */
+export function coveredArea(args: {
+  desktop: boolean
+  width: number
+  height: number
+  drawerOpen: boolean
+  presenting: boolean
+}): { axis: 'x' | 'y'; px: number } {
+  if (args.desktop) return { axis: 'x', px: args.drawerOpen ? drawerWidthIn(args.width) : 0 }
+  if (args.drawerOpen) return { axis: 'y', px: args.height * MOBILE_DRAWER_SHARE }
+  if (args.presenting) return { axis: 'y', px: args.height * MOBILE_PRESENTATION_SHARE }
+  return { axis: 'y', px: 0 }
+}

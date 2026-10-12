@@ -71,6 +71,21 @@ export const BENCHMARKS: Benchmark[] = [
     },
   },
   {
+    id: 'arc-agi-3',
+    name: 'ARC-AGI-3',
+    description:
+      'Ambientes interativos por turnos, sem instruções nem regras: o agente descobre o objetivo agindo. A pontuação compara as ações dele com as de um humano.',
+    year: 2026,
+    measures: ['react', 'generative-agents', 'reasoning-rl'],
+    paperUrl: 'https://arcprize.org/blog/arc-agi-3-launch',
+    officialUrl: 'https://arcprize.org/leaderboard',
+    reference: {
+      value: 'Humanos: 100%. IA de fronteira: 0,51%',
+      setting: 'Lançamento, 25/03/2026. Pontuação RHAE: a eficiência de ações em relação a um humano',
+      source: 'https://arcprize.org/blog/arc-agi-3-launch',
+    },
+  },
+  {
     id: 'arena-elo',
     name: 'Arena (Elo)',
     description: 'Ranking por preferência humana em comparações pareadas, com pontuação Elo.',

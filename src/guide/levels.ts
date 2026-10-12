@@ -16,6 +16,8 @@ export interface TierDetail {
   criteria: string[]
   /** Por que ele fica nessa posição na árvore. */
   position: string
+  /** Leituras de referência para o patamar, quando há um texto de base publicado. */
+  references?: string[]
 }
 
 export interface StatusDetail {
@@ -82,6 +84,9 @@ export const TIER_DETAILS: TierDetail[] = [
       'Ainda com limitações claras, e com debate público sobre o quanto está de fato próximo da AGI.',
     ],
     position: 'Fica acima do T3 porque combina as capacidades anteriores em sistemas gerais. É o trecho mais disputado da árvore.',
+    references: [
+      'Morris et al., "Levels of AGI for Operationalizing Progress on the Path to AGI" (arXiv:2311.02462, 2023): propõe níveis de desempenho para a AGI, do emergente ao sobre-humano.',
+    ],
   },
   {
     tier: 5,
@@ -96,6 +101,10 @@ export const TIER_DETAILS: TierDetail[] = [
       'Discutido por pesquisadores de segurança e de governança, não por produtos.',
     ],
     position: 'Fica no topo: depende do que está embaixo, mas não há ainda um caminho técnico consolidado até ele.',
+    references: [
+      'Good, "Speculations Concerning the First Ultraintelligent Machine" (1965): a ideia de que uma máquina capaz de melhorar a si mesma leva a uma explosão de inteligência.',
+      'Bostrom, "Superintelligence: Paths, Dangers, Strategies" (Oxford University Press, 2014): o estudo clássico dos caminhos, dos riscos e do controle da superinteligência.',
+    ],
   },
 ]
 

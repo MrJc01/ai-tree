@@ -14,3 +14,20 @@ afterEach(() => {
   cleanup()
   localStorage.clear()
 })
+
+// O hook de tamanho (useMedia) consulta matchMedia, que o jsdom não tem. Consultas de min-width seguem a largura
+// da janela do jsdom (1024px por padrão, ou seja, desktop); as demais não batem.
+window.matchMedia = (query: string) => {
+  const min = /min-width:\s*(\d+)px/.exec(query)
+  const matches = min ? window.innerWidth >= Number(min[1]) : false
+  return {
+    matches,
+    media: query,
+    onchange: null,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    addListener: () => {},
+    removeListener: () => {},
+    dispatchEvent: () => false,
+  } as unknown as MediaQueryList
+}

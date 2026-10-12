@@ -180,6 +180,7 @@ function tierFaq(): FaqItem[] {
         `Como reconhecer: ${t.criteria.join(' ')}`,
         `Posição na árvore: ${t.position}`,
         `${ex.count} habilidades. Exemplos: ${ex.examples.join(', ')}.`,
+        ...(t.references ?? []).map((r) => `Leitura: ${r}`),
       ],
     }
   })

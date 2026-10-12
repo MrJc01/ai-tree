@@ -1,12 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import App from '../App'
+import { toPng } from 'html-to-image'
 import { SkillDrawer } from '../components/drawer/SkillDrawer'
 import { TIMELINE_MAX, useAppStore } from '../store/appStore'
 import { PRESENTATION_STEPS } from '../presentation/steps'
 
 // Diagramas Mermaid não rodam no jsdom. O teste só precisa saber que a aba existe.
 vi.mock('mermaid', () => ({ default: { initialize: () => {}, render: async () => ({ svg: '<svg/>' }) } }))
+
+// A exportação lê o DOM renderizado, que o jsdom não desenha. O teste só confere o pedido e o nome do arquivo.
+vi.mock('html-to-image', () => ({
+  toPng: vi.fn(async () => 'data:image/png;base64,AA'),
+  toSvg: vi.fn(async () => 'data:image/svg+xml;base64,AA'),
+}))
 
 const initial = useAppStore.getState()
 
@@ -276,3 +283,34 @@ describe('link direto ao carregar', () => {
     window.history.replaceState(null, '', '/')
   })
 })
+
+describe('exportar a vista', () => {
+  it('o menu oferece PNG e SVG, e o PNG sai com a data no nome do arquivo', async () => {
+    const downloads: string[] = []
+    const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (this: HTMLAnchorElement) {
+      downloads.push(this.download)
+    })
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Exportar' }))
+    const menu = screen.getByRole('menu', { name: 'Formato da exportação' })
+    expect(within(menu).getAllByRole('menuitem')).toHaveLength(2)
+    fireEvent.click(within(menu).getByRole('menuitem', { name: /PNG/ }))
+    await waitFor(() => expect(toPng).toHaveBeenCalled())
+    await waitFor(() => expect(downloads[0]).toMatch(/^ai-tree-\d{4}-\d{2}-\d{2}\.png$/))
+    click.mockRestore()
+  })
+})
+
+describe('menu do cabeçalho no celular', () => {
+  it('o menu reúne as ações, e Padrão volta o layout pelo menu', () => {
+    useAppStore.getState().setNodePosition('llm', { x: 1, y: 2 })
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
+    const menu = screen.getByRole('menu', { name: 'Menu' })
+    expect(within(menu).getAllByRole('menuitem').length).toBeGreaterThanOrEqual(8)
+    fireEvent.click(within(menu).getByRole('menuitem', { name: /Padrão/ }))
+    expect(useAppStore.getState().positions).toEqual({})
+    expect(screen.queryByRole('menu', { name: 'Menu' })).not.toBeInTheDocument()
+  })
+})
+

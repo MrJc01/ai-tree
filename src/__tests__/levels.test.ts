@@ -37,6 +37,16 @@ describe('patamares T1 a T5', () => {
 })
 
 describe('maturidade', () => {
+  it('T4 e T5 trazem leituras de referência, e o FAQ as mostra', async () => {
+    const { FAQ } = await import('../guide/faq')
+    for (const tier of [4, 5] as const) {
+      const detail = TIER_DETAILS.find((t) => t.tier === tier)
+      expect(detail?.references?.length ?? 0, `T${tier}`).toBeGreaterThan(0)
+      const item = FAQ.find((f) => f.id === `patamar-t${tier}`)
+      expect(item?.answer.join(' '), `T${tier} no FAQ`).toContain('Leitura: ')
+    }
+  })
+
   it('há uma explicação para cada uma das quatro maturidades', () => {
     expect(STATUS_DETAILS.map((m) => m.status).sort()).toEqual([...MATURITY_STATUSES].sort())
     for (const m of STATUS_DETAILS) {

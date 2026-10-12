@@ -12,6 +12,9 @@ import { PRESENTATION_MODES } from './presentation/modes'
 import { BenchmarkVault } from './components/hud/BenchmarkVault'
 import { FilterBar } from './components/hud/FilterBar'
 import { ArrangeMenu } from './components/hud/ArrangeMenu'
+import { ExportMenu } from './components/hud/ExportMenu'
+import { MobileMenu } from './components/hud/MobileMenu'
+import { DESKTOP_QUERY, useMedia } from './lib/useMedia'
 import { FaqPanel } from './components/faq/FaqPanel'
 import { TimeSlider } from './components/hud/TimeSlider'
 import { useAppStore } from './store/appStore'
@@ -22,7 +25,7 @@ const iconButton =
   'inline-flex size-8 items-center justify-center rounded-md border border-(--t-border) text-(--t-text-muted) transition-colors hover:text-(--t-text)'
 
 const toolButton =
-  'hidden h-8 items-center rounded-md border border-(--t-border) px-3 font-mono text-[10px] tracking-[0.12em] text-(--t-text-muted) uppercase transition-colors hover:text-(--t-text) md:inline-flex'
+  'hidden h-8 items-center whitespace-nowrap rounded-md border border-(--t-border) px-3 font-mono text-[10px] tracking-[0.12em] text-(--t-text-muted) uppercase transition-colors hover:text-(--t-text) md:inline-flex'
 
 export default function App() {
   const theme = useAppStore((s) => s.theme)
@@ -32,10 +35,14 @@ export default function App() {
   const resetLayout = useAppStore((s) => s.resetLayout)
   const faqOpen = useAppStore((s) => s.faqOpen)
   const drawerOpen = useAppStore((s) => s.drawer.length > 0)
+  const desktop = useMedia(DESKTOP_QUERY)
   // Com a gaveta aberta, o painel superior esquerdo encolhe para a área que sobra ao lado dela, sem ficar por baixo.
-  const topPanelWidth = drawerOpen
-    ? 'min(560px, calc(100% - min(620px, 60%) - 1.5rem))'
-    : 'min(560px, calc(100% - 11rem))'
+  // No celular a gaveta sobe por baixo, então o painel ocupa a largura toda.
+  const topPanelWidth = !desktop
+    ? 'calc(100% - 1.5rem)'
+    : drawerOpen
+      ? 'min(560px, calc(100% - min(620px, 60%) - 1.5rem))'
+      : 'min(560px, calc(100% - 11rem))'
   const setFaqOpen = useAppStore((s) => s.setFaqOpen)
   const presenting = useAppStore((s) => s.presentation.active)
   const presentationMode = useAppStore((s) => s.presentation.mode)
@@ -84,55 +91,59 @@ export default function App() {
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={resetLayout}
-            title="Volta cada hexágono para a posição padrão da área e do patamar"
-            className={toolButton}
-          >
-            Padrão
-          </button>
-          <button
-            type="button"
-            onClick={() => setFaqOpen(!faqOpen)}
-            aria-pressed={faqOpen}
-            title="Perguntas frequentes e pesquisa sobre o sistema"
-            className={`${toolButton} ${faqOpen ? 'border-(--t-accent) bg-(--t-accent) text-(--t-bg)' : 'hover:text-(--t-text)'}`}
-          >
-            FAQ
-          </button>
-          <ArrangeMenu buttonClass={toolButton} />
-          {(['apresentacao', 'historia'] as const).map((m) => {
-            const on = presenting && presentationMode === m
-            return (
-              <button
-                key={m}
-                type="button"
-                onClick={() => (on ? stopPresentation() : startPresentation(m))}
-                aria-pressed={on}
-                title={
-                  m === 'apresentacao'
-                    ? 'Roteiro para apresentar o sistema: como ler, como explorar, filtros e modelos'
-                    : 'Conta a história da IA em ordem, de 1950 até hoje, com a linha do tempo avançando junto'
-                }
-                className={`${toolButton} ${on ? 'border-(--t-accent) bg-(--t-accent) text-(--t-bg)' : 'hover:text-(--t-text)'}`}
-              >
-                {PRESENTATION_MODES[m].label}
-              </button>
-            )
-          })}
-          <button
-            type="button"
-            onClick={toggleModels}
-            aria-pressed={showModels}
-            className={`h-8 rounded-md border px-3 font-mono text-[10px] tracking-[0.12em] uppercase transition-colors ${
-              showModels
-                ? 'border-(--t-accent) bg-(--t-accent) text-(--t-bg)'
-                : 'border-(--t-border) text-(--t-text-muted) hover:text-(--t-text)'
-            }`}
-          >
-            Modelos
-          </button>
+          <div className="hidden items-center gap-2 md:flex">
+            <button
+              type="button"
+              onClick={resetLayout}
+              title="Volta cada hexágono para a posição padrão da área e do patamar"
+              className={toolButton}
+            >
+              Padrão
+            </button>
+            <button
+              type="button"
+              onClick={() => setFaqOpen(!faqOpen)}
+              aria-pressed={faqOpen}
+              title="Perguntas frequentes e pesquisa sobre o sistema"
+              className={`${toolButton} ${faqOpen ? 'border-(--t-accent) bg-(--t-accent) text-(--t-bg)' : 'hover:text-(--t-text)'}`}
+            >
+              FAQ
+            </button>
+            <ArrangeMenu buttonClass={toolButton} />
+            <ExportMenu buttonClass={toolButton} />
+            {(['apresentacao', 'historia'] as const).map((m) => {
+              const on = presenting && presentationMode === m
+              return (
+                <button
+                  key={m}
+                  type="button"
+                  onClick={() => (on ? stopPresentation() : startPresentation(m))}
+                  aria-pressed={on}
+                  title={
+                    m === 'apresentacao'
+                      ? 'Roteiro para apresentar o sistema: como ler, como explorar, filtros e modelos'
+                      : 'Conta a história da IA em ordem, de 1950 até hoje, com a linha do tempo avançando junto'
+                  }
+                  className={`${toolButton} ${on ? 'border-(--t-accent) bg-(--t-accent) text-(--t-bg)' : 'hover:text-(--t-text)'}`}
+                >
+                  {PRESENTATION_MODES[m].label}
+                </button>
+              )
+            })}
+            <button
+              type="button"
+              onClick={toggleModels}
+              aria-pressed={showModels}
+              className={`h-8 rounded-md border px-3 font-mono text-[10px] tracking-[0.12em] uppercase transition-colors ${
+                showModels
+                  ? 'border-(--t-accent) bg-(--t-accent) text-(--t-bg)'
+                  : 'border-(--t-border) text-(--t-text-muted) hover:text-(--t-text)'
+              }`}
+            >
+              Modelos
+            </button>
+          </div>
+          <MobileMenu />
           <button
             type="button"
             onClick={() => setTheme(nextTheme)}
@@ -144,7 +155,7 @@ export default function App() {
         </div>
       </header>
 
-      <div className="flex min-h-0 flex-1">
+      <div className="relative flex min-h-0 flex-1">
         <PresentationPanel />
         <main className="relative min-h-0 min-w-0 flex-1 overflow-hidden">
           <SkillCanvas skills={SKILLS} />

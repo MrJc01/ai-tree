@@ -65,13 +65,13 @@ export function SkillCanvas({ skills }: SkillCanvasProps) {
   return (
     <div className="h-full w-full">
       <ReactFlow
+        className="max-md:[&_.react-flow__controls]:hidden max-md:[&_.react-flow__minimap]:hidden"
         nodes={nodes}
         edges={visibleEdges}
         onNodesChange={onNodesChange}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         colorMode={theme}
-        fitView
         fitViewOptions={{ padding: 0.06, minZoom: 0.2, maxZoom: 0.7 }}
         minZoom={0.12}
         maxZoom={2}

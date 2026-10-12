@@ -2,7 +2,8 @@ import { useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronLeft, X } from 'lucide-react'
 import { SKILL_BY_ID } from '../../data'
-import { DRAWER_MAX_SHARE, DRAWER_MAX_WIDTH } from '../../lib/geometry'
+import { DRAWER_MAX_SHARE, DRAWER_MAX_WIDTH, MOBILE_DRAWER_SHARE } from '../../lib/geometry'
+import { DESKTOP_QUERY, useMedia } from '../../lib/useMedia'
 import { useAppStore, type DrawerEntry } from '../../store/appStore'
 import { CompanySheet, SourceSheet } from './DetailSheets'
 import { breadcrumbsFor } from './entries'
@@ -74,6 +75,7 @@ export function SkillDrawer() {
     return () => window.removeEventListener('keydown', onKey)
   }, [open, faqOpen, popEntry])
 
+  const desktop = useMedia(DESKTOP_QUERY)
   const crumbs = breadcrumbsFor(drawer)
 
   return (
@@ -82,12 +84,20 @@ export function SkillDrawer() {
         <motion.aside
           key="drawer"
           aria-label="Detalhes da habilidade"
-          initial={{ x: '100%' }}
-          animate={{ x: 0 }}
-          exit={{ x: '100%' }}
+          initial={desktop ? { x: '100%' } : { y: '100%' }}
+          animate={{ x: 0, y: 0 }}
+          exit={desktop ? { x: '100%' } : { y: '100%' }}
           transition={SPRING}
-          className="absolute inset-y-0 right-0 z-30 flex flex-col border-l border-(--t-border) shadow-2xl"
-          style={{ width: `min(${DRAWER_MAX_WIDTH}px, ${DRAWER_MAX_SHARE * 100}%)`, background: 'color-mix(in srgb, var(--t-bg) 92%, transparent)', backdropFilter: 'blur(16px)' }}
+          className={`absolute z-30 flex flex-col shadow-2xl ${
+            desktop ? 'inset-y-0 right-0 border-l border-(--t-border)' : 'inset-x-0 bottom-0 rounded-t-xl border-t border-(--t-border)'
+          }`}
+          style={{
+            ...(desktop
+              ? { width: `min(${DRAWER_MAX_WIDTH}px, ${DRAWER_MAX_SHARE * 100}%)` }
+              : { height: `${MOBILE_DRAWER_SHARE * 100}%` }),
+            background: 'color-mix(in srgb, var(--t-bg) 92%, transparent)',
+            backdropFilter: 'blur(16px)',
+          }}
         >
           <div className="flex items-center gap-2 border-b border-(--t-border) px-3 py-2.5">
             {drawer.length > 1 && (
@@ -100,7 +110,7 @@ export function SkillDrawer() {
                 <ChevronLeft size={16} />
               </button>
             )}
-            <nav aria-label="Caminho" className="min-w-0 flex-1 text-[12px] leading-relaxed">
+            <nav aria-label="Caminho" className="min-w-0 flex-1 overflow-hidden text-[12px] leading-relaxed">
               {crumbs.map((c, i) => (
                 <span key={`${c.label}-${i}`}>
                   {i > 0 && <span className="mx-1.5 text-(--t-text-muted)">&gt;</span>}
@@ -119,7 +129,9 @@ export function SkillDrawer() {
                 </span>
               ))}
             </nav>
-            <DensityToggle />
+            <span className="shrink-0">
+              <DensityToggle />
+            </span>
             <button
               type="button"
               onClick={closeDrawer}
@@ -138,14 +150,16 @@ export function SkillDrawer() {
                 return (
                   <motion.div
                     key={`${i}-${entryKey(entry)}`}
-                    initial={{ left: '100%' }}
-                    animate={{ left: i * STACK_STEP, opacity: isTop ? 1 : 0.85 }}
-                    exit={{ left: '100%', opacity: 0 }}
+                    initial={desktop ? { left: '100%' } : { top: '100%' }}
+                    animate={desktop ? { left: i * STACK_STEP, opacity: isTop ? 1 : 0.85 } : { top: i * STACK_STEP, opacity: isTop ? 1 : 0.85 }}
+                    exit={desktop ? { left: '100%', opacity: 0 } : { top: '100%', opacity: 0 }}
                     transition={SPRING}
                     onClick={isTop ? undefined : () => jumpTo(i)}
-                    className={`absolute inset-y-0 right-0 bg-(--t-bg) shadow-[-10px_0_24px_rgba(0,0,0,0.18)] ${
-                      isTop ? '' : 'cursor-pointer border-l border-(--t-border)'
-                    }`}
+                    className={`absolute bg-(--t-bg) ${
+                      desktop
+                        ? 'inset-y-0 right-0 shadow-[-10px_0_24px_rgba(0,0,0,0.18)]'
+                        : 'inset-x-0 bottom-0 rounded-t-xl shadow-[0_-10px_24px_rgba(0,0,0,0.18)]'
+                    } ${isTop ? '' : `cursor-pointer ${desktop ? 'border-l' : 'border-t'} border-(--t-border)`}`}
                     style={{ zIndex: i + 1 }}
                     aria-hidden={!isTop}
                   >

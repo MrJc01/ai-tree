@@ -17,7 +17,7 @@ export function BenchmarkVault() {
   const active = BENCHMARKS.find((b) => b.id === activeId)
 
   return (
-    <div className="absolute top-3 right-3 z-20 flex flex-col items-end gap-2">
+    <div className="absolute top-3 right-3 z-20 flex flex-col items-end gap-2 max-md:top-auto max-md:right-3 max-md:bottom-24">
       <button
         type="button"
         aria-expanded={open}

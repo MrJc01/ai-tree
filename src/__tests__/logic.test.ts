@@ -79,7 +79,8 @@ describe('roteamento das arestas', () => {
   it('cada aresta tem pontos e vai do pré-requisito até quem depende dele', () => {
     expect(edges.length).toBe(SKILLS.reduce((n, s) => n + s.prerequisites.length, 0))
     for (const e of edges) {
-      expect(e.data?.points.length, e.id).toBe(4)
+      // Trilha entre vizinhos: 4 pontos. Trilha longa, que desvia por uma coluna livre: 6.
+      expect([4, 6], e.id).toContain(e.data?.points.length)
       expect(SKILL_BY_ID.get(e.target)?.prerequisites).toContain(e.source)
       expect(e.type).toBe('circuit')
     }

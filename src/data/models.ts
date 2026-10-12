@@ -61,4 +61,28 @@ export const MODELS: ModelNode[] = [
     orbits: 'reasoning-rl',
     url: 'https://arxiv.org/abs/2501.12948',
   },
+  {
+    id: 'claude-opus-5-5',
+    name: 'Claude Opus 5.5',
+    vendor: 'Anthropic',
+    releasedAt: '2026-09',
+    orbits: 'constitutional-ai',
+    url: 'https://www.anthropic.com/claude-opus-5-5',
+  },
+  {
+    id: 'claude-sonnet-5-5',
+    name: 'Claude Sonnet 5.5',
+    vendor: 'Anthropic',
+    releasedAt: '2026-09',
+    orbits: 'constitutional-ai',
+    url: 'https://www.anthropic.com/claude-sonnet-5-5',
+  },
+  {
+    id: 'claude-haiku-5-5',
+    name: 'Claude Haiku 5.5',
+    vendor: 'Anthropic',
+    releasedAt: '2026-10',
+    orbits: 'constitutional-ai',
+    url: 'https://www.anthropic.com/claude-haiku-5-5',
+  },
 ]

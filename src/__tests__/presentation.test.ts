@@ -22,7 +22,7 @@ beforeEach(() => {
     showModels: false,
     benchmarkId: null,
     density: 'streamline',
-    presentation: { active: false, index: 0, mode: 'apresentacao' },
+    presentation: { active: false, index: 0, mode: 'apresentacao', trail: [] },
     focus: null,
     fit: null,
     positions: {},
@@ -155,7 +155,7 @@ describe('store da apresentação', () => {
   it('start, goToStep, next e prev respeitam os limites', () => {
     const s = useAppStore.getState()
     s.startPresentation()
-    expect(useAppStore.getState().presentation).toEqual({ active: true, index: 0, mode: 'apresentacao' })
+    expect(useAppStore.getState().presentation).toEqual({ active: true, index: 0, mode: 'apresentacao', trail: [] })
     useAppStore.getState().prevStep()
     expect(useAppStore.getState().presentation.index).toBe(0)
     useAppStore.getState().goToStep(999)
@@ -165,9 +165,10 @@ describe('store da apresentação', () => {
   })
 
   it('stop desativa sem perder o passo', () => {
+    useAppStore.getState().startPresentation()
     useAppStore.getState().goToStep(4)
     useAppStore.getState().stopPresentation()
-    expect(useAppStore.getState().presentation).toEqual({ active: false, index: 4, mode: 'apresentacao' })
+    expect(useAppStore.getState().presentation).toEqual({ active: false, index: 4, mode: 'apresentacao', trail: [0] })
   })
 })
 
@@ -314,7 +315,7 @@ describe('roteiro da História da IA', () => {
 describe('modo da apresentação', () => {
   it('startPresentation("historia") entra no roteiro histórico', () => {
     useAppStore.getState().startPresentation('historia')
-    expect(useAppStore.getState().presentation).toEqual({ active: true, index: 0, mode: 'historia' })
+    expect(useAppStore.getState().presentation).toEqual({ active: true, index: 0, mode: 'historia', trail: [] })
   })
 
   it('navegação respeita o tamanho do roteiro do modo ativo', () => {
@@ -352,5 +353,30 @@ describe('estado-base dos passos', () => {
     runPresentationStep([{ kind: 'year', year: 1958 }, { kind: 'focus', skillId: 'perceptron' }])
     expect(useAppStore.getState().year).toBe(1958)
     expect(useAppStore.getState().presentationFocus).toBe('perceptron')
+  })
+})
+
+describe('voltar ao último passo visto', () => {
+  it('desfaz o último salto, inclusive o de "Próximo", e para quando não há o que desfazer', () => {
+    const s = useAppStore.getState()
+    s.startPresentation()
+    useAppStore.getState().goToStep(5)
+    useAppStore.getState().nextStep()
+    expect(useAppStore.getState().presentation.index).toBe(6)
+    useAppStore.getState().backToLastSeen()
+    expect(useAppStore.getState().presentation.index).toBe(5)
+    useAppStore.getState().backToLastSeen()
+    expect(useAppStore.getState().presentation.index).toBe(0)
+    expect(useAppStore.getState().presentation.trail).toEqual([])
+    useAppStore.getState().backToLastSeen()
+    expect(useAppStore.getState().presentation.index).toBe(0)
+  })
+
+  it('ficar no mesmo passo não cria entrada, e a pilha não passa de 50', () => {
+    useAppStore.getState().startPresentation()
+    useAppStore.getState().goToStep(0)
+    expect(useAppStore.getState().presentation.trail).toEqual([])
+    for (let i = 0; i < 80; i++) useAppStore.getState().goToStep(i % 2)
+    expect(useAppStore.getState().presentation.trail.length).toBeLessThanOrEqual(50)
   })
 })
