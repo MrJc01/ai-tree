@@ -106,23 +106,24 @@ Legenda: `[x]` feito com evidência · `[ ]` a fazer · **parcial** = implementa
    - MMLU clássico: sem placar atual verificado; continua só com o valor do artigo.
    Modelo: campo `current` em `src/types/skill.ts` e `src/data/benchmarks.ts`. Evidência: `data.test.ts` ("placares atuais": data, fonte e links https); conferido no navegador (Vault mostra "Placar atual: 96%", "Lido em 12/10/2026", "dado da fonte de 10/10/2026" e os três links); FAQ "Os benchmarks mostram placares atuais?" reescrita.
    **Parcial**: swebench.com, arcprize.org, TIGER-Lab e arena.ai carregam os placares por JavaScript, então o WebFetch não leu as tabelas. Só o arena.ai foi lido direto; os outros números vêm de agregadores, e o painel diz isso em cada item.
-4. [ ] **Nomes para o repositório git**: apresentar opções e esperar a escolha. Não iniciado (aguarda o usuário).
+4. [x] **Repositório git: `ai-tree`**. Nome escolhido pelo usuário ("na real, ai-tree"). Iniciado na branch `main`, com o pacote renomeado para `ai-tree`. Evidência: commit `76d2333` (primeiro commit, 83 arquivos). **Pendente**: o remoto no GitHub não foi criado (ação que publica código; aguarda confirmação).
 
 **Pedido novo: "pense e pesquise o que mais pode estar faltando, e faça tudo"**
 
 **Lacunas levantadas (pesquisa de 2026-10-12), com estado:**
-- [ ] **Modelos da árvore desatualizados (prioridade alta)**: `src/data/models.ts` tem só modelos de 2023 a janeiro de 2025. Os líderes de 2026 (Claude Opus 5, Claude Fable 5, gemini-4-argon) não estão na árvore. Precisa de pesquisa de datas de lançamento por modelo, com fonte.
-- [ ] **ARC-AGI-3 sem entrada (prioridade média)**: a ARC Prize já tem placar do ARC-AGI-3 (arcprize.org/leaderboard abre nele). A árvore só tem o ARC-AGI original, de 2019. Precisa decidir quais habilidades ele avalia.
-- [ ] **Celular sem controles (prioridade alta)**: o cabeçalho esconde Padrão, FAQ, Auto-organizar, Apresentação, História e Modelos abaixo de `md`, e a gaveta ocupa a tela toda. Precisa de desenho próprio.
-- [ ] **Placares sem leitura direta (fonte)**: três páginas oficiais carregam os números por JavaScript. Conferir no navegador ou pelo dado oficial antes de publicar. Não é bug, é a forma como o site funciona.
-- [ ] **Testes de ponta a ponta**: não há Playwright. Toda conferência visual é manual.
-- [ ] **ESLint**: não existe. Só o TypeScript (com `noUnusedLocals`) pega código sem uso.
-- [ ] **Acessibilidade**: contraste nos dois temas e leitor de tela, ainda não auditados.
-- [ ] **Revisão de dados**: patamares T4 e T5, e os papéis dos atores de cada habilidade.
-- [ ] **Trilhas que contornam os hexágonos**: uma aresta ainda pode passar atrás de um nó (aceito por enquanto).
-- [ ] **Exportar PNG ou SVG** e **histórico de passos** da apresentação.
-- [ ] **Repositório git**: sem ele, não há CI rodando nem histórico. Aguarda a escolha do nome.
-- [ ] **Tamanho do pacote**: o build avisa de um chunk principal de 689 kB. Vale separar as partes pesadas.
+- [~] **Modelos da árvore desatualizados (prioridade alta)**. **Feito**: Claude Opus 5.5 (22/09/2026), Sonnet 5.5 (28/09/2026) e Haiku 5.5 (07/10/2026), com a página oficial da Anthropic como link (lidas em anthropic.com/news e nas páginas de cada modelo). **Pendente**, sem página oficial confirmada: Claude Fable 5 e Mythos 5 (jornais citam 09/06/2026; o endereço anthropic.com/claude-fable-5 deu 404); GPT-5.6 Sol (openai.com deu 403, a data 09/07/2026 vem de imprensa); Gemini 4 (não anunciado no blog do Google; o Arena lista um nome de teste, "gemini-4-argon", como preliminar). Opus 5: datas conflitantes (24/07/2026 em fontes secundárias). Evidência: `models.ts`; `data.test.ts` passa.
+- [x] **ARC-AGI-3 com entrada**: lançado em 25/03/2026 (arcprize.org/blog/arc-agi-3-launch). Referência do lançamento: humanos 100%, IA de fronteira 0,51%. **Pendente**: placar atual (o leaderboard carrega por JavaScript; um agregador cita 30,2% para Opus 5 high, não confirmado). Evidência: `benchmarks.ts`.
+- [x] **Celular**: cabeçalho com menu (Vista, Organizar, Exportar, Apresentar); gaveta sobe por baixo com 60% da tela; painel da apresentação é faixa inferior com 40%; a câmera centraliza o foco na área livre de cima; controles e minimapa ocultos. Conferido no navegador em 375×812 (menu, gaveta, passo 3 da apresentação com o Transformer centralizado) e nos testes de ponta a ponta (perfil Pixel 5). **Pendente**: revisão em tablet (768 a 1024 px), não feita.
+- [~] **Placares sem leitura direta (fonte)**: swebench.com, arcprize.org, TIGER-Lab e arena.ai carregam por JavaScript. Só o arena.ai foi lido direto. Os demais estão marcados no Vault com a fonte real (agregador). Conferir antes de publicar.
+- [x] **Testes de ponta a ponta** (Playwright): `npm run e2e`, 10 testes passando e 8 pulados por perfil (desktop e celular). Cobrem link direto, apresentação e "voltar ao último visto", Auto-organizar, exportação PNG real, Vault com placar atual, e o menu do celular. Rodam no CI (`ponta_a_ponta`). Evidência: saída do `playwright test`.
+- [x] **ESLint**: `npm run lint` sem erros (regras do TypeScript, React Hooks e Fast Refresh). Um erro real encontrado e corrigido: `MermaidDiagram` chamava setState dentro do efeito. Roda no CI.
+- [~] **Acessibilidade**: axe-core 4.10 na página: **0 violações**, 46 regras aprovadas. 63 casos de contraste ficaram "incompletos" (o axe não lê fundo com imagem, desfoque ou sobreposição do canvas). Medido à mão no tema escuro: título do hexágono 15,04:1; selo muted 4,91:1. No claro, valem os tokens da rodada anterior (16,9 e 4,51). **Pendente**: leitor de tela não testado com ferramenta própria.
+- [~] **Revisão de dados**: T4 e T5 agora citam leituras reais (Morris et al., "Levels of AGI", arXiv:2311.02462, 2023; Good, 1965; Bostrom, *Superintelligence*, 2014), e o FAQ as mostra (`levels.test.ts`). **Pendente**: revisão dos papéis dos atores das 51 habilidades, uma a uma.
+- [x] **Trilhas que contornam os hexágonos**: a medição mostrou **7 cruzamentos** (arestas longas, como `transformer → mamba`, passando por dentro de um hexágono de um patamar intermediário). Correção: arestas que atravessam patamares ganham uma coluna livre entre os hexágonos, com faixa horizontal em cada ponta (`src/lib/route.ts`). Agora, zero cruzamentos. Evidência: `edges.test.ts` (controle do detector, rotas não vazias, zero cruzamentos); `logic.test.ts` (sem sobreposição horizontal, trilhas ortogonais); conferido no navegador.
+- [x] **Exportar PNG ou SVG** (botão Exportar no cabeçalho, e no menu do celular). Exporta a **vista atual** do canvas, com o zoom e a posição da tela; a árvore inteira em uma imagem fica para depois. Evidência: teste E2E de download (nome `ai-tree-AAAA-MM-DD.png`) e `ui.test.tsx`.
+- [x] **Histórico de passos da apresentação**: botão "Voltar ao último visto" com o título do passo de destino; a pilha guarda até 50 passos e fica salva na sessão. Evidência: `presentation.test.ts` (desfaz o salto de "Próximo", ignora o mesmo passo, limita a pilha), `navigation.test.ts` (leitura validada), e o E2E de apresentação.
+- [x] **Repositório git** iniciado (`ai-tree`, branch `main`, primeiro commit `76d2333`). O CI agora roda lint, tipos, testes, build e ponta a ponta. **Pendente**: criar o remoto no GitHub, se você quiser.
+- [x] **Tamanho do pacote**: o arquivo principal caiu de 689 kB para 173 kB, com React, React Flow e Framer Motion em pacotes separados. Os avisos que sobram são de módulos do Mermaid, carregados só quando um fluxograma é aberto. Evidência: saída do `npm run build`.
 - Já decidido (não é lacuna): `npm audit` (risco aceito, ver "Decisões já tomadas").
 
 ## 📥 Pedidos de 2026-10-12 (continuação)
@@ -195,8 +196,8 @@ Este bloco é a lista única de tudo. Nada que foi pedido ou sugerido fica fora 
 7. [ ] Testes de ponta a ponta (Playwright) para apresentação, gaveta, FAQ e link direto. Hoje a conferência é manual no navegador de teste.
 8. [ ] ESLint, para pegar padrões ruins que o TypeScript não pega.
 9. [ ] Desempenho: medir o custo do blur de cada nó com a árvore cheia e com a camada de modelos ligada.
-10. [ ] Histórico de passos da apresentação, com voltar ao último passo visto.
-11. [ ] Exportar a árvore como imagem (PNG ou SVG), para slides.
+10. [x] Histórico de passos da apresentação, com voltar ao último passo visto: feito (ver a rodada 3).
+11. [x] Exportar a árvore como imagem (PNG ou SVG): feito para a vista atual (ver a rodada 3).
 
 **Dependem de você (não consigo decidir sozinho):**
 - [x] Layout em árvore: o usuário quer escolher o tipo de organização no Auto-organizar. Feito (dropdown com quatro tipos).
