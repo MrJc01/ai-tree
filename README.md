@@ -113,6 +113,7 @@ docs/              checklist do projeto e guia da apresentação
 
 ## Limitações conhecidas
 
+- **Idiomas.** Português e inglês estão completos: interface, apresentação, história, FAQ, benchmarks e habilidades. Espanhol, francês, alemão, italiano, japonês e chinês ainda não têm o conteúdo traduzido e não aparecem no seletor. O que falta, e como reativar cada idioma, está em [docs/CHECKLIST.md](docs/CHECKLIST.md), na seção *Traduções: o que falta*.
 - Outros modelos recentes, de empresas e de código aberto que não estão nesta lista, ainda não entraram. O Gemini 4 Argon aparece como anunciado, não como lançado de forma ampla.
 - Gu e Dao (Mamba) e Ho (DDPM) têm a afiliação confirmada por fonte secundária, não pela primeira página dos artigos.
 - O layout foi testado em 375×812 (celular), 768×1024 e 1024 px (tablet), e em 1280×800 (desktop).
