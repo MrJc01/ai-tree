@@ -152,6 +152,9 @@ interface AppState {
   /** Slide Sobre, aberto na primeira visita e pelo botão do cabeçalho. */
   aboutOpen: boolean
   setAboutOpen: (open: boolean) => void
+  /** Slide atual do Sobre. Fica na store para sobreviver à troca de idioma, que remonta a árvore. */
+  aboutSlide: number
+  setAboutSlide: (slide: number) => void
 
   presentation: PresentationState
   /** Habilidade que o passo atual da apresentação está explicando. Recebe a borda de foco. */
@@ -212,7 +215,9 @@ export const useAppStore = create<AppState>((set) => ({
   faqOpen: false,
   setFaqOpen: (open) => set({ faqOpen: open }),
   aboutOpen: false,
-  setAboutOpen: (open) => set({ aboutOpen: open }),
+  setAboutOpen: (open) => set(open ? { aboutOpen: true, aboutSlide: 0 } : { aboutOpen: false }),
+  aboutSlide: 0,
+  setAboutSlide: (slide) => set({ aboutSlide: slide }),
   presentation: loadPresentation(),
   presentationFocus: null,
   setPresentationFocus: (id) => set({ presentationFocus: id }),

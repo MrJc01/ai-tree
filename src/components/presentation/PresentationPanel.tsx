@@ -40,6 +40,8 @@ export function PresentationPanel() {
     if (!active) return
     const onKey = (e: KeyboardEvent) => {
       if (isTyping(e.target)) return
+      // Com o slide Sobre aberto por cima, as setas são dele e não passam os passos da apresentação.
+      if (useAppStore.getState().aboutOpen) return
       if (e.key === 'ArrowRight') {
         e.preventDefault()
         nextStep()

@@ -15,6 +15,7 @@
     "test:watch": "vitest",
     "e2e": "playwright test",
     "prints": "node scripts/capturar-prints.mjs",
+    "prints:sobre": "node scripts/capturar-sobre.mjs",
     "og": "node scripts/gerar-og-image.mjs"
   },
   "dependencies": {
