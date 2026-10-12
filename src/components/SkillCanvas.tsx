@@ -28,6 +28,9 @@ interface SkillCanvasProps {
   skills: SkillNode[]
 }
 
+/** Esconde a atribuição do React Flow no canto inferior direito. */
+const PRO_OPTIONS = { hideAttribution: true }
+
 export function SkillCanvas({ skills }: SkillCanvasProps) {
   const theme = useAppStore((s) => s.theme)
   const domains = useAppStore((s) => s.domains)
@@ -78,6 +81,7 @@ export function SkillCanvas({ skills }: SkillCanvasProps) {
         nodesDraggable
         nodesConnectable={false}
         selectNodesOnDrag={false}
+        proOptions={PRO_OPTIONS}
       >
         <Background variant={BackgroundVariant.Dots} gap={24} size={1} color={GRID_COLOR[theme]} />
         <Controls showInteractive={false} />
