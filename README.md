@@ -84,6 +84,7 @@ Depois abra http://localhost:5173.
 | `npm run typecheck` | Checagem de tipos |
 | `npm run build` | Build de produção |
 | `npm run prints` | Gera os prints de `docs/img/` (precisa do `npm run dev` rodando) |
+| `npm run og` | Gera `public/og-image.png`, a imagem que aparece ao compartilhar o link do site |
 
 Os testes de ponta a ponta precisam do navegador de teste, que se instala uma vez com `npx playwright install chromium`.
 
